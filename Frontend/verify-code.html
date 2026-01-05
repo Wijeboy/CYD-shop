@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Code - CYD</title>
+    <link rel="stylesheet" href="css/forgot-password.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="form-section">
+            <div class="form-container">
+                <div class="logo">
+                    <img src="images/logo.png" alt="CYD Logo">
+                </div>
+                
+                <h1>Enter Reset Code</h1>
+                <p class="subtitle">We've sent a code to <span id="sentEmail"></span></p>
+                
+                <form id="codeForm">
+                    <div class="form-group">
+                        <label for="resetCode">Reset Code</label>
+                        <input type="text" id="resetCode" placeholder="Enter 6-digit code" maxlength="6" required>
+                        <span class="error-message" id="codeError"></span>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Verify Code</button>
+                    
+                    <div class="resend-link">
+                        Didn't receive code? <a href="#" id="resendCode">Resend</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/verify-code.js"></script>
+</body>
+</html>
