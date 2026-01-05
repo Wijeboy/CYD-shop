@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - CYD</title>
+    <link rel="stylesheet" href="css/signin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="form-section">
+            <div class="form-container">
+                <div class="logo">
+                    <img src="images/logo.png" alt="CYD Logo">
+                </div>
+                
+                <h1>WELCOME !</h1>
+                
+                <form id="signinForm">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="Enter your Email" required>
+                        <span class="error-message" id="emailError"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="password-input-wrapper">
+                            <input type="password" id="password" placeholder="Enter your Password" required>
+                            <button type="button" class="toggle-password" onclick="togglePassword()">
+                                <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 5C5.636 5 2 12 2 12s3.636 7 10 7 10-7 10-7-3.636-7-10-7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="forgot-password">
+                            <a href="#">Forgot password?</a>
+                        </div>
+                    </div>
+                    
+                    <div class="signup-link">
+                        Don't have an account? <a href="signup.html">Sign Up</a>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/signin.js"></script>
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleBtn = document.querySelector('.toggle-password');
+            const eyeIcon = toggleBtn.querySelector('.eye-icon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.innerHTML = '<path d="M2 2l20 20M9.88 9.88a3 3 0 104.24 4.24m-4.24-4.24A10.07 10.07 0 0112 9c6.364 0 10 7 10 7s-.912 1.75-2.573 3.457M9.88 9.88L2 2m7.88 7.88l4.24 4.24m0 0L22 22M9.88 9.88c-.82.82-1.36 1.95-1.36 3.12 0 .28.03.56.08.82m4.4 4.4a3.007 3.007 0 01-3.32-3.32" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.innerHTML = '<path d="M12 5C5.636 5 2 12 2 12s3.636 7 10 7 10-7 10-7-3.636-7-10-7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+            }
+        }
+    </script>
+</body>
+</html>
