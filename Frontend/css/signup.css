@@ -96,6 +96,39 @@ h1 {
     color: #999;
 }
 
+.password-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-input-wrapper input {
+    padding-right: 45px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    transition: color 0.3s ease;
+}
+
+.toggle-password:hover {
+    color: #000;
+}
+
+.eye-icon {
+    width: 18px;
+    height: 18px;
+}
+
 .terms {
     display: flex;
     align-items: center;
