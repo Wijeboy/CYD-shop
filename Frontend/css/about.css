@@ -1,0 +1,341 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #ffffff;
+    color: #000000;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Navigation Bar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.brand-name {
+    font-size: 24px;
+    font-weight: bold;
+    color: #000000;
+    letter-spacing: 5px;
+}
+
+.nav-center {
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+.search-input {
+    padding: 10px 15px;
+    width: 400px;
+    border: none;
+    background-color: #f5f5f5;
+    font-size: 14px;
+    outline: none;
+    border-radius: 5px 0 0 5px;
+}
+
+.search-btn {
+    padding: 10px 20px;
+    border: none;
+    background-color: #f5f5f5;
+    color: #5a5a5a;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 0 5px 5px 0;
+}
+
+.search-btn:hover {
+    background-color: #e8e8e8;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #000000;
+    font-size: 14px;
+}
+
+.nav-icon {
+    width: 20px;
+    height: 20px;
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    overflow: hidden;
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.hero-title {
+    font-size: 56px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 15px;
+}
+
+.hero-subtitle {
+    font-size: 16px;
+    color: #ffffff;
+}
+
+/* Who We Are Section */
+.who-we-are-section {
+    background-color: #ffffff;
+    padding: 80px 200px;
+    text-align: center;
+}
+
+.section-label {
+    font-size: 12px;
+    color: #000000;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+}
+
+.section-title {
+    font-size: 40px;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 30px;
+}
+
+.section-description {
+    font-size: 16px;
+    color: #5a5a5a;
+    line-height: 1.8;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Two Images Section */
+.two-images-section {
+    display: flex;
+    width: 100%;
+    height: 500px;
+}
+
+.half-image {
+    width: 50%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Founder Section */
+.founder-section {
+    display: flex;
+    align-items: center;
+    background-color: #000000;
+    padding: 80px;
+    gap: 80px;
+}
+
+.founder-image {
+    width: 400px;
+    height: 500px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.founder-content {
+    flex: 1;
+}
+
+.founder-label {
+    font-size: 14px;
+    color: #ffffff;
+    margin-bottom: 15px;
+}
+
+.founder-name {
+    font-size: 36px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 25px;
+}
+
+.founder-quote {
+    font-size: 18px;
+    color: #ffffff;
+    line-height: 1.8;
+    font-style: italic;
+}
+
+/* Contact Banner Section */
+.contact-banner-section {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+}
+
+.contact-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.contact-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.contact-label {
+    font-size: 14px;
+    color: #ffffff;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.contact-title {
+    font-size: 48px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 30px;
+}
+
+.contact-info {
+    font-size: 18px;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+/* Footer */
+.footer {
+    background-color: #000000;
+    padding: 50px 80px 30px 80px;
+    color: #ffffff;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 80px;
+}
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.footer-brand {
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.social-icon {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.footer-copyright {
+    font-size: 10px;
+    color: #ffffff;
+}
+
+.footer-heading {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.footer-link {
+    font-size: 14px;
+    color: #ffffff;
+    transition: color 0.3s;
+}
+
+.footer-link:hover {
+    color: #d4af37;
+}
+
+.footer-newsletter {
+    align-items: flex-end;
+}
+
+.newsletter-input {
+    padding: 12px;
+    width: 250px;
+    border: none;
+    background-color: #ffffff;
+    color: #000000;
+    font-size: 14px;
+    outline: none;
+}
+
+.newsletter-btn {
+    padding: 12px 30px;
+    border: none;
+    background-color: #5a5a5a;
+    color: #000000;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.newsletter-btn:hover {
+    background-color: #7a7a7a;
+}
