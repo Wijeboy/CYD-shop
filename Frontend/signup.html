@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="js/country-codes.js"></script>
 </head>
 <body>
     <div class="container">
@@ -28,12 +29,19 @@
                     
                     <div class="form-group">
                         <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" placeholder="Enter your number" required>
+                        <div class="phone-input-wrapper">
+                            <select id="countryCode" class="country-code-select" required>
+                                <option value="">Select</option>
+                            </select>
+                            <input type="tel" id="phone" placeholder="Enter your number" required>
+                        </div>
+                        <span class="error-message" id="phoneError"></span>
                     </div>
                     
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" id="email" placeholder="Enter your Email" required>
+                        <span class="error-message" id="emailError"></span>
                     </div>
                     
                     <div class="form-group">

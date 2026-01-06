@@ -106,6 +106,40 @@ h1 {
     padding-right: 45px;
 }
 
+.phone-input-wrapper {
+    display: flex;
+    gap: 8px;
+}
+
+.country-code-select {
+    width: 140px;
+    padding: 11px 8px;
+    border: 2px solid rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: 'Poppins', sans-serif;
+    background: rgba(255, 255, 255, 0.95);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.country-code-select:focus {
+    outline: none;
+    border-color: #000;
+}
+
+.phone-input-wrapper input {
+    flex: 1;
+}
+
+.error-message {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+    min-height: 18px;
+    font-weight: 400;
+}
+
 .toggle-password {
     position: absolute;
     right: 12px;
