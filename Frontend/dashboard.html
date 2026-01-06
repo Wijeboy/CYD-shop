@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - CYD Shop</title>
+    <link rel="stylesheet" href="css/signin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="js/auth-utils.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .dashboard-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .dashboard-header h1 {
+            margin: 0;
+            color: #333;
+            font-size: 28px;
+        }
+
+        .logout-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .user-info {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .user-info h2 {
+            margin: 0 0 20px 0;
+            color: #333;
+            font-size: 20px;
+        }
+
+        .info-row {
+            display: flex;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #666;
+            min-width: 140px;
+        }
+
+        .info-value {
+            color: #333;
+        }
+
+        .token-info {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #ffc107;
+        }
+
+        .token-info h3 {
+            margin: 0 0 10px 0;
+            color: #856404;
+            font-size: 16px;
+        }
+
+        .token-info p {
+            margin: 0;
+            color: #856404;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .actions {
+            margin-top: 25px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-refresh {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-refresh:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>🛍️ CYD Shop Dashboard</h1>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+
+        <div id="content" class="loading">
+            <p>Loading user information...</p>
+        </div>
+    </div>
+
+    <script>
+        // Protect this page - require authentication
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Check authentication
+            const authenticated = await requireAuth();
+            
+            if (!authenticated) {
+                return; // Will be redirected by requireAuth()
+            }
+
+            // Get user data
+            const user = getAuthUser();
+            const token = getAuthToken();
+
+            if (user) {
+                displayUserInfo(user, token);
+            } else {
+                // Fetch fresh user data from server
+                const result = await fetchUserProfile();
+                if (result.success) {
+                    displayUserInfo(result.user, token);
+                } else {
+                    document.getElementById('content').innerHTML = `
+                        <div style="text-align: center; color: #ef4444;">
+                            <p>Failed to load user information</p>
+                            <button class="btn-refresh" onclick="location.reload()">Retry</button>
+                        </div>
+                    `;
+                }
+            }
+        });
+
+        function displayUserInfo(user, token) {
+            const contentDiv = document.getElementById('content');
+            
+            contentDiv.innerHTML = `
+                <div class="user-info">
+                    <h2>Welcome, ${user.name}! 👋</h2>
+                    <div class="info-row">
+                        <span class="info-label">User ID:</span>
+                        <span class="info-value">${user.id}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Name:</span>
+                        <span class="info-value">${user.name}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Email:</span>
+                        <span class="info-value">${user.email}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Phone:</span>
+                        <span class="info-value">${user.countryCode || ''} ${user.phone || 'N/A'}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Role:</span>
+                        <span class="info-value">${user.role || 'user'}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Account Status:</span>
+                        <span class="info-value">${user.isActive !== false ? '✅ Active' : '❌ Inactive'}</span>
+                    </div>
+                </div>
+
+                <div class="token-info">
+                    <h3>🔐 Session Information</h3>
+                    <p>Your session is secured with JWT (JSON Web Token). The token is stored in your browser's localStorage and is automatically included in all authenticated requests.</p>
+                    <p style="margin-top: 10px;"><strong>Token (first 50 chars):</strong> ${token.substring(0, 50)}...</p>
+                </div>
+
+                <div class="actions">
+                    <button class="btn-refresh" onclick="handleRefreshToken()">Refresh Token</button>
+                    <button class="btn-refresh" onclick="handleFetchProfile()">Reload Profile</button>
+                </div>
+            `;
+        }
+
+        async function handleRefreshToken() {
+            const result = await refreshToken();
+            if (result.success) {
+                alert('Token refreshed successfully!');
+                location.reload();
+            } else {
+                alert('Failed to refresh token: ' + result.message);
+            }
+        }
+
+        async function handleFetchProfile() {
+            const result = await fetchUserProfile();
+            if (result.success) {
+                alert('Profile reloaded successfully!');
+                location.reload();
+            } else {
+                alert('Failed to fetch profile: ' + result.message);
+            }
+        }
+    </script>
+</body>
+</html>
