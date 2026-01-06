@@ -1,7 +1,7 @@
 // Signup form handling with real-time validation
 document.addEventListener('DOMContentLoaded', function() {
     // Redirect if already authenticated
-    redirectIfAuthenticated('dashboard.html');
+    redirectIfAuthenticated('index.html');
 
     const signupForm = document.getElementById('signupForm');
     const emailInput = document.getElementById('email');
@@ -190,8 +190,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     setAuthToken(data.token);
                     setAuthUser(data.user);
                 }
-                // Redirect to dashboard or home page
-                window.location.href = 'dashboard.html';
+                // Redirect to home page
+                window.location.href = 'index.html';
             } else {
                 alert(data.message || 'Signup failed. Please try again.');
             }

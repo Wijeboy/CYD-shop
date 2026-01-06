@@ -79,13 +79,13 @@ a {
 .nav-right {
     display: flex;
     align-items: center;
-    gap: 30px;
+    gap: 15px;
 }
 
 .nav-link {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
     color: #000000;
     font-size: 14px;
 }
@@ -93,6 +93,23 @@ a {
 .nav-icon {
     width: 20px;
     height: 20px;
+}
+
+.logout-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+    font-size: 14px;
+    color: #000000;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.logout-btn:hover {
+    color: #666666;
 }
 
 /* Hero Section */

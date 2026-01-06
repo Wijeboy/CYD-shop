@@ -1,7 +1,7 @@
 // Signin form handling with JWT session management
 document.addEventListener('DOMContentLoaded', function() {
     // Redirect if already authenticated
-    redirectIfAuthenticated('dashboard.html');
+    redirectIfAuthenticated('index.html');
 
     const signinForm = document.getElementById('signinForm');
     const emailInput = document.getElementById('email');
@@ -87,8 +87,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Show success message
                 alert(`Welcome back, ${data.user.name}!`);
                 
-                // Redirect to dashboard or home page
-                window.location.href = 'dashboard.html';
+                // Redirect to home page
+                window.location.href = 'index.html';
             } else {
                 // Show error message
                 alert(data.message || 'Login failed. Please check your credentials.');
