@@ -4,9 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile - CYD</title>
+    <link rel="stylesheet" href="css/homepage.css">
     <link rel="stylesheet" href="css/edit-profile.css">
+    <script src="js/toast.js"></script>
+    <script src="js/auth-utils.js"></script>
+    <script src="js/country-codes.js"></script>
 </head>
 <body>
+    <script>
+        // Display user info in navigation bar on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = getAuthUser();
+            if (user) {
+                const accountLink = document.querySelector('a[href="profile.html"]');
+                if (accountLink) {
+                    const accountText = accountLink.querySelector('span');
+                    if (accountText) {
+                        accountText.textContent = user.name.split(' ')[0]; // First name only
+                    }
+                }
+            }
+        });
+    </script>
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="nav-left">
@@ -42,10 +61,13 @@
             <a href="contact.html" class="nav-link">
                 <span>Contact Us</span>
             </a>
-            <a href="account.html" class="nav-link">
+            <a href="profile.html" class="nav-link">
                 <img src="User panel images/icons/account-icon.webp" alt="Account" class="nav-icon">
                 <span>Account</span>
             </a>
+            <button onclick="handleLogout()" class="nav-link logout-btn">
+                <span>Logout</span>
+            </button>
         </div>
     </nav>
 
@@ -87,13 +109,45 @@
             <!-- Contact Number Field -->
             <div class="form-group">
                 <label for="contactNumber" class="form-label">Contact Number</label>
-                <input type="tel" id="contactNumber" name="contactNumber" class="form-input" placeholder="Enter your contact number" required>
+                <div class="phone-input-wrapper" style="display: flex; gap: 10px;">
+                    <select id="countryCode" name="countryCode" class="form-input" style="width: 200px;" required>
+                        <option value="">Select Country</option>
+                    </select>
+                    <input type="tel" id="contactNumber" name="contactNumber" class="form-input" style="flex: 1;" placeholder="Enter your phone number" required>
+                </div>
+                <span class="error-message" id="phoneError" style="display: block; margin-top: 5px; font-size: 12px; color: #ff4444;"></span>
+            </div>
+
+            <!-- Address Field -->
+            <div class="form-group">
+                <label for="address" class="form-label">Address</label>
+                <input type="text" id="address" name="address" class="form-input" placeholder="Enter your address">
+            </div>
+
+            <!-- Country Field -->
+            <div class="form-group">
+                <label for="country" class="form-label">Country</label>
+                <select id="country" name="country" class="form-input">
+                    <option value="">Select Country</option>
+                </select>
+            </div>
+
+            <!-- Postal Code Field -->
+            <div class="form-group">
+                <label for="postalCode" class="form-label">Postal Code</label>
+                <input type="text" id="postalCode" name="postalCode" class="form-input" placeholder="Enter your postal code">
+            </div>
+
+            <!-- Old Password Field -->
+            <div class="form-group">
+                <label for="oldPassword" class="form-label">Current Password</label>
+                <input type="password" id="oldPassword" name="oldPassword" class="form-input" placeholder="Enter current password to change password">
             </div>
 
             <!-- Password Field -->
             <div class="form-group">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" id="password" name="password" class="form-input" placeholder="Enter new password (leave blank to keep current)">
+                <label for="password" class="form-label">New Password</label>
+                <input type="password" id="password" name="password" class="form-input" placeholder="Enter new password (leave blank to keep current)" disabled>
             </div>
 
             <!-- Confirm Password Field -->

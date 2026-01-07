@@ -132,33 +132,33 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Validate terms acceptance
         if (!terms) {
-            alert('Please accept the terms & policy');
+            showToast('Please accept the terms & policy', 'warning');
             return;
         }
 
         // Validate all fields are filled
         if (!name || !email || !phone || !countryCode || !password) {
-            alert('Please fill in all fields');
+            showToast('Please fill in all fields', 'warning');
             return;
         }
 
         // Validate email format
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
-            alert('Please enter a valid email address');
+            showToast('Please enter a valid email address', 'warning');
             return;
         }
 
         // Validate phone number
         const phoneValidation = validatePhoneNumber(countryCode, phone);
         if (!phoneValidation.valid) {
-            alert(phoneValidation.message);
+            showToast(phoneValidation.message, 'warning');
             return;
         }
         
         // Validate password strength
         if (password.length < 6) {
-            alert('Password must be at least 6 characters long');
+            showToast('Password must be at least 6 characters long', 'warning');
             return;
         }
         
@@ -184,32 +184,33 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await response.json();
             
             if (response.ok) {
-                alert('Account created successfully!');
+                showToast('Account created successfully!', 'success');
                 // Store authentication data using utility functions
                 if (data.token) {
                     setAuthToken(data.token);
                     setAuthUser(data.user);
                 }
+                console.log('Redirecting to index.html (home page)...');
                 // Redirect to home page
-                window.location.href = 'index.html';
+                setTimeout(() => window.location.href = 'index.html', 1000);
             } else {
-                alert(data.message || 'Signup failed. Please try again.');
+                showToast(data.message || 'Signup failed. Please try again.', 'error');
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('Network error. Please check your connection and try again.');
+            showToast('Network error. Please check your connection and try again.', 'error');
         }
     });
 });
 
 // Google Sign In (placeholder)
 document.querySelector('.btn-google')?.addEventListener('click', function() {
-    alert('Google Sign In - Integration coming soon!');
+    showToast('Google Sign In - Integration coming soon!', 'info');
     // Implement Google OAuth here
 });
 
 // Apple Sign In (placeholder)
 document.querySelector('.btn-apple')?.addEventListener('click', function() {
-    alert('Apple Sign In - Integration coming soon!');
+    showToast('Apple Sign In - Integration coming soon!', 'info');
     // Implement Apple OAuth here
 });

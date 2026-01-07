@@ -29,6 +29,25 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Please provide country code'],
         trim: true
     },
+    address: {
+        type: String,
+        trim: true,
+        default: ''
+    },
+    country: {
+        type: String,
+        trim: true,
+        default: ''
+    },
+    postalCode: {
+        type: String,
+        trim: true,
+        default: ''
+    },
+    profileImage: {
+        type: String,
+        default: 'User panel images/default-avatar.png'
+    },
     password: {
         type: String,
         required: [true, 'Please provide a password'],

@@ -1,246 +1,321 @@
-// API Base URL
-const API_URL = 'http://localhost:5000/api';
-
-// Store original password to track if user changed it
-let passwordChanged = false;
-
-// Load user profile on page load
+// Edit Profile page with JWT authentication
 document.addEventListener('DOMContentLoaded', async function() {
-    await loadUserProfile();
+    // Protect this page - require authentication
+    const authenticated = await requireAuth();
+    if (!authenticated) {
+        return; // Will be redirected to signin by requireAuth()
+    }
+
+    // Start inactivity monitor (auto logout after 10 minutes)
+    startInactivityMonitor();
+
+    // Populate country codes dropdown
+    populateCountryCodes();
+
+    // Populate countries dropdown
+    populateCountries();
+
+    // Load user profile data
+    await loadUserData();
+
+    // Setup event listeners
+    setupEventListeners();
+});
+
+// Populate country codes dropdown
+function populateCountryCodes() {
+    const countryCodeSelect = document.getElementById('countryCode');
     
-    // Form submission handler
-    const editForm = document.getElementById('editProfileForm');
-    editForm.addEventListener('submit', handleFormSubmit);
+    countryCodes.forEach(country => {
+        const option = document.createElement('option');
+        option.value = country.code;
+        option.textContent = `${country.flag} ${country.code} ${country.country}`;
+        countryCodeSelect.appendChild(option);
+    });
+}
+
+// Populate countries dropdown
+function populateCountries() {
+    const countrySelect = document.getElementById('country');
     
-    // Cancel button handler
-    const cancelBtn = document.getElementById('cancelBtn');
-    cancelBtn.addEventListener('click', function() {
-        window.location.href = 'profile.html';
+    // Get unique countries (some countries share phone codes)
+    const uniqueCountries = [];
+    const countryNames = new Set();
+    
+    countryCodes.forEach(country => {
+        if (!countryNames.has(country.country)) {
+            countryNames.add(country.country);
+            uniqueCountries.push(country);
+        }
     });
     
-    // Image upload handler
-    const imageUpload = document.getElementById('imageUpload');
-    imageUpload.addEventListener('change', handleImageUpload);
+    // Sort alphabetically
+    uniqueCountries.sort((a, b) => a.country.localeCompare(b.country));
     
-    // Password change handler
+    // Add options
+    uniqueCountries.forEach(country => {
+        const option = document.createElement('option');
+        option.value = country.country;
+        option.textContent = `${country.flag} ${country.country}`;
+        countrySelect.appendChild(option);
+    });
+}
+
+// Load user data from JWT token
+async function loadUserData() {
+    try {
+        // Get user from localStorage
+        let user = getAuthUser();
+        
+        // If no user in localStorage, fetch from backend
+        if (!user) {
+            const result = await fetchUserProfile();
+            if (result.success) {
+                user = result.user;
+            } else {
+                throw new Error('Failed to load profile');
+            }
+        }
+        
+        // Populate form with user data
+        document.getElementById('name').value = user.name || '';
+        document.getElementById('email').value = user.email || '';
+        document.getElementById('countryCode').value = user.countryCode || '';
+        document.getElementById('contactNumber').value = user.phone || '';
+        document.getElementById('address').value = user.address || '';
+        document.getElementById('country').value = user.country || '';
+        document.getElementById('postalCode').value = user.postalCode || '';
+        
+        // Update profile image
+        const profileImage = document.getElementById('profileImage');
+        if (profileImage) {
+            if (user.profileImage && user.profileImage !== 'User panel images/default-avatar.png') {
+                // Add timestamp to prevent caching
+                const timestamp = new Date().getTime();
+                profileImage.src = 'http://localhost:5001/' + user.profileImage + '?t=' + timestamp;
+            } else {
+                profileImage.src = 'User panel images/default-avatar.png';
+            }
+            profileImage.alt = user.name || 'Profile Picture';
+        }
+        
+        console.log('User data loaded successfully');
+    } catch (error) {
+        console.error('Error loading user data:', error);
+        showToast('Failed to load profile data. Please try again.', 'error');
+    }
+}
+
+// Setup event listeners
+function setupEventListeners() {
+    const form = document.getElementById('editProfileForm');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const oldPasswordInput = document.getElementById('oldPassword');
     const passwordInput = document.getElementById('password');
     const confirmPasswordInput = document.getElementById('confirmPassword');
-    
+    const imageUpload = document.getElementById('imageUpload');
+    const phoneInput = document.getElementById('contactNumber');
+    const countryCodeSelect = document.getElementById('countryCode');
+
+    // Enable new password field when old password is entered
+    oldPasswordInput.addEventListener('input', function() {
+        if (this.value) {
+            passwordInput.disabled = false;
+        } else {
+            passwordInput.disabled = true;
+            passwordInput.value = '';
+            confirmPasswordInput.disabled = true;
+            confirmPasswordInput.value = '';
+        }
+    });
+
+    // Enable/disable confirm password based on new password field
     passwordInput.addEventListener('input', function() {
-        if (passwordInput.value.trim() !== '') {
+        if (this.value) {
             confirmPasswordInput.disabled = false;
             confirmPasswordInput.required = true;
-            passwordChanged = true;
         } else {
             confirmPasswordInput.disabled = true;
             confirmPasswordInput.required = false;
             confirmPasswordInput.value = '';
-            passwordChanged = false;
         }
     });
-});
 
-// Function to get auth token
-function getAuthToken() {
-    return localStorage.getItem('authToken');
-}
+    // Phone number validation
+    phoneInput.addEventListener('input', function() {
+        const phoneError = document.getElementById('phoneError');
+        const phoneNumber = this.value.trim();
+        const selectedCountryCode = countryCodeSelect.value;
 
-// Function to load user profile
-async function loadUserProfile() {
-    const token = getAuthToken();
-    
-    if (!token) {
-        alert('Please login to edit your profile');
-        window.location.href = 'login.html';
-        return;
-    }
-    
-    try {
-        const response = await fetch(`${API_URL}/users/profile`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            }
-        });
-        
-        if (!response.ok) {
-            if (response.status === 401) {
-                alert('Session expired. Please login again.');
-                localStorage.removeItem('authToken');
-                window.location.href = 'login.html';
-                return;
-            }
-            throw new Error('Failed to load profile');
+        if (!phoneNumber || !selectedCountryCode) {
+            phoneError.textContent = '';
+            return;
         }
+
+        const validation = validatePhoneNumber(selectedCountryCode, phoneNumber);
         
-        const data = await response.json();
-        
-        if (data.success) {
-            populateForm(data.user);
+        if (!validation.valid) {
+            phoneError.textContent = validation.message;
+            phoneError.style.color = '#ff4444';
         } else {
-            throw new Error('Failed to load profile data');
+            phoneError.textContent = '✓ Valid phone number';
+            phoneError.style.color = '#4CAF50';
         }
-    } catch (error) {
-        console.error('Error loading profile:', error);
-        alert('Failed to load profile. Please try again.');
-    }
+    });
+
+    // Revalidate phone when country code changes
+    countryCodeSelect.addEventListener('change', function() {
+        if (phoneInput.value.trim()) {
+            phoneInput.dispatchEvent(new Event('input'));
+        }
+    });
+
+    // Image upload preview
+    imageUpload.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('profileImage').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Cancel button - go back to profile page
+    cancelBtn.addEventListener('click', function() {
+        showConfirm('Are you sure you want to cancel? Any unsaved changes will be lost.', () => {
+            window.location.href = 'profile.html';
+        });
+    });
+
+    // Form submission
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        await saveProfile();
+    });
 }
 
-// Function to populate form with user data
-function populateForm(user) {
-    document.getElementById('name').value = user.name;
-    document.getElementById('email').value = user.email;
-    document.getElementById('contactNumber').value = user.contactNumber;
-    
-    // Update profile image
-    const profileImage = document.getElementById('profileImage');
-    if (user.profileImage && user.profileImage !== 'default-avatar.png') {
-        profileImage.src = `http://localhost:5000/uploads/${user.profileImage}`;
-    } else {
-        profileImage.src = 'images/default-avatar.png';
-    }
-}
+// Save profile updates
+async function saveProfile() {
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('contactNumber').value.trim();
+    const countryCode = document.getElementById('countryCode').value;
+    const address = document.getElementById('address').value.trim();
+    const country = document.getElementById('country').value.trim();
+    const postalCode = document.getElementById('postalCode').value.trim();
+    const oldPassword = document.getElementById('oldPassword').value;
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const imageUpload = document.getElementById('imageUpload');
 
-// Function to handle image upload
-async function handleImageUpload(event) {
-    const file = event.target.files[0];
-    
-    if (!file) {
+    // Validation
+    if (!name || !email || !phone || !countryCode) {
+        showToast('Please fill in all required fields', 'warning');
         return;
     }
-    
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-        alert('Please select an image file');
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        showToast('Please enter a valid email address', 'warning');
         return;
     }
-    
-    // Validate file size (5MB max)
-    if (file.size > 5 * 1024 * 1024) {
-        alert('Image size must be less than 5MB');
+
+    // Phone validation
+    const phoneValidation = validatePhoneNumber(countryCode, phone);
+    if (!phoneValidation.valid) {
+        showToast(phoneValidation.message, 'warning');
         return;
     }
-    
-    const token = getAuthToken();
-    const formData = new FormData();
-    formData.append('profileImage', file);
-    
+
+    // Password validation if old password is provided
+    if (oldPassword) {
+        if (!password) {
+            showToast('Please enter a new password', 'warning');
+            return;
+        }
+        if (password.length < 6) {
+            showToast('New password must be at least 6 characters long', 'warning');
+            return;
+        }
+        if (password !== confirmPassword) {
+            showToast('New passwords do not match', 'warning');
+            return;
+        }
+    }
+
+    // If new password is entered without old password
+    if (password && !oldPassword) {
+        showToast('Please enter your current password to change your password', 'warning');
+        return;
+    }
+
     try {
-        const response = await fetch(`${API_URL}/users/profile/upload-image`, {
-            method: 'POST',
+        const token = getAuthToken();
+        
+        if (!token) {
+            showToast('Session expired. Please login again.', 'error');
+            setTimeout(() => window.location.href = 'signin.html', 1500);
+            return;
+        }
+
+        // Use FormData to send file along with other data
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('email', email);
+        formData.append('phone', phone);
+        formData.append('countryCode', countryCode);
+        formData.append('address', address);
+        formData.append('country', country);
+        formData.append('postalCode', postalCode);
+
+        // Add passwords only if changing password
+        if (oldPassword && password) {
+            formData.append('oldPassword', oldPassword);
+            formData.append('password', password);
+        }
+
+        // Add profile image if selected
+        if (imageUpload.files && imageUpload.files[0]) {
+            formData.append('profileImage', imageUpload.files[0]);
+        }
+
+        // Call API to update profile
+        const response = await fetch('http://localhost:5001/api/auth/update-profile', {
+            method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`
+                // Don't set Content-Type header - browser will set it with boundary for FormData
             },
             body: formData
         });
-        
-        if (!response.ok) {
-            throw new Error('Failed to upload image');
-        }
-        
-        const data = await response.json();
-        
-        if (data.success) {
-            // Update preview image
-            const profileImage = document.getElementById('profileImage');
-            profileImage.src = `http://localhost:5000/uploads/${data.imagePath}?t=${Date.now()}`;
-            alert('Profile image updated successfully!');
-        } else {
-            throw new Error('Failed to upload image');
-        }
-    } catch (error) {
-        console.error('Error uploading image:', error);
-        alert('Failed to upload image. Please try again.');
-    }
-}
 
-// Function to handle form submission
-async function handleFormSubmit(event) {
-    event.preventDefault();
-    
-    const name = document.getElementById('name').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const contactNumber = document.getElementById('contactNumber').value.trim();
-    const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
-    
-    // Validation
-    if (!name || !email || !contactNumber) {
-        alert('Please fill in all required fields');
-        return;
-    }
-    
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        alert('Please enter a valid email address');
-        return;
-    }
-    
-    // Validate password if changed
-    if (passwordChanged) {
-        if (!password) {
-            alert('Please enter a new password');
-            return;
-        }
-        
-        if (password.length < 6) {
-            alert('Password must be at least 6 characters long');
-            return;
-        }
-        
-        if (password !== confirmPassword) {
-            alert('Passwords do not match');
-            return;
-        }
-    }
-    
-    // Prepare update data
-    const updateData = {
-        name,
-        email,
-        contactNumber
-    };
-    
-    // Add password only if changed
-    if (passwordChanged && password) {
-        updateData.password = password;
-    }
-    
-    const token = getAuthToken();
-    
-    try {
-        const response = await fetch(`${API_URL}/users/profile`, {
-            method: 'PUT',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(updateData)
-        });
-        
-        if (!response.ok) {
-            throw new Error('Failed to update profile');
-        }
-        
         const data = await response.json();
-        
-        if (data.success) {
-            alert('Profile updated successfully!');
+
+        if (response.ok && data.success) {
+            // Update stored user data with fresh data from backend
+            setAuthUser(data.user);
             
-            // If password was changed, inform user
-            if (passwordChanged) {
-                alert('Your password has been updated. Please use your new password for future logins.');
-            }
+            // Clear any cached profile data and force reload
+            localStorage.removeItem('lastProfileRefresh');
             
-            // Redirect to profile page
-            window.location.href = 'profile.html';
+            showToast('Profile updated successfully!', 'success');
+            setTimeout(() => window.location.href = 'profile.html', 1500);
         } else {
-            throw new Error(data.message || 'Failed to update profile');
+            showToast(data.message || 'Failed to update profile. Please try again.', 'error');
         }
     } catch (error) {
         console.error('Error updating profile:', error);
-        alert('Failed to update profile. Please try again.');
+        showToast('Network error. Please check your connection and try again.', 'error');
     }
+}
+
+// Logout function
+function handleLogout() {
+    showConfirm('Are you sure you want to logout?', () => {
+        stopInactivityMonitor();
+        logout();
+    });
 }

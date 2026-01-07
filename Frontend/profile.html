@@ -4,9 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile - CYD</title>
+    <link rel="stylesheet" href="css/homepage.css">
     <link rel="stylesheet" href="css/profile.css">
+    <script src="js/toast.js"></script>
+    <script src="js/auth-utils.js"></script>
 </head>
 <body>
+    <script>
+        // Protect this page - require authentication
+        document.addEventListener('DOMContentLoaded', async function() {
+            const authenticated = await requireAuth();
+            if (!authenticated) {
+                return; // Will be redirected to signin by requireAuth()
+            }
+            
+            // Start inactivity monitor (auto logout after 10 minutes)
+            startInactivityMonitor();
+            
+            // Display user info in account link
+            const user = getAuthUser();
+            if (user) {
+                const accountLink = document.querySelector('a[href="profile.html"]');
+                if (accountLink) {
+                    const accountText = accountLink.querySelector('span');
+                    if (accountText) {
+                        accountText.textContent = user.name.split(' ')[0]; // First name only
+                    }
+                }
+            }
+        });
+        
+        // Logout function for navigation bar
+        function handleNavLogout() {
+            showConfirm('Are you sure you want to logout?', () => {
+                stopInactivityMonitor(); // Stop the timer
+                logout(); // From auth-utils.js
+            });
+        }
+    </script>
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="nav-left">
@@ -42,22 +77,19 @@
             <a href="contact.html" class="nav-link">
                 <span>Contact Us</span>
             </a>
-            <a href="account.html" class="nav-link">
+            <a href="profile.html" class="nav-link">
                 <img src="User panel images/icons/account-icon.webp" alt="Account" class="nav-icon">
                 <span>Account</span>
             </a>
+            <button onclick="handleLogout()" class="nav-link logout-btn">
+                <span>Logout</span>
+            </button>
         </div>
     </nav>
 
     <!-- Banner Section with Profile Image -->
     <section class="banner-section">
         <img src="User panel images/profile-banner.png" alt="Profile Banner" class="banner-image">
-        
-        <!-- Logout Button -->
-        <div class="logout-container">
-            <img src="User panel images/icons/logout-icon.png" alt="Logout" class="logout-icon">
-            <button id="logoutBtn" class="logout-btn">Log out</button>
-        </div>
         
         <!-- Profile Image (overlapping banner) -->
         <div class="profile-image-container">
@@ -85,6 +117,24 @@
             </div>
 
             <div class="detail-item">
+                <img src="User panel images/icons/location-icon.png" alt="Address" class="detail-icon">
+                <span class="detail-label">Address</span>
+                <span id="userAddress" class="detail-value">Loading...</span>
+            </div>
+
+            <div class="detail-item">
+                <img src="User panel images/icons/country-icon.png" alt="Country" class="detail-icon">
+                <span class="detail-label">Country</span>
+                <span id="userCountry" class="detail-value">Loading...</span>
+            </div>
+
+            <div class="detail-item">
+                <img src="User panel images/icons/postal-icon.png" alt="Postal Code" class="detail-icon">
+                <span class="detail-label">Postal Code</span>
+                <span id="userPostalCode" class="detail-value">Loading...</span>
+            </div>
+
+            <div class="detail-item">
                 <img src="User panel images/icons/lock-icon.png" alt="Password" class="detail-icon">
                 <span class="detail-label">Password</span>
                 <span id="userPassword" class="detail-value">**********</span>
@@ -103,9 +153,9 @@
             <div class="footer-column">
                 <h3 class="footer-brand">C Y D.</h3>
                 <div class="social-icons">
-                    <img src="images/icons/facebook-icon.webp" alt="Facebook" class="social-icon">
-                    <img src="images/icons/twitter-icon.png" alt="Twitter" class="social-icon">
-                    <img src="images/icons/instagram-icon.jpg" alt="Instagram" class="social-icon">
+                    <img src="User panel images/icons/facebook-icon.webp" alt="Facebook" class="social-icon">
+                    <img src="User panel images/icons/twitter-icon.png" alt="Twitter" class="social-icon">
+                    <img src="User panel images/icons/instagram-icon.jpg" alt="Instagram" class="social-icon">
                 </div>
                 <p class="footer-copyright">Copyright 2025 ©️ CYD.com - All rights Reserved</p>
             </div>

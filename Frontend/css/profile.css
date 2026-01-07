@@ -109,35 +109,6 @@ a {
     object-fit: cover;
 }
 
-/* Logout Button */
-.logout-container {
-    position: absolute;
-    top: 20px;
-    right: 50px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.logout-icon {
-    width: 20px;
-    height: 20px;
-}
-
-.logout-btn {
-    background: none;
-    border: none;
-    color: #ff0000;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: opacity 0.3s;
-}
-
-.logout-btn:hover {
-    opacity: 0.8;
-}
-
 /* Profile Content */
 .profile-content {
     padding: 0 80px 80px 80px;

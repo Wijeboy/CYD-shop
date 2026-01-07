@@ -204,3 +204,54 @@ function redirectIfAuthenticated(redirectTo = 'index.html') {
         window.location.href = redirectTo;
     }
 }
+
+// Inactivity timeout - auto logout after 10 minutes of inactivity
+let inactivityTimer;
+let lastActivityTime;
+const INACTIVITY_TIMEOUT = 10 * 60 * 1000; // 10 minutes in milliseconds
+const WARNING_TIME = 9 * 60 * 1000; // Show warning at 9 minutes (1 minute before logout)
+
+function resetInactivityTimer() {
+    // Clear existing timer
+    clearTimeout(inactivityTimer);
+    
+    // Update last activity time
+    lastActivityTime = Date.now();
+    
+    // Set new timer
+    inactivityTimer = setTimeout(() => {
+        if (typeof showToast === 'function') {
+            showToast('You have been logged out due to 10 minutes of inactivity.', 'warning', 3000);
+        }
+        setTimeout(() => logout(), 1000);
+    }, INACTIVITY_TIMEOUT);
+}
+
+function startInactivityMonitor() {
+    // Only start if user is authenticated
+    if (!isAuthenticated()) {
+        return;
+    }
+    
+    // Events that count as user activity
+    const activityEvents = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
+    
+    // Reset timer on any activity
+    activityEvents.forEach(event => {
+        document.addEventListener(event, resetInactivityTimer, true);
+    });
+    
+    // Start the initial timer
+    resetInactivityTimer();
+    
+    console.log('✓ Inactivity monitor started - Auto logout after 10 minutes of inactivity');
+}
+
+function stopInactivityMonitor() {
+    clearTimeout(inactivityTimer);
+    
+    const activityEvents = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
+    activityEvents.forEach(event => {
+        document.removeEventListener(event, resetInactivityTimer, true);
+    });
+}

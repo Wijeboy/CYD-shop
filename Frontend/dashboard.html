@@ -162,6 +162,9 @@
                 return; // Will be redirected by requireAuth()
             }
 
+            // Start inactivity monitor (auto logout after 10 minutes)
+            startInactivityMonitor();
+
             // Get user data
             const user = getAuthUser();
             const token = getAuthToken();

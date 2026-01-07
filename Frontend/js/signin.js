@@ -44,19 +44,19 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Validate inputs
         if (!email || !password) {
-            alert('Please fill in all fields');
+            showToast('Please fill in all fields', 'warning');
             return;
         }
         
         // Validate email format
         if (!validateEmail()) {
-            alert('Please enter a valid email address');
+            showToast('Please enter a valid email address', 'warning');
             return;
         }
         
         // Validate password length
         if (password.length < 6) {
-            alert('Password must be at least 6 characters long');
+            showToast('Password must be at least 6 characters long', 'warning');
             return;
         }
         
@@ -85,23 +85,46 @@ document.addEventListener('DOMContentLoaded', function() {
                 setAuthUser(data.user);
                 
                 // Show success message
-                alert(`Welcome back, ${data.user.name}!`);
+                showToast(`Welcome back, ${data.user.name}!`, 'success');
                 
                 // Redirect to home page
-                window.location.href = 'index.html';
+                setTimeout(() => window.location.href = 'index.html', 1000);
             } else {
                 // Show error message
-                alert(data.message || 'Login failed. Please check your credentials.');
+                showToast(data.message || 'Login failed. Please check your credentials.', 'error');
                 submitButton.disabled = false;
                 submitButton.textContent = 'Sign In';
             }
         } catch (error) {
             console.error('Login Error:', error);
-            alert('Network error. Please check your connection and try again.');
+            showToast('Network error. Please check your connection and try again.', 'error');
             submitButton.disabled = false;
             submitButton.textContent = 'Sign In';
         }
     });
+
+    // Password toggle functionality
+    const togglePassword = document.querySelector('.toggle-password');
+    if (togglePassword) {
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            // Toggle icon
+            const svgPath = this.querySelector('svg path');
+            const svgCircle = this.querySelector('svg circle');
+            
+            if (type === 'text') {
+                // Eye-off icon (password visible)
+                svgPath.setAttribute('d', 'M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z');
+                if (svgCircle) svgCircle.style.display = 'none';
+            } else {
+                // Eye icon (password hidden)
+                svgPath.setAttribute('d', 'M12 5C5.636 5 2 12 2 12s3.636 7 10 7 10-7 10-7-3.636-7-10-7z');
+                if (svgCircle) svgCircle.style.display = '';
+            }
+        });
+    }
 });
 
 // Google Sign In (placeholder)
@@ -110,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (googleBtn) {
         googleBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            alert('Google Sign In - Integration coming soon!');
+            showToast('Google Sign In - Integration coming soon!', 'info');
             // Implement Google OAuth here
         });
     }
@@ -122,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (appleBtn) {
         appleBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            alert('Apple Sign In - Integration coming soon!');
+            showToast('Apple Sign In - Integration coming soon!', 'info');
             // Implement Apple OAuth here
         });
     }
