@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - CYD</title>
+    <link rel="stylesheet" href="css/profile.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="index.html">
+                <img src="images/logo.png" alt="CYD Logo" class="logo">
+            </a>
+            <span class="brand-name">C Y D</span>
+            <a href="index.html" class="nav-link">
+                <span>Home</span>
+            </a>
+            <a href="products.html" class="nav-link">
+                <span>Shop Now</span>
+            </a>
+        </div>
+        
+        <div class="nav-center">
+            <input type="text" id="searchInput" placeholder="search" class="search-input">
+            <button id="searchBtn" class="search-btn">Search</button>
+        </div>
+        
+        <div class="nav-right">
+            <a href="orders.html" class="nav-link">
+                <img src="User panel images/icons/orders-icon.png" alt="Orders" class="nav-icon">
+                <span>Orders</span>
+            </a>
+            <a href="cart.html" class="nav-link">
+                <img src="User panel images/icons/cart-icon.png" alt="Cart" class="nav-icon">
+                <span>Cart</span>
+            </a>
+            <a href="about.html" class="nav-link">
+                <span>About Us</span>
+            </a>
+            <a href="contact.html" class="nav-link">
+                <span>Contact Us</span>
+            </a>
+            <a href="account.html" class="nav-link">
+                <img src="User panel images/icons/account-icon.webp" alt="Account" class="nav-icon">
+                <span>Account</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Banner Section with Profile Image -->
+    <section class="banner-section">
+        <img src="User panel images/profile-banner.png" alt="Profile Banner" class="banner-image">
+        
+        <!-- Logout Button -->
+        <div class="logout-container">
+            <img src="User panel images/icons/logout-icon.png" alt="Logout" class="logout-icon">
+            <button id="logoutBtn" class="logout-btn">Log out</button>
+        </div>
+        
+        <!-- Profile Image (overlapping banner) -->
+        <div class="profile-image-container">
+            <img id="profileImage" src="User panel images/default-avatar.png" alt="Profile Picture" class="profile-image">
+        </div>
+    </section>
+
+    <!-- Profile Content -->
+    <section class="profile-content">
+        <!-- User Name -->
+        <h1 id="userName" class="user-name">Loading...</h1>
+
+        <!-- User Details -->
+        <div class="user-details">
+            <div class="detail-item">
+                <img src="User panel images/icons/email-icon.png" alt="Email" class="detail-icon">
+                <span class="detail-label">Email</span>
+                <span id="userEmail" class="detail-value">Loading...</span>
+            </div>
+
+            <div class="detail-item">
+                <img src="User panel images/icons/phone-icon.png" alt="Phone" class="detail-icon">
+                <span class="detail-label">Contact No</span>
+                <span id="userContact" class="detail-value">Loading...</span>
+            </div>
+
+            <div class="detail-item">
+                <img src="User panel images/icons/lock-icon.png" alt="Password" class="detail-icon">
+                <span class="detail-label">Password</span>
+                <span id="userPassword" class="detail-value">**********</span>
+            </div>
+        </div>
+
+        <!-- Edit Profile Button -->
+        <div class="button-container">
+            <a href="edit-profile.html" class="edit-profile-btn">Edit Profile</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3 class="footer-brand">C Y D.</h3>
+                <div class="social-icons">
+                    <img src="images/icons/facebook-icon.webp" alt="Facebook" class="social-icon">
+                    <img src="images/icons/twitter-icon.png" alt="Twitter" class="social-icon">
+                    <img src="images/icons/instagram-icon.jpg" alt="Instagram" class="social-icon">
+                </div>
+                <p class="footer-copyright">Copyright 2025 ©️ CYD.com - All rights Reserved</p>
+            </div>
+            
+            <div class="footer-column">
+                <h4 class="footer-heading">Company</h4>
+                <a href="products.html" class="footer-link">Shop Now</a>
+                <a href="index.html" class="footer-link">Home</a>
+                <a href="about.html" class="footer-link">About Us</a>
+                <a href="contact.html" class="footer-link">Contact Us</a>
+            </div>
+            
+            <div class="footer-column">
+                <h4 class="footer-heading">Information</h4>
+                <a href="privacy.html" class="footer-link">Privacy Policy</a>
+                <a href="terms.html" class="footer-link">Terms & Conditions</a>
+                <a href="returns.html" class="footer-link">Return Policy</a>
+                <a href="locations.html" class="footer-link">Store Locations</a>
+            </div>
+            
+            <div class="footer-column footer-newsletter">
+                <h4 class="footer-heading">Get In Touch</h4>
+                <input type="email" placeholder="enter your email" class="newsletter-input">
+                <button class="newsletter-btn">subscribe</button>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/profile.js"></script>
+</body>
+</html>
