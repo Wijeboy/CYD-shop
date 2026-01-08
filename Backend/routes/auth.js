@@ -4,7 +4,7 @@ const { body, validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { protect } = require('../middleware/auth');
-const upload = require('../config/multer');
+const { uploadProfile } = require('../config/multer');
 
 // @route   POST /api/auth/check-email
 // @desc    Check if email already exists
@@ -329,7 +329,7 @@ router.post('/refresh-token', protect, async (req, res) => {
 // @route   PUT /api/auth/update-profile
 // @desc    Update user profile
 // @access  Private
-router.put('/update-profile', protect, upload.single('profileImage'), [
+router.put('/update-profile', protect, uploadProfile.single('profileImage'), [
     body('name').trim().notEmpty().withMessage('Name is required'),
     body('email').isEmail().withMessage('Please provide a valid email'),
     body('phone').trim().notEmpty().withMessage('Phone number is required'),

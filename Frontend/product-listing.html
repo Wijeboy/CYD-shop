@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - CYD</title>
+    <link rel="stylesheet" href="css/product-listing.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="index.html">
+                <img src="images/logo.png" alt="CYD Logo" class="logo">
+            </a>
+            <span class="brand-name">C Y D</span>
+            <a href="index.html" class="nav-link">
+                <span>Home</span>
+            </a>
+            <a href="products.html" class="nav-link">
+                <span>Shop Now</span>
+            </a>
+        </div>
+        
+        <div class="nav-center">
+            <input type="text" id="searchInput" placeholder="search" class="search-input">
+            <button id="searchBtn" class="search-btn">Search</button>
+        </div>
+        
+        <div class="nav-right">
+            <a href="orders.html" class="nav-link">
+                <img src="User panel images/icons/orders-icon.png" alt="Orders" class="nav-icon">
+                <span>Orders</span>
+            </a>
+            <a href="cart.html" class="nav-link">
+                <img src="User panel images/icons/cart-icon.png" alt="Cart" class="nav-icon">
+                <span>Cart</span>
+            </a>
+            <a href="about.html" class="nav-link">
+                <span>About Us</span>
+            </a>
+            <a href="contact.html" class="nav-link">
+                <span>Contact Us</span>
+            </a>
+            <a href="account.html" class="nav-link">
+                <img src="User panel images/icons/account-icon.webp" alt="Account" class="nav-icon">
+                <span>Account</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Header Section -->
+        <div class="products-header">
+            <button class="filter-btn" id="filterBtn">
+                <img src="User panel images/icons/filter-icon.png" alt="Filter" class="filter-icon">
+                Filter
+            </button>
+            <h1 class="page-title">Elevated everyday wear</h1>
+            <p class="product-count" id="productCount">0 products</p>
+        </div>
+
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            <!-- Filter Sidebar -->
+            <aside class="filter-sidebar" id="filterSidebar">
+                <div class="filter-section">
+                    <h3 class="filter-title">Category</h3>
+                    <div class="filter-options">
+                        <label class="filter-option">
+                            <input type="checkbox" class="filter-checkbox" data-filter="category" value="t-shirts">
+                            <span>T-Shirts</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" class="filter-checkbox" data-filter="category" value="tops">
+                            <span>Tops</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" class="filter-checkbox" data-filter="category" value="blouses">
+                            <span>Blouses</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" class="filter-checkbox" data-filter="category" value="skirts">
+                            <span>Skirts</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" class="filter-checkbox" data-filter="category" value="dresses">
+                            <span>Dresses</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" class="filter-checkbox" data-filter="category" value="trousers">
+                            <span>Trousers</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" class="filter-checkbox" data-filter="category" value="ethnic wear">
+                            <span>Ethnic Wear</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h3 class="filter-title">Price</h3>
+                    <div class="filter-options">
+                        <label class="filter-option">
+                            <input type="checkbox" class="filter-checkbox" data-filter="price" value="8-12">
+                            <span>$8-$12</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" class="filter-checkbox" data-filter="price" value="12-25">
+                            <span>$12-$25</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" class="filter-checkbox" data-filter="price" value="25-35">
+                            <span>$25-$35</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" class="filter-checkbox" data-filter="price" value="35-50">
+                            <span>$35-$50</span>
+                        </label>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Products Grid -->
+            <div class="products-container">
+                <div class="products-grid" id="productsGrid">
+                    <div class="loading-message">Loading products...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3 class="footer-brand">C Y D.</h3>
+                <div class="social-icons">
+                    <img src="User panel images/icons/facebook-icon.webp" alt="Facebook" class="social-icon">
+                    <img src="User panel images/icons/twitter-icon.png" alt="Twitter" class="social-icon">
+                    <img src="User panel images/icons/instagram-icon.jpg" alt="Instagram" class="social-icon">
+                </div>
+                <p class="footer-copyright">Copyright 2025 ©️ CYD.com - All rights Reserved</p>
+            </div>
+            
+            <div class="footer-column">
+                <h4 class="footer-heading">Company</h4>
+                <a href="products.html" class="footer-link">Shop Now</a>
+                <a href="index.html" class="footer-link">Home</a>
+                <a href="about.html" class="footer-link">About Us</a>
+                <a href="contact.html" class="footer-link">Contact Us</a>
+            </div>
+            
+            <div class="footer-column">
+                <h4 class="footer-heading">Information</h4>
+                <a href="privacy.html" class="footer-link">Privacy Policy</a>
+                <a href="terms.html" class="footer-link">Terms & Conditions</a>
+                <a href="returns.html" class="footer-link">Return Policy</a>
+                <a href="locations.html" class="footer-link">Store Locations</a>
+            </div>
+            
+            <div class="footer-column footer-newsletter">
+                <h4 class="footer-heading">Get In Touch</h4>
+                <input type="email" placeholder="enter your email" class="newsletter-input">
+                <button class="newsletter-btn">subscribe</button>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/product-listing.js"></script>
+</body>
+</html>
