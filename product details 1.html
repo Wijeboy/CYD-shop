@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Women Category Page</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+body{background:#fff;}
+header{display:flex;align-items:center;justify-content:space-between;padding:15px 50px;border-bottom:1px solid #eee;}
+.logo{font-weight:900;font-size:22px;letter-spacing:3px;}
+nav ul{display:flex;gap:25px;list-style:none}
+nav ul li{cursor:pointer;font-size:14px;}
+.searchBox{display:flex;align-items:center;border:1px solid #ccc;border-radius:20px;padding:5px 10px;width:220px}
+.searchBox input{border:none;outline:none;width:100%}
+
+.topRight{display:flex;gap:25px;font-size:14px}
+
+.main{display:grid;grid-template-columns:260px 1fr;padding:40px 60px;gap:40px}
+
+.sidebar h3{margin:20px 0 8px}
+.sidebar label{display:flex;align-items:center;gap:7px;font-size:13px;margin:3px 0}
+.sidebar input[type=checkbox]{accent-color:black;}
+
+.products h1{text-align:center;margin-bottom:30px}
+
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:35px}
+
+.card{background:#fafafa;border-radius:10px;overflow:hidden;border:1px solid #ddd;text-align:center;padding-bottom:15px}
+.card img{width:100%;height:330px;object-fit:cover}
+.card h4{margin:10px 0}
+.card button{padding:6px 15px;border:none;background:#59351f;color:#fff;font-size:12px;border-radius:3px;cursor:pointer}
+.card button:hover{opacity:.8}
+
+footer{margin-top:60px;background:#000;color:#fff;padding:50px}
+.footerGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:40px}
+.footerGrid h4{margin-bottom:10px}
+.footerGrid p, .footerGrid li{font-size:13px;opacity:.8;list-style:none;margin:4px 0}
+input.email{padding:10px;width:230px;border:none;border-radius:5px}
+.subscribe{margin-top:8px;padding:8px 20px;border:none;background:#fff;border-radius:5px}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">C Y D</div>
+
+<div class="searchBox">
+<input type="text" placeholder="Search">
+</div>
+
+<nav>
+<ul>
+<li>New & Featured</li>
+<li>Men</li>
+<li style="font-weight:bold">Women</li>
+<li>Kids</li>
+<li>Accessories</li>
+<li>Sales</li>
+</ul>
+</nav>
+
+<div class="topRight">
+<p>Orders</p>
+<p>Cart</p>
+<p>Account</p>
+</div>
+</header>
+
+<section class="main">
+
+<!-- Sidebar -->
+<div class="sidebar">
+<h3>CATEGORY</h3>
+<label><input type="checkbox">T-Shirts</label>
+<label><input type="checkbox">Tops</label>
+<label><input type="checkbox">Blouses</label>
+<label><input type="checkbox">Jackets</label>
+
+<h3>COLOR</h3>
+<label><input type="checkbox">Blue</label>
+<label><input type="checkbox">Black</label>
+<label><input type="checkbox">Brown</label>
+
+<h3>BRAND</h3>
+<label><input type="checkbox">Zoukay</label>
+<label><input type="checkbox">Ann Taylor</label>
+
+<h3>SIZE</h3>
+<label><input type="checkbox">XS</label>
+<label><input type="checkbox">S</label>
+<label><input type="checkbox">M</label>
+<label><input type="checkbox">L</label>
+
+<h3>PRICE</h3>
+<label><input type="checkbox">$20 - $35</label>
+<label><input type="checkbox">$35 - $50</label>
+</div>
+
+<!-- Products -->
+<div class="products">
+<h1>Women</h1>
+
+<div class="grid">
+
+<div class="card">
+<img src="https://images.pexels.com/photos/5886041/pexels-photo-5886041.jpeg" >
+<h4>Dresses</h4>
+<button>See more</button>
+</div>
+
+<div class="card">
+<img src="https://images.pexels.com/photos/5325899/pexels-photo-5325899.jpeg">
+<h4>Tops</h4>
+<button>See more</button>
+</div>
+
+<div class="card">
+<img src="https://images.pexels.com/photos/6311393/pexels-photo-6311393.jpeg">
+<h4>Shirts</h4>
+<button>See more</button>
+</div>
+
+<div class="card">
+<img src="https://images.pexels.com/photos/7679633/pexels-photo-7679633.jpeg">
+<h4>Blazers</h4>
+<button>See more</button>
+</div>
+
+<div class="card">
+<img src="https://images.pexels.com/photos/6311572/pexels-photo-6311572.jpeg">
+<h4>T-Shirts</h4>
+<button>See more</button>
+</div>
+
+<div class="card">
+<img src="https://images.pexels.com/photos/6311412/pexels-photo-6311412.jpeg">
+<h4>Pants</h4>
+<button>See more</button>
+</div>
+
+<div class="card">
+<img src="https://images.pexels.com/photos/7679629/pexels-photo-7679629.jpeg">
+<h4>Jumpsuit</h4>
+<button>See more</button>
+</div>
+
+<div class="card">
+<img src="https://images.pexels.com/photos/6311655/pexels-photo-6311655.jpeg">
+<h4>Skirts</h4>
+<button>See more</button>
+</div>
+
+<div class="card">
+<img src="https://images.pexels.com/photos/6311377/pexels-photo-6311377.jpeg">
+<h4>Shorts</h4>
+<button>See more</button>
+</div>
+
+</div>
+</div>
+</section>
+
+<footer>
+<div class="footerGrid">
+
+<div>
+<h2>C Y D.</h2>
+<p>Fashion that fits your life.</p>
+</div>
+
+<div>
+<h4>Company</h4>
+<li>Shop Now</li>
+<li>About Us</li>
+<li>Contact</li>
+</div>
+
+<div>
+<h4>Information</h4>
+<li>Terms & Conditions</li>
+<li>Return Policy</li>
+<li>Privacy Policy</li>
+</div>
+
+<div>
+<h4>Get In Touch</h4>
+<input class="email" placeholder="Enter Your Email">
+<button class="subscribe">Subscribe</button>
+</div>
+
+</div>
+</footer>
+
+<script>
+// simple alert for buttons
+document.querySelectorAll("button").forEach(btn=>{
+  btn.addEventListener("click",()=>alert("Button Clicked!"));
+});
+</script>
+
+</body>
+</html>

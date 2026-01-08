@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYD - New Arrivals</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- Reset & Base Styles --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* --- Navbar --- */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: #000;
+        }
+
+        .main-logo-img {
+            height: 40px;
+            width: auto;
+        }
+
+        .search-bar input {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            width: 300px;
+            outline: none;
+            transition: width 0.3s ease;
+        }
+        .search-bar input:focus {
+            width: 320px;
+            border-color: #333;
+        }
+
+        .nav-tools {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .nav-tools div {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 0.2s;
+        }
+
+        .nav-tools div:hover {
+            color: #666;
+        }
+
+        #cart-nav-item {
+            position: relative;
+        }
+
+        .cart-badge {
+            background-color: #e74c3c;
+            color: white;
+            font-size: 0.7rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .cart-badge.active {
+            opacity: 1;
+        }
+
+        /* --- Main Content --- */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        /* --- Product Card --- */
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .image-box {
+            position: relative;
+            height: 400px;
+            overflow: hidden;
+            background-color: #f0f0f0;
+        }
+
+        .image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .image-box img {
+            transform: scale(1.05);
+        }
+
+        .arrival-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background-color: #000;
+            color: #fff;
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            z-index: 10;
+        }
+
+        .action-overlay {
+            position: absolute;
+            bottom: -60px; /* Hidden by default */
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            transition: bottom 0.3s ease;
+        }
+
+        .product-card:hover .action-overlay {
+            bottom: 0;
+        }
+
+        .view-btn, .add-cart-btn {
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .view-btn {
+            background-color: transparent;
+            border: 1px solid #000;
+            color: #000;
+        }
+
+        .view-btn:hover {
+            background-color: #000;
+            color: #fff;
+        }
+
+        .add-cart-btn {
+            background-color: #000;
+            color: #fff;
+        }
+
+        .add-cart-btn:hover {
+            background-color: #333;
+        }
+
+        .product-details {
+            padding: 1.5rem;
+        }
+
+        .details-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 0.5rem;
+        }
+
+        .details-header h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .wishlist-icon {
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: transform 0.2s;
+        }
+
+        .wishlist-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .price {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 4rem 5% 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-col h4 {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+
+        .footer-logo-text {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links a {
+            color: #fff;
+            font-size: 1.2rem;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+        .social-links a:hover { opacity: 1; }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.8rem;
+            opacity: 0.7;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .footer-col ul li:hover { opacity: 1; }
+
+        .sub-input {
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 10px;
+            border: none;
+            outline: none;
+        }
+
+        .sub-btn {
+            padding: 10px 20px;
+            background-color: #fff;
+            color: #000;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            text-transform: uppercase;
+        }
+
+        /* --- Toast Notification --- */
+        #toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 2000;
+        }
+
+        .toast {
+            background-color: #333;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 4px;
+            margin-top: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .search-bar input {
+                width: 100%;
+            }
+            .nav-tools {
+                width: 100%;
+                justify-content: space-around;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo-container">
+            <!-- Replaced local image with icon for demo purposes -->
+            <i class="fa-solid fa-layer-group"></i>
+            <div class="logo-text">CYD</div>
+        </div>
+        <div class="search-bar"><input type="text" placeholder="Search products..."></div>
+        <div class="nav-tools">
+            <div><i class="fa-solid fa-box-open"></i> <span class="nav-label">Orders</span></div>
+            <div id="nav-wishlist-btn"><i class="fa-regular fa-heart"></i> <span class="nav-label">Wishlist</span></div>
+            <div id="cart-nav-item">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span id="cart-badge" class="cart-badge">0</span> <span class="nav-label">Cart</span>
+            </div>
+            <div><i class="fa-regular fa-user"></i> <span class="nav-label">Account</span></div>
+        </div>
+    </nav>
+
+    <main class="main-container">
+        <h1 class="section-title">New Arrivals</h1>
+        
+        <div class="product-grid">
+            <!-- Product 1 -->
+            <div class="product-card">
+                <div class="image-box">
+                    <span class="arrival-badge">New</span>
+                    <!-- Replaced local src with placeholder -->
+                    <img src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Tunic Shirt">
+                    <div class="action-overlay">
+                        <button class="view-btn" onclick="showToast('Viewing Product...')">View</button>
+                        <button class="add-cart-btn" onclick="addToCart('Tunic Shirt')">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>Everyday Tunic Shirt</h3>
+                        <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWishlist(this)"></i>
+                    </div>
+                    <p class="price">Rs.3,490.00</p>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product-card">
+                <div class="image-box">
+                    <span class="arrival-badge">New</span>
+                    <!-- Replaced local src with placeholder -->
+                    <img src="https://images.unsplash.com/photo-1551028919-ac6635f0e5c9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Suede Jacket">
+                    <div class="action-overlay">
+                        <button class="view-btn" onclick="showToast('Viewing Product...')">View</button>
+                        <button class="add-cart-btn" onclick="addToCart('Suede Jacket')">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>Heritage Suede Jacket</h3>
+                        <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWishlist(this)"></i>
+                    </div>
+                    <p class="price">Rs.8,990.00</p>
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="product-card">
+                <div class="image-box">
+                    <span class="arrival-badge">New</span>
+                    <!-- Replaced local src with placeholder -->
+                    <img src="https://images.unsplash.com/photo-1598033129183-c4f50c736f10?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Resort Shirt">
+                    <div class="action-overlay">
+                        <button class="view-btn" onclick="showToast('Viewing Product...')">View</button>
+                        <button class="add-cart-btn" onclick="addToCart('Resort Shirt')">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>Sunflower Resort Shirt</h3>
+                        <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWishlist(this)"></i>
+                    </div>
+                    <p class="price">Rs.2,990.00</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Best Selling Section (Added) -->
+        <h1 class="section-title" style="margin-top: 5rem;">Best Selling</h1>
+        
+        <div class="product-grid">
+            <!-- Best Selling Item 1 -->
+            <div class="product-card">
+                <div class="image-box">
+                    <!-- Placeholder for: best-selling-1.jpg -->
+                    <img src="https://images.unsplash.com/photo-1564584217132-2271feaeb3c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Tunic Shirt">
+                    <div class="action-overlay">
+                        <button class="view-btn" onclick="showToast('Redirecting to best selling 01.html...')">View Product</button>
+                        <button class="add-cart-btn" onclick="addToCart('Tunic Shirt')">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>Everyday Tunic Shirt</h3>
+                        <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWishlist(this)"></i>
+                    </div>
+                    <p class="price">Rs.3,490.00</p>
+                </div>
+            </div>
+
+            <!-- Best Selling Item 2 -->
+            <div class="product-card">
+                <div class="image-box">
+                    <!-- Placeholder for: best-selling-2.webp -->
+                    <img src="https://images.unsplash.com/photo-1559551409-dadc959f76b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Suede Jacket">
+                    <div class="action-overlay">
+                        <button class="view-btn" onclick="showToast('Redirecting to best selling 01.html...')">View Product</button>
+                        <button class="add-cart-btn" onclick="addToCart('Suede Jacket')">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>Heritage Suede Jacket</h3>
+                        <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWishlist(this)"></i>
+                    </div>
+                    <p class="price">Rs.8,990.00</p>
+                </div>
+            </div>
+
+            <!-- Best Selling Item 3 -->
+            <div class="product-card">
+                <div class="image-box">
+                    <!-- Placeholder for: best-selling-3.jpg -->
+                    <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Resort Shirt">
+                    <div class="action-overlay">
+                        <button class="view-btn" onclick="showToast('Viewing Product...')">View Product</button>
+                        <button class="add-cart-btn" onclick="addToCart('Resort Shirt')">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>Sunflower Resort Shirt</h3>
+                        <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWishlist(this)"></i>
+                    </div>
+                    <p class="price">Rs.2,990.00</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Women's Collection Section (Added) -->
+        <h1 class="section-title" style="margin-top: 5rem; text-decoration: underline;">Women's Collection</h1>
+        
+        <div class="product-grid">
+            <!-- Tops -->
+            <div class="product-card">
+                <div class="image-box">
+                    <!-- Placeholder for: category-tops.webp -->
+                    <img src="https://images.unsplash.com/photo-1551163943-3f6a29e39426?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Tunic Shirt">
+                    <div class="action-overlay">
+                        <button class="view-btn" onclick="showToast('Viewing Tops...')">View Product</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>Tops</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- T-shirts -->
+            <div class="product-card">
+                <div class="image-box">
+                    <!-- Placeholder for: category-tshirts.webp -->
+                    <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Suede Jacket">
+                    <div class="action-overlay">
+                        <button class="view-btn" onclick="showToast('Viewing T-shirts...')">View Product</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>T-shirts</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blouses -->
+            <div class="product-card">
+                <div class="image-box">
+                    <!-- Placeholder for: new-arrival-1.jpg -->
+                    <img src="https://images.unsplash.com/photo-1564257631407-4deb1f99d992?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Resort Shirt">
+                    <div class="action-overlay">
+                        <button class="view-btn" onclick="showToast('Viewing Blouses...')">View Product</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>Blouses</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="product-grid" style="margin-top: 2rem;">
+            <!-- Dresses -->
+            <div class="product-card">
+                <div class="image-box">
+                    <!-- Placeholder for: best-selling-2.webp -->
+                    <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Tunic Shirt">
+                    <div class="action-overlay">
+                        <button class="view-btn" onclick="showToast('Viewing Dresses...')">View Product</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>Dresses</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trousers -->
+            <div class="product-card">
+                <div class="image-box">
+                    <!-- Placeholder for: category-trousers.jpg -->
+                    <img src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Suede Jacket">
+                    <div class="action-overlay">
+                        <button class="view-btn" onclick="showToast('Viewing Trousers...')">View Product</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>Trousers</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skirts -->
+            <div class="product-card">
+                <div class="image-box">
+                    <!-- Placeholder for: category-skirts.webp -->
+                    <img src="https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Resort Shirt">
+                    <div class="action-overlay">
+                        <button class="view-btn" onclick="showToast('Viewing Skirts...')">View Product</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>Skirts</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+         <!-- Women's Collection Section (Added) -->
+        <h1 class="section-title" style="margin-top: 5rem; text-decoration: underline;">Men's Collection</h1>
+        
+        <div class="product-grid">
+            <!-- Tops -->
+            <div class="product-card">
+                <div class="image-box">
+                    <!-- Placeholder for: category-tops.webp -->
+                    <img src="https://images.unsplash.com/photo-1551163943-3f6a29e39426?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Tunic Shirt">
+                    <div class="action-overlay">
+                        <button class="view-btn" onclick="showToast('Viewing Tops...')">View Product</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>Tops</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- T-shirts -->
+            <div class="product-card">
+                <div class="image-box">
+                    <!-- Placeholder for: category-tshirts.webp -->
+                    <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Suede Jacket">
+                    <div class="action-overlay">
+                        <button class="view-btn" onclick="showToast('Viewing T-shirts...')">View Product</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>T-shirts</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blouses -->
+            <div class="product-card">
+                <div class="image-box">
+                    <!-- Placeholder for: new-arrival-1.jpg -->
+                    <img src="https://images.unsplash.com/photo-1564257631407-4deb1f99d992?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Resort Shirt">
+                    <div class="action-overlay">
+                        <button class="view-btn" onclick="showToast('Viewing Blouses...')">View Product</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>Blouses</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="product-grid" style="margin-top: 2rem;">
+            <!-- Dresses -->
+            <div class="product-card">
+                <div class="image-box">
+                    <!-- Placeholder for: best-selling-2.webp -->
+                    <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Tunic Shirt">
+                    <div class="action-overlay">
+                        <button class="view-btn" onclick="showToast('Viewing Dresses...')">View Product</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>Dresses</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trousers -->
+            <div class="product-card">
+                <div class="image-box">
+                    <!-- Placeholder for: category-trousers.jpg -->
+                    <img src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Suede Jacket">
+                    <div class="action-overlay">
+                        <button class="view-btn" onclick="showToast('Viewing Trousers...')">View Product</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>Trousers</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skirts -->
+            <div class="product-card">
+                <div class="image-box">
+                    <!-- Placeholder for: category-skirts.webp -->
+                    <img src="https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Resort Shirt">
+                    <div class="action-overlay">
+                        <button class="view-btn" onclick="showToast('Viewing Skirts...')">View Product</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>Skirts</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="footer-logo-text">CYD.</div>
+                <div class="social-links">
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-facebook-square"></i></a>
+                </div>
+                <p style="font-size: 12px; opacity: 0.7; margin-top: 10px;">Copyright 2026 © CYD.com<br>All Rights Reserved</p>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul><li>Home</li><li>About Us</li><li>Contact Us</li></ul>
+            </div>
+            <div class="footer-col">
+                <h4>Information</h4>
+                <ul><li>Privacy Policy</li><li>Return Policy</li><li>Shipping</li></ul>
+            </div>
+            <div class="footer-col">
+                <h4>Get In Touch</h4>
+                <input type="email" class="sub-input" placeholder="Enter Your Email">
+                <button class="sub-btn">Subscribe</button>
+            </div>
+        </div>
+    </footer>
+
+    <div id="toast-container"></div>
+
+    <script>
+        let cartCount = 0;
+        
+        function addToCart(name) {
+            cartCount++;
+            const badge = document.getElementById('cart-badge');
+            badge.innerText = cartCount;
+            badge.classList.add('active');
+            showToast(`Added ${name} to Cart!`);
+        }
+
+        function toggleWishlist(el) {
+            // Toggle local heart
+            if (el.classList.contains('fa-regular')) {
+                el.classList.replace('fa-regular', 'fa-solid');
+                el.style.color = '#e74c3c';
+                showToast('Added to Wishlist');
+            } else {
+                el.classList.replace('fa-solid', 'fa-regular');
+                el.style.color = 'inherit';
+                showToast('Removed from Wishlist');
+            }
+            
+            // Toggle Nav Heart (Visual effect logic)
+            const navHeart = document.querySelector('#nav-wishlist-btn i');
+            // This is a simple logic; in a real app, you'd check if ANY items are wishlisted
+            const anyWishlisted = document.querySelectorAll('.product-card .fa-heart.fa-solid').length > 0;
+            
+            if (anyWishlisted) {
+                navHeart.classList.replace('fa-regular', 'fa-solid');
+                navHeart.style.color = '#e74c3c';
+            } else {
+                navHeart.classList.replace('fa-solid', 'fa-regular');
+                navHeart.style.color = 'inherit';
+            }
+        }
+
+        function showToast(msg) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerText = msg;
+            container.appendChild(toast);
+            
+            // Trigger reflow
+            void toast.offsetWidth; 
+            
+            setTimeout(() => toast.classList.add('show'), 50);
+            
+            setTimeout(() => { 
+                toast.classList.remove('show'); 
+                setTimeout(() => toast.remove(), 500); 
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

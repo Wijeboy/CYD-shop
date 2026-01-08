@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYD - Best Selling </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="best selling.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo-container">
+            <img src="cyd logo.jpg" alt="CYD Logo" class="main-logo-img">
+            <div class="logo-text">CYD</div>
+        </div>
+        <div class="search-bar"><input type="text" placeholder="Search"></div>
+        <div class="nav-tools">
+            <div><i class="fa-solid fa-box-open"></i> Orders</div>
+            <div id="nav-wishlist-btn"><i class="fa-regular fa-heart"></i> Wishlist</div>
+            <div id="cart-nav-item">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span id="cart-badge" class="cart-badge">0</span> Cart
+            </div>
+            <div><i class="fa-regular fa-user"></i> Account</div>
+        </div>
+    </nav>
+
+    <main class="main-container">
+        <h1 class="section-title">Best Selling </h1>
+        
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="image-box">
+                    
+                    <img src="C:\Users\hi\Desktop\MT\intern project 01\User panel images\best-selling-1.jpg" alt="Tunic Shirt">
+                    <div class="action-overlay">
+                       
+                        <button class="view-btn" onclick="window.location.href='best selling 01.html'">View Product</button>
+                        <button class="add-cart-btn" onclick="addToCart('Tunic Shirt')">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>Everyday Tunic Shirt</h3>
+                        <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWishlist(this)"></i>
+                    </div>
+                    <p class="price">Rs.3,490.00</p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-box">
+                    
+                    <img src="C:\Users\hi\Desktop\MT\intern project 01\User panel images\BS 01.webp" alt="Suede Jacket">
+                    <div class="action-overlay">
+                        
+                        <button class="view-btn" onclick="window.location.href='best selling 01.html'">View Product</button>
+                        <button class="add-cart-btn" onclick="addToCart('Suede Jacket')">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>Heritage Suede Jacket</h3>
+                        <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWishlist(this)"></i>
+                    </div>
+                    <p class="price">Rs.8,990.00</p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-box">
+                   
+                    <img src="C:\Users\hi\Desktop\MT\intern project 01\User panel images\best-selling-3.jpg" alt="Resort Shirt">
+                    <div class="action-overlay">
+                        
+                        <button class="view-btn" onclick="window.location.href='#'">View Product</button>
+                        <button class="add-cart-btn" onclick="addToCart('Resort Shirt')">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>Sunflower Resort Shirt</h3>
+                        <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWishlist(this)"></i>
+                    </div>
+                    <p class="price">Rs.2,990.00</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="footer-logo-text">CYD.</div>
+                <div class="social-links">
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-facebook-square"></i></a>
+                </div>
+                <p style="font-size: 9px; opacity: 0.7;">Copyright 2026 © CYD.com - All Rights Reserved</p>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul><li>Home</li><li>About Us</li><li>Contact Us</li></ul>
+            </div>
+            <div class="footer-col">
+                <h4>Information</h4>
+                <ul><li>Privacy Policy</li><li>Return Policy</li><li>Shipping</li></ul>
+            </div>
+            <div class="footer-col">
+                <h4>Get In Touch</h4>
+                <input type="email" class="sub-input" placeholder="Enter Your Email">
+                <button class="sub-btn">Subscribe</button>
+            </div>
+        </div>
+    </footer>
+
+    <div id="toast-container"></div>
+
+    <script>
+        let cartCount = 0;
+        function addToCart(name) {
+            cartCount++;
+            const badge = document.getElementById('cart-badge');
+            badge.innerText = cartCount;
+            badge.classList.add('active');
+            showToast(`Added ${name} to Cart!`);
+        }
+        function toggleWishlist(el) {
+            const navHeart = document.querySelector('#nav-wishlist-btn i');
+            if (el.classList.contains('fa-regular')) {
+                el.classList.replace('fa-regular', 'fa-solid');
+                el.style.color = '#e74c3c';
+                navHeart.classList.replace('fa-regular', 'fa-solid');
+                navHeart.style.color = '#e74c3c';
+            } else {
+                el.classList.replace('fa-solid', 'fa-regular');
+                el.style.color = 'inherit';
+            }
+        }
+        function showToast(msg) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerText = msg;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 500); }, 3000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1088 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Women's Fashion Collection | CYD - Premium Clothing & Accessories</title>
+  <meta name="description" content="Shop CYD's premium women's fashion collection featuring dresses, tops, shirts, blazers, and more. Filter by size, color, brand, and price. Free shipping on orders over $50.">
+  <meta name="keywords" content="women's fashion, dresses, tops, shirts, blazers, jumpsuits, skirts, shorts, premium clothing, CYD fashion">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Women's Fashion Collection | CYD - Premium Clothing">
+  <meta property="og:description" content="Shop CYD's premium women's fashion collection featuring dresses, tops, shirts, blazers, and more. Filter by size, color, brand, and price.">
+  
+  <style>
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      line-height: 1.6;
+      color: #0e0e0e;
+      background-color: #ffffff;
+      background-image: url('../assets/images/img_grain_texture.png');
+      background-size: cover;
+      background-attachment: fixed;
+    }
+    
+    /* Layout components */
+    .main-container {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .content-wrapper {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 158px;
+      padding: 16px;
+    }
+    
+    .page-stack {
+      width: 100%;
+      max-width: 1930px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    /* Header */
+    .header {
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.9);
+      box-shadow: 0px 4px 12px rgba(136, 136, 136, 1);
+      padding: 28px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 1810px;
+      margin: 0 auto;
+    }
+    
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    
+    .logo {
+      width: 56px;
+      height: 56px;
+      border-radius: 28px;
+    }
+    
+    .brand-name {
+      font-size: 32px;
+      font-family: 'Bakbak One', Arial, sans-serif;
+      font-weight: 400;
+      line-height: 45px;
+      color: #000000;
+    }
+    
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    
+    .search-container {
+      position: relative;
+      width: 300px;
+    }
+    
+    .search-input {
+      width: 100%;
+      padding: 16px 12px 16px 50px;
+      border: none;
+      border-radius: 14px;
+      background-color: #f3f3f3;
+      font-size: 12px;
+      font-family: 'Beatrice Deck Trial', Arial, sans-serif;
+      letter-spacing: 2px;
+      color: rgba(0, 0, 0, 0.66);
+    }
+    
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 14px;
+    }
+    
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 48px;
+    }
+    
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      text-decoration: none;
+      color: #000000;
+    }
+    
+    .nav-icon {
+      width: 48px;
+      height: 48px;
+    }
+    
+    .nav-text {
+      font-size: 20px;
+      font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
+      line-height: 24px;
+    }
+    
+    /* Navigation Menu */
+    .nav-menu {
+      width: 100%;
+      padding: 202px 28px;
+      margin-left: 44px;
+    }
+    
+    .nav-menu-content {
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      gap: 36px;
+      flex-wrap: wrap;
+    }
+    
+    .nav-link {
+      font-size: 20px;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 700;
+      line-height: 25px;
+      color: #0e0e0e;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .nav-link:hover {
+      color: #562e16;
+    }
+    
+    .page-title {
+      font-size: 48px;
+      font-family: 'Moul', serif;
+      font-weight: 400;
+      line-height: 86px;
+      text-align: center;
+      color: #0e0e0e;
+      margin-top: 54px;
+    }
+    
+    /* Main Content Layout */
+    .main-content {
+      width: 100%;
+      display: flex;
+      gap: 32px;
+      margin-top: -644px;
+      padding: 0 72px 0 82px;
+    }
+    
+    /* Sidebar Filters */
+    .sidebar {
+      width: 34%;
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+    
+    .filter-section {
+      display: flex;
+      flex-direction: column;
+      gap: 44px;
+    }
+    
+    .filter-title {
+      font-size: 28px;
+      font-family: 'Poppins', Arial, sans-serif;
+      font-weight: 400;
+      line-height: 42px;
+      color: #000000;
+      margin-left: 12px;
+    }
+    
+    .filter-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      list-style: none;
+    }
+    
+    .filter-item {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    
+    .filter-checkbox {
+      width: 38px;
+      height: 26px;
+      background-color: #ffffff;
+      border: 1px solid #000000;
+      cursor: pointer;
+    }
+    
+    .filter-label {
+      font-size: 15px;
+      font-family: 'Poppins', Arial, sans-serif;
+      font-weight: 400;
+      line-height: 22px;
+      color: #000000;
+      cursor: pointer;
+    }
+    
+    /* Color Filter */
+    .color-filter-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+    
+    .color-indicator-group {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    
+    .color-indicator {
+      width: 30px;
+      height: 22px;
+      border-radius: 14px;
+    }
+    
+    .color-blue { background-color: #9296ff; }
+    .color-black { background-color: #000000; }
+    .color-beige { background-color: #cd7816; }
+    .color-brown { background-color: #d1b552; }
+    .color-grey { background-color: #d9d9d9; }
+    .color-red { background-color: #ff0004; }
+    .color-white { background-color: #ffffff; border: 1px solid #000000; }
+    .color-navy { background-color: #120490; }
+    
+    /* Product Grid */
+    .product-grid {
+      width: 66%;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 32px;
+    }
+    
+    .product-card {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      align-items: center;
+    }
+    
+    .product-image {
+      width: 100%;
+      max-width: 422px;
+      height: 514px;
+      object-fit: cover;
+      border-radius: 20px;
+    }
+    
+    .product-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    
+    .product-button {
+      padding: 8px 34px;
+      border: 1px solid #bfbfbf;
+      border-radius: 1px;
+      background-color: #fafafa;
+      font-size: 16px;
+      font-family: 'Roboto', Arial, sans-serif;
+      font-weight: 600;
+      line-height: 19px;
+      color: #000000;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .product-button:hover {
+      background-color: #e5e7eb;
+      transform: translateY(-2px);
+    }
+    
+    .see-more-button {
+      padding: 8px 28px;
+      border: none;
+      border-radius: 1px;
+      background-color: #562e16;
+      font-size: 16px;
+      font-family: 'Roboto', Arial, sans-serif;
+      font-weight: 400;
+      line-height: 19px;
+      color: #ffffff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .see-more-button:hover {
+      background-color: #3d1f0f;
+      transform: translateY(-2px);
+    }
+    
+    /* Price Display */
+    .price-display {
+      font-size: 14px;
+      font-family: 'Beatrice Deck Trial', Arial, sans-serif;
+      font-weight: 500;
+      line-height: 21px;
+      color: #000000;
+      margin-top: 20px;
+    }
+    
+    /* Footer */
+    .footer {
+      width: 100%;
+      background-color: #000000;
+      color: #ffffff;
+      padding: 56px;
+      margin-top: 158px;
+    }
+    
+    .footer-content {
+      max-width: 1696px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 48px;
+    }
+    
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    
+    .footer-logo {
+      font-size: 48px;
+      font-family: 'Bakbak One', Arial, sans-serif;
+      font-weight: 400;
+      line-height: 68px;
+      color: #ffffff;
+    }
+    
+    .social-icons {
+      display: flex;
+      gap: 16px;
+    }
+    
+    .social-icon {
+      width: 28px;
+      height: 30px;
+    }
+    
+    .footer-section {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    
+    .footer-title {
+      font-size: 32px;
+      font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
+      font-weight: 400;
+      line-height: 38px;
+      color: #ffffff;
+    }
+    
+    .footer-link {
+      font-size: 20px;
+      font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
+      font-weight: 400;
+      line-height: 24px;
+      color: #ffffff;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .footer-link:hover {
+      color: #cccccc;
+    }
+    
+    .newsletter-section {
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+    }
+    
+    .newsletter-input {
+      padding: 28px;
+      border: none;
+      border-radius: 20px;
+      background-color: #ffffff;
+      font-size: 16px;
+      font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
+      color: #64748b;
+    }
+    
+    .newsletter-button {
+      padding: 14px 34px;
+      border: none;
+      border-radius: 20px;
+      background-color: #c4c4c4;
+      font-size: 20px;
+      font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
+      font-weight: 400;
+      line-height: 24px;
+      color: #000000;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    .newsletter-button:hover {
+      background-color: #a0a0a0;
+    }
+    
+    .copyright {
+      font-size: 13px;
+      font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
+      font-weight: 400;
+      line-height: 16px;
+      color: #ffffff;
+      text-align: center;
+      margin-top: 32px;
+    }
+    
+    /* Responsive media queries */
+    @media (max-width: 639px) {
+      .header-content {
+        flex-direction: column;
+        gap: 16px;
+      }
+      
+      .search-container {
+        width: 100%;
+      }
+      
+      .header-nav {
+        flex-direction: column;
+        gap: 16px;
+      }
+      
+      .nav-menu-content {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+      }
+      
+      .page-title {
+        font-size: 32px;
+        line-height: 48px;
+      }
+      
+      .main-content {
+        flex-direction: column;
+        padding: 0 16px;
+        margin-top: 0;
+      }
+      
+      .sidebar {
+        width: 100%;
+      }
+      
+      .product-grid {
+        width: 100%;
+        grid-template-columns: 1fr;
+      }
+      
+      .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+    }
+    
+    @media (min-width: 640px) and (max-width: 767px) {
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .main-content {
+        padding: 0 32px;
+      }
+    }
+    
+    @media (min-width: 768px) {
+      .nav-menu-content {
+        justify-content: center;
+      }
+      
+      .page-title {
+        font-size: 42px;
+        line-height: 72px;
+      }
+      
+      .main-content {
+        flex-direction: row;
+      }
+      
+      .sidebar {
+        width: 30%;
+      }
+      
+      .product-grid {
+        width: 70%;
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (min-width: 1024px) {
+      .page-title {
+        font-size: 48px;
+        line-height: 86px;
+      }
+      
+      .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      
+      .main-content {
+        padding: 0 72px 0 82px;
+      }
+    }
+    
+    @media (min-width: 1280px) {
+      .content-wrapper {
+        gap: 158px;
+      }
+      
+      .main-content {
+        margin-top: -644px;
+      }
+    }
+    
+    /* Interactive states */
+    .filter-checkbox:hover {
+      background-color: #f3f4f6;
+      transform: scale(1.05);
+    }
+    
+    .filter-checkbox:checked {
+      background-color: #2563eb;
+      border-color: #2563eb;
+    }
+    
+    .product-card:hover {
+      transform: translateY(-4px);
+      transition: transform 0.3s ease;
+    }
+    
+    .product-card:hover .product-image {
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Hidden mobile menu */
+    .mobile-menu {
+      display: none;
+    }
+    
+    @media (max-width: 767px) {
+      .header-nav {
+        display: none;
+      }
+      
+      .mobile-menu {
+        display: block;
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+      }
+    }
+  </style>
+  
+  <script type="module" async src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fwomensfas1780back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.12"></script>
+  <script type="module" defer src="https://static.rocket.new/rocket-shot.js?v=0.0.2"></script>
+  </head>
+<body>
+  <div class="main-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <div class="logo-section">
+          <img src="../assets/images/img_header_logo.png" alt="CYD Logo" class="logo">
+          <h1 class="brand-name">C Y D</h1>
+        </div>
+        
+        <div class="search-container">
+          <img src="../assets/images/img_group_4.svg" alt="Search" class="search-icon">
+          <input type="search" class="search-input" placeholder="Search" aria-label="Search products">
+        </div>
+        
+        <nav class="header-nav">
+          <a href="#" class="nav-item">
+            <img src="../assets/images/img_1026440_2.png" alt="Orders" class="nav-icon">
+            <span class="nav-text">Orders</span>
+          </a>
+          <a href="#" class="nav-item">
+            <img src="../assets/images/img_cartic_2.png" alt="Cart" class="nav-icon">
+            <span class="nav-text">Cart</span>
+          </a>
+          <a href="#" class="nav-item">
+            <img src="../assets/images/img_prof_2.png" alt="Account" class="nav-icon">
+            <span class="nav-text">Account</span>
+          </a>
+        </nav>
+        
+        <button class="mobile-menu" aria-label="Open menu">☰</button>
+      </div>
+    </header>
+
+    <div class="content-wrapper">
+      <div class="page-stack">
+        <!-- Navigation Menu -->
+        <nav class="nav-menu">
+          <div class="nav-menu-content">
+            <a href="#" class="nav-link">New & featured</a>
+            <a href="#" class="nav-link">Men</a>
+            <a href="#" class="nav-link">Women</a>
+            <a href="#" class="nav-link">Kids</a>
+            <a href="#" class="nav-link">Accessories</a>
+            <a href="#" class="nav-link">Sales</a>
+          </div>
+          <h2 class="page-title">Women</h2>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+          <!-- Sidebar Filters -->
+          <aside class="sidebar">
+            <!-- Category Filter -->
+            <section class="filter-section">
+              <h3 class="filter-title">CATEGORY</h3>
+              <ul class="filter-list">
+                <li class="filter-item">
+                  <input type="checkbox" class="filter-checkbox" id="tshirts">
+                  <label for="tshirts" class="filter-label">T - Shirts</label>
+                </li>
+                <li class="filter-item">
+                  <input type="checkbox" class="filter-checkbox" id="tops">
+                  <label for="tops" class="filter-label">Tops</label>
+                </li>
+                <li class="filter-item">
+                  <input type="checkbox" class="filter-checkbox" id="shirts">
+                  <label for="shirts" class="filter-label">Shirts</label>
+                </li>
+                <li class="filter-item">
+                  <input type="checkbox" class="filter-checkbox" id="blouses">
+                  <label for="blouses" class="filter-label">Blouses</label>
+                </li>
+                <li class="filter-item">
+                  <input type="checkbox" class="filter-checkbox" id="jackets">
+                  <label for="jackets" class="filter-label">Jackets</label>
+                </li>
+              </ul>
+            </section>
+
+            <!-- Color Filter -->
+            <section class="filter-section">
+              <h3 class="filter-title">COLOR</h3>
+              <ul class="filter-list">
+                <li class="color-filter-item">
+                  <div class="color-indicator-group">
+                    <input type="checkbox" class="filter-checkbox" id="blue">
+                    <div class="color-indicator color-blue"></div>
+                  </div>
+                  <label for="blue" class="filter-label">Blue</label>
+                </li>
+                <li class="color-filter-item">
+                  <div class="color-indicator-group">
+                    <input type="checkbox" class="filter-checkbox" id="black">
+                    <div class="color-indicator color-black"></div>
+                  </div>
+                  <label for="black" class="filter-label">Black</label>
+                </li>
+                <li class="color-filter-item">
+                  <div class="color-indicator-group">
+                    <input type="checkbox" class="filter-checkbox" id="beige">
+                    <div class="color-indicator color-beige"></div>
+                  </div>
+                  <label for="beige" class="filter-label">Beige</label>
+                </li>
+                <li class="color-filter-item">
+                  <div class="color-indicator-group">
+                    <input type="checkbox" class="filter-checkbox" id="brown">
+                    <div class="color-indicator color-brown"></div>
+                  </div>
+                  <label for="brown" class="filter-label">Brown</label>
+                </li>
+                <li class="color-filter-item">
+                  <div class="color-indicator-group">
+                    <input type="checkbox" class="filter-checkbox" id="grey">
+                    <div class="color-indicator color-grey"></div>
+                  </div>
+                  <label for="grey" class="filter-label">Grey</label>
+                </li>
+                <li class="color-filter-item">
+                  <div class="color-indicator-group">
+                    <input type="checkbox" class="filter-checkbox" id="red">
+                    <div class="color-indicator color-red"></div>
+                  </div>
+                  <label for="red" class="filter-label">Red</label>
+                </li>
+                <li class="color-filter-item">
+                  <div class="color-indicator-group">
+                    <input type="checkbox" class="filter-checkbox" id="white">
+                    <div class="color-indicator color-white"></div>
+                  </div>
+                  <label for="white" class="filter-label">White</label>
+                </li>
+                <li class="color-filter-item">
+                  <div class="color-indicator-group">
+                    <input type="checkbox" class="filter-checkbox" id="navy">
+                    <div class="color-indicator color-navy"></div>
+                  </div>
+                  <label for="navy" class="filter-label">Navy Blue</label>
+                </li>
+              </ul>
+            </section>
+
+            <!-- Brand Filter -->
+            <section class="filter-section">
+              <h3 class="filter-title">BRAND</h3>
+              <ul class="filter-list">
+                <li class="filter-item">
+                  <input type="checkbox" class="filter-checkbox" id="croft">
+                  <label for="croft" class="filter-label">Croft Barrow</label>
+                </li>
+                <li class="filter-item">
+                  <input type="checkbox" class="filter-checkbox" id="zolucky">
+                  <label for="zolucky" class="filter-label">Zolucky</label>
+                </li>
+                <li class="filter-item">
+                  <input type="checkbox" class="filter-checkbox" id="lesuit">
+                  <label for="lesuit" class="filter-label">Le Suit</label>
+                </li>
+                <li class="filter-item">
+                  <input type="checkbox" class="filter-checkbox" id="simple">
+                  <label for="simple" class="filter-label">Simple Flavor</label>
+                </li>
+                <li class="filter-item">
+                  <input type="checkbox" class="filter-checkbox" id="ann">
+                  <label for="ann" class="filter-label">Ann Taylor</label>
+                </li>
+                <li class="filter-item">
+                  <input type="checkbox" class="filter-checkbox" id="haband">
+                  <label for="haband" class="filter-label">Haband</label>
+                </li>
+                <li class="filter-item">
+                  <input type="checkbox" class="filter-checkbox" id="spanx">
+                  <label for="spanx" class="filter-label">Spanx</label>
+                </li>
+                <li class="filter-item">
+                  <input type="checkbox" class="filter-checkbox" id="lyvv">
+                  <label for="lyvv" class="filter-label">Ly Vv</label>
+                </li>
+              </ul>
+            </section>
+
+            <!-- Size Filter -->
+            <section class="filter-section">
+              <h3 class="filter-title">SIZES</h3>
+              <ul class="filter-list">
+                <li class="filter-item">
+                  <input type="checkbox" class="filter-checkbox" id="xs">
+                  <label for="xs" class="filter-label">XS</label>
+                </li>
+                <li class="filter-item">
+                  <input type="checkbox" class="filter-checkbox" id="s">
+                  <label for="s" class="filter-label">S</label>
+                </li>
+                <li class="filter-item">
+                  <input type="checkbox" class="filter-checkbox" id="m">
+                  <label for="m" class="filter-label">M</label>
+                </li>
+                <li class="filter-item">
+                  <input type="checkbox" class="filter-checkbox" id="l">
+                  <label for="l" class="filter-label">L</label>
+                </li>
+                <li class="filter-item">
+                  <input type="checkbox" class="filter-checkbox" id="xl">
+                  <label for="xl" class="filter-label">XL</label>
+                </li>
+                <li class="filter-item">
+                  <input type="checkbox" class="filter-checkbox" id="xxl">
+                  <label for="xxl" class="filter-label">XXL</label>
+                </li>
+                <li class="filter-item">
+                  <input type="checkbox" class="filter-checkbox" id="xxxl">
+                  <label for="xxxl" class="filter-label">XXXL</label>
+                </li>
+                <li class="filter-item">
+                  <input type="checkbox" class="filter-checkbox" id="4xl">
+                  <label for="4xl" class="filter-label">4XL</label>
+                </li>
+              </ul>
+            </section>
+
+            <!-- Price Filter -->
+            <section class="filter-section">
+              <h3 class="filter-title">PRICE</h3>
+              <ul class="filter-list">
+                <li class="filter-item">
+                  <input type="checkbox" class="filter-checkbox" id="price1">
+                  <label for="price1" class="filter-label">$30 - $35</label>
+                </li>
+                <li class="filter-item">
+                  <input type="checkbox" class="filter-checkbox" id="price2">
+                  <label for="price2" class="filter-label">$35 - $40</label>
+                </li>
+                <li class="filter-item">
+                  <input type="checkbox" class="filter-checkbox" id="price3">
+                  <label for="price3" class="filter-label">$40 - $45</label>
+                </li>
+                <li class="filter-item">
+                  <input type="checkbox" class="filter-checkbox" id="price4">
+                  <label for="price4" class="filter-label">$45 - $50</label>
+                </li>
+              </ul>
+            </section>
+          </aside>
+
+          <!-- Product Grid -->
+          <section class="product-grid">
+            <!-- Product Card 1 -->
+            <article class="product-card">
+              <img src="../assets/images/img_rectangle_62.png" alt="Women's Tops Collection" class="product-image">
+              <div class="product-actions">
+                <button class="product-button">Tops</button>
+                <button class="see-more-button">See more</button>
+              </div>
+            </article>
+
+            <!-- Product Card 2 -->
+            <article class="product-card">
+              <img src="../assets/images/img_rectangle_62_514x422.png" alt="Women's Dresses Collection" class="product-image">
+              <div class="product-actions">
+                <button class="product-button">Dresses</button>
+                <button class="see-more-button">See more</button>
+              </div>
+            </article>
+
+            <!-- Product Card 3 -->
+            <article class="product-card">
+              <img src="../assets/images/img_pexels_dima_valkov_6211614.png" alt="Women's Blazers & Jackets" class="product-image">
+              <div class="product-actions">
+                <button class="product-button">Blazers & Jackets</button>
+                <button class="see-more-button">See more</button>
+              </div>
+            </article>
+
+            <!-- Product Card 4 -->
+            <article class="product-card">
+              <img src="../assets/images/img_pexels_dima_valkov_6211614_478x430.png" alt="Women's T-shirts Collection" class="product-image">
+              <div class="product-actions">
+                <button class="product-button">Tshirts</button>
+                <button class="see-more-button">See more</button>
+              </div>
+            </article>
+
+            <!-- Product Card 5 -->
+            <article class="product-card">
+              <img src="../assets/images/img_pexels_dima_valkov_6211614_1.png" alt="Women's Shorts & Pants" class="product-image">
+              <div class="product-actions">
+                <button class="product-button">Shorts & Pants</button>
+                <button class="see-more-button">See more</button>
+              </div>
+            </article>
+
+            <!-- Product Card 6 -->
+            <article class="product-card">
+              <img src="../assets/images/img_pexels_dima_valkov_6211601.png" alt="Women's Skirts Collection" class="product-image">
+              <div class="product-actions">
+                <button class="product-button">Skirts</button>
+                <button class="see-more-button">See more</button>
+              </div>
+              <div class="price-display">$ 199</div>
+            </article>
+
+            <!-- Product Card 7 -->
+            <article class="product-card">
+              <img src="../assets/images/img_pexels_dima_valkov_6402846.png" alt="Women's Shirts Collection" class="product-image">
+              <div class="product-actions">
+                <button class="product-button">Shirts</button>
+                <button class="see-more-button">See more</button>
+              </div>
+            </article>
+
+            <!-- Product Card 8 -->
+            <article class="product-card">
+              <img src="../assets/images/img_pexels_dima_valkov_6211601_516x432.png" alt="Women's Jumpsuits & Rompers" class="product-image">
+              <div class="product-actions">
+                <button class="product-button">Jumpsuits & Rompers</button>
+                <button class="see-more-button">See more</button>
+              </div>
+            </article>
+
+            <!-- Product Card 9 -->
+            <article class="product-card">
+              <img src="../assets/images/img_rectangle_66.png" alt="Women's Shorts Collection" class="product-image">
+              <div class="product-actions">
+                <button class="product-button">Shorts</button>
+                <button class="see-more-button">See more</button>
+              </div>
+            </article>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <h2 class="footer-logo">C Y D.</h2>
+          <div class="social-icons">
+            <img src="../assets/images/img_frame.svg" alt="Facebook" class="social-icon">
+            <img src="../assets/images/img_frame_white_a700.svg" alt="Twitter" class="social-icon">
+            <img src="../assets/images/img_frame_white_a700_30x28.svg" alt="Instagram" class="social-icon">
+            <img src="../assets/images/img_vector_white_a700.svg" alt="LinkedIn" class="social-icon">
+            <img src="../assets/images/img_vector.svg" alt="YouTube" class="social-icon">
+          </div>
+          <p class="copyright">Copyright2025 ©️ CYD.com-All Right Reserved</p>
+        </div>
+
+        <div class="footer-section">
+          <h3 class="footer-title">SHOP</h3>
+          <a href="#" class="footer-link">Products</a>
+          <a href="#" class="footer-link">Overview</a>
+          <a href="#" class="footer-link">Pricing</a>
+          <a href="#" class="footer-link">Releases</a>
+        </div>
+
+        <div class="footer-section">
+          <h3 class="footer-title">Company</h3>
+          <ul>
+            <li><a href="#" class="footer-link">Shop Now</a></li>
+            <li><a href="#" class="footer-link">Home</a></li>
+            <li><a href="#" class="footer-link">About Us</a></li>
+            <li><a href="#" class="footer-link">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h3 class="footer-title">Information</h3>
+          <ul>
+            <li><a href="#" class="footer-link">Privacy Policy</a></li>
+            <li><a href="#" class="footer-link">Return Policy</a></li>
+            <li><a href="#" class="footer-link">Terms & Conditions</a></li>
+            <li><a href="#" class="footer-link">Store Locations</a></li>
+          </ul>
+        </div>
+
+        <div class="newsletter-section">
+          <h3 class="footer-title">Get In Touch</h3>
+          <input type="email" class="newsletter-input" placeholder="Enter Your Email" aria-label="Email for newsletter">
+          <button class="newsletter-button">Subscribe</button>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Filter functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const checkboxes = document.querySelectorAll('.filter-checkbox');
+      const productCards = document.querySelectorAll('.product-card');
+      
+      checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+          // Add visual feedback for checked state
+          if (this.checked) {
+            this.style.backgroundColor = '#2563eb';
+            this.style.borderColor = '#2563eb';
+          } else {
+            this.style.backgroundColor = '#ffffff';
+            this.style.borderColor = '#000000';
+          }
+          
+          // Filter logic would go here
+          filterProducts();
+        });
+      });
+      
+      function filterProducts() {
+        // Get all checked filters
+        const checkedFilters = Array.from(checkboxes)
+          .filter(cb => cb.checked)
+          .map(cb => cb.id);
+        
+        // Show/hide products based on filters
+        productCards.forEach(card => {
+          if (checkedFilters.length === 0) {
+            card.style.display = 'flex';
+          } else {
+            // Simple filter logic - in real app would be more sophisticated
+            card.style.display = 'flex';
+          }
+        });
+      }
+      
+      // Mobile menu toggle
+      const mobileMenuBtn = document.querySelector('.mobile-menu');
+      const headerNav = document.querySelector('.header-nav');
+      
+      if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', function() {
+          headerNav.style.display = headerNav.style.display === 'flex' ? 'none' : 'flex';
+        });
+      }
+      
+      // Search functionality
+      const searchInput = document.querySelector('.search-input');
+      if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+          const searchTerm = e.target.value.toLowerCase();
+          // Search logic would go here
+          console.log('Searching for:', searchTerm);
+        });
+      }
+      
+      // Newsletter subscription
+      const newsletterBtn = document.querySelector('.newsletter-button');
+      const newsletterInput = document.querySelector('.newsletter-input');
+      
+      if (newsletterBtn && newsletterInput) {
+        newsletterBtn.addEventListener('click', function() {
+          const email = newsletterInput.value;
+          if (email && email.includes('@')) {
+            alert('Thank you for subscribing!');
+            newsletterInput.value = '';
+          } else {
+            alert('Please enter a valid email address.');
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
