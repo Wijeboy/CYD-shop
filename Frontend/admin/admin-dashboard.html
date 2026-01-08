@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - CYD</title>
+    <link rel="stylesheet" href="../css/admin-dashboard.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar Dashboard -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../User panel images/icons/dashboard-icon.png" alt="Dashboard" class="header-icon">
+                <h1 class="sidebar-title">Dashboard</h1>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="admin-dashboard.html" class="nav-item active">
+                    <img src="../User panel images/icons/dashboard-icon.png" alt="Dashboard" class="nav-icon">
+                    <span>Dashboard</span>
+                </a>
+                <a href="product-management.html" class="nav-item">
+                    <img src="../User panel images/icons/product-icon.png" alt="Products" class="nav-icon">
+                    <span>Product Management</span>
+                </a>
+                <a href="customer-management.html" class="nav-item">
+                    <img src="../User panel images/icons/customer-icon.png" alt="Customers" class="nav-icon">
+                    <span>Customer Management</span>
+                </a>
+                <a href="order-management.html" class="nav-item">
+                    <img src="../User panel images/icons/order-icon.png" alt="Orders" class="nav-icon">
+                    <span>Order Management</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="admin-profile">
+                    <a href="admin-profile.html">
+                    <img src="../User panel images/default-avatar.png" alt="Admin" class="profile-icon">
+                    </a>
+                    <span class="profile-name">Admin</span>
+                    <img src="../User panel images/icons/dropdown-icon.png" alt="Dropdown" class="dropdown-icon" id="dropdownIcon">
+                </div>
+                <div class="dropdown-content" id="dropdownContent">
+                    <span class="dropdown-text">admin</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Welcome Header -->
+            <div class="welcome-header">
+                <h2 class="welcome-text">Hello Admin 👋,</h2>
+            </div>
+
+            <!-- Overview Section -->
+            <section class="overview-section">
+                <h3 class="section-title">Overview</h3>
+
+                <!-- Stats Cards -->
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-content">
+                            <h4 class="stat-label">Total Customers</h4>
+                            <p class="stat-value" id="totalCustomers">1240</p>
+                        </div>
+                        <img src="../User panel images/icons/total-customers-icon.png" alt="Customers" class="stat-icon">
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-content">
+                            <h4 class="stat-label">Orders Pending</h4>
+                            <p class="stat-value" id="ordersPending">24</p>
+                        </div>
+                        <img src="../User panel images/icons/orders-pending-icon.png" alt="Orders" class="stat-icon">
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-content">
+                            <h4 class="stat-label">Total Revenue</h4>
+                            <p class="stat-value" id="totalRevenue">$30000</p>
+                        </div>
+                        <img src="../User panel images/icons/revenue-icon.png" alt="Revenue" class="stat-icon">
+                    </div>
+                </div>
+
+                <!-- Change Button -->
+                <div class="change-btn-container">
+                    <button class="change-btn" id="changeBtn">Change</button>
+                </div>
+            </section>
+
+            <!-- Quick Actions Section -->
+            <section class="quick-actions-section">
+                <h3 class="section-subtitle">Quick Actions</h3>
+
+                <div class="quick-actions-container">
+                    <img src="../User panel images/contact-banner.webp" alt="Quick Actions Background" class="quick-actions-bg">
+                    
+                    <div class="actions-grid">
+                        <button class="action-btn" onclick="window.location.href='add-product.html'">
+                            <img src="../User panel images/icons/add-product-icon.png" alt="Add Product" class="action-icon">
+                            <span class="action-text">Add new products</span>
+                        </button>
+
+                        <button class="action-btn" onclick="window.location.href='order-management.html'">
+                            <img src="../User panel images/icons/manage-orders-icon.png" alt="Manage Orders" class="action-icon">
+                            <span class="action-text">Manage Orders</span>
+                        </button>
+
+                        <button class="action-btn" onclick="window.location.href='customer-management.html'">
+                            <img src="../User panel images/icons/view-customers-icon.png" alt="View Customers" class="action-icon">
+                            <span class="action-text">View customers</span>
+                        </button>
+
+                        <button class="action-btn" onclick="window.location.href='product-management.html'">
+                            <img src="../User panel images/icons/product-icon2.png" alt="Product Management" class="action-icon">
+                            <span class="action-text">Product management</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Change Stats Modal -->
+    <div class="modal" id="changeModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Update Dashboard Statistics</h2>
+            
+            <form id="changeStatsForm">
+                <div class="form-group">
+                    <label for="modalTotalCustomers" class="form-label">Total Customers</label>
+                    <input type="number" id="modalTotalCustomers" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="modalOrdersPending" class="form-label">Orders Pending</label>
+                    <input type="number" id="modalOrdersPending" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="modalTotalRevenue" class="form-label">Total Revenue ($)</label>
+                    <input type="number" id="modalTotalRevenue" class="form-input" step="0.01" required>
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="button" class="cancel-modal-btn" id="cancelModalBtn">Cancel</button>
+                    <button type="submit" class="save-modal-btn">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/admin-dashboard.js"></script>
+</body>
+</html>
