@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History - Admin</title>
+    <link rel="stylesheet" href="css/order.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="dashboard-wrapper">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="logo-icon">💠</div>
+                <div class="brand-name">Dashboard <small>v.01</small></div>
+            </div>
+
+            <nav class="nav-menu">
+                <div class="nav-item"><span class="nav-icon">📄</span> Dashboard</div>
+                <div class="nav-item"><span class="nav-icon">📦</span> Return Products <span class="arrow">›</span></div>
+                <div class="nav-item"><span class="nav-icon">👤</span> Profile <span class="arrow">›</span></div>
+                
+                <div class="nav-group">
+                    <div class="nav-item active"><span class="nav-icon">🛒</span> Order Management <span class="arrow-down">⌄</span></div>
+                    <div class="sub-item active">Order History</div>
+                </div>
+            </nav>
+
+            <div class="admin-profile">
+                <img src="images/logo.png" alt="Admin" class="admin-img">
+                <div class="admin-info">
+                    <span class="admin-name">Admin</span>
+                    <span class="admin-role">Admin</span>
+                </div>
+                <span class="chevron">⌄</span>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="content-header">
+                <h2 class="title">ORDER HISTORY</h2>
+                <div class="search-container">
+                    <input type="text" placeholder="Search order id">
+                    <span class="search-btn">🔍</span>
+                </div>
+            </header>
+
+            <table class="order-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Order Number</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Attributes</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="product-cell">
+                                <img src="images/1 Women.avif" alt="Women Top" class="product-img">
+                            </div>
+                        </td>
+                        <td><strong>234567AB12</strong></td>
+                        <td class="price">$250.00</td>
+                        <td><span class="status-tag refund">Refund</span></td>
+                        <td class="attr">Color : Blue <br> Size : S <br> <a href="#">See all</a></td>
+                        <td><span class="action-btn">▼</span></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="product-cell">
+                                <img src="images/img2.avif" alt="Casual Dress" class="product-img">
+                            </div>
+                        </td>
+                        <td><strong>234567AB12</strong></td>
+                        <td class="price">$210.00</td>
+                        <td><span class="status-tag delivered">Delivered</span></td>
+                        <td class="attr">Color : Brown <br> Size : M <br> <a href="#">See all</a></td>
+                        <td><span class="action-btn">▼</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+    </div>
+
+    <footer class="main-footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h2>C Y D .</h2>
+                <div class="socials">
+                    <div class="social-circle">📸</div>
+                    <div class="social-circle">🐦</div>
+                    <div class="social-circle">f</div>
+                </div>
+                <p class="copyright">Copyright 2025 © CYD.com-All Right Reserved</p>
+            </div>
+            <div class="footer-links">
+                <h3>Company</h3>
+                <ul><li>Shop Now</li><li>Home</li><li>About Us</li><li>Contact</li></ul>
+            </div>
+            <div class="footer-links">
+                <h3>Information</h3>
+                <ul><li>Privacy Policy</li><li>Terms & Conditions</li><li>Return Policy</li><li>Store Locations</li></ul>
+            </div>
+            <div class="footer-subscribe">
+                <h3>Get In Touch</h3>
+                <input type="email" placeholder="Enter Your Email">
+                <button class="sub-btn">Subscribe</button>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

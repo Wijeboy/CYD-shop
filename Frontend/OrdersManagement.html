@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Order Management</title>
+    <link rel="stylesheet" href="css/OrdersManage.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="dashboard-wrapper">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="logo-icon">💠</div>
+                <div class="brand-name">Dashboard <small>v.01</small></div>
+            </div>
+
+            <nav class="nav-menu">
+                <div class="nav-item"><span class="nav-icon">📄</span> Dashboard</div>
+                <div class="nav-item"><span class="nav-icon">📦</span> Product Management <span class="arrow">›</span></div>
+                <div class="nav-item"><span class="nav-icon">👥</span> Customers <span class="arrow">›</span></div>
+                
+                <div class="nav-group">
+                    <div class="nav-item active"><span class="nav-icon">🛒</span> Order Management <span class="arrow-down">⌄</span></div>
+                    <div class="sub-item active">Order Management</div>
+                </div>
+            </nav>
+
+            <div class="admin-profile">
+                <img src="images/img2.avif" alt="Admin" class="admin-img">
+                <div class="admin-info">
+                    <span class="admin-name">Admin</span>
+                    <span class="admin-role">Admin</span>
+                </div>
+                <span class="chevron">⌄</span>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <div class="welcome-text">Hello Admin 👋,</div>
+            </header>
+
+            <div class="page-title-section">
+                <h2 class="title">ORDERS</h2>
+                <div class="search-container">
+                    <input type="text" placeholder="Search order id">
+                    <span class="search-icon">🔍</span>
+                </div>
+            </div>
+
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer Name</th>
+                        <th>Time</th>
+                        <th>Quantity</th>
+                        <th>Placed On</th>
+                        <th>Price</th>
+                        <th>Order Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="order-id-cell">
+                            ID: <strong>#26-0000001</strong>
+                        </td>
+                        <td>Kinara Withana</td>
+                        <td>10.01 A.M</td>
+                        <td>05 items</td>
+                        <td><strong>2026.01.01</strong></td>
+                        <td class="price">12 500.00</td>
+                        <td class="actions-cell">
+                            <select class="status-select">
+                                <option>Order Status</option>
+                            </select>
+                            <button class="update-btn">Update Order</button>
+                            <div class="btn-group">
+                                <button class="approve-btn">Approve</button>
+                                <button class="reject-btn">Reject</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="order-id-cell">
+                            ID: <strong>#26-0000002</strong>
+                        </td>
+                        <td>Kamal Perera</td>
+                        <td>11.14 A.M</td>
+                        <td>06 items</td>
+                        <td><strong>2025.12.31</strong></td>
+                        <td class="price">20 000.00</td>
+                        <td class="actions-cell">
+                            <select class="status-select">
+                                <option>Order Status</option>
+                            </select>
+                            <button class="update-btn">Update Order</button>
+                            <div class="btn-group">
+                                <button class="approve-btn">Approve</button>
+                                <button class="reject-btn">Reject</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+    </div>
+
+</body>
+</html>

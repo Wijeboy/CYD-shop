@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - CYD Store</title>
+    <link rel="stylesheet" href="css/payment.css">
+</head>
+<body>
+
+    <div class="checkout-container">
+        <div class="form-section">
+            <button class="back-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            </button>
+            <h2>CHECKOUT</h2>
+            
+            <div class="tabs">
+                <span class="active">INFORMATION</span>
+                <span>PAYMENT</span>
+            </div>
+
+            <form>
+                <h4>CONTACT INFO</h4>
+                <input type="email" placeholder="Email" required>
+                <input type="tel" placeholder="Phone" required>
+
+                <h4>SHIPPING ADDRESS</h4>
+                <div class="row">
+                    <input type="text" placeholder="Firstname" required>
+                    <input type="text" placeholder="Lastname" required>
+                </div>
+                <input type="text" placeholder="Country" required>
+                <input type="text" placeholder="State/Region" required>
+                <input type="text" placeholder="Street" required>
+                <div class="row">
+                    <input type="text" placeholder="City" required>
+                    <input type="text" placeholder="Postal Code" required>
+                </div>
+
+                <button type="submit" class="payment-btn">Proceed to Payment</button>
+            </form>
+        </div>
+
+        <div class="summary-section">
+            <h4 class="summary-title">YOUR ORDER</h4>
+            
+            <div class="order-item">
+                <div class="item-img-container">
+                    <img src="images/img4.webp" alt="Long Dress">
+                </div>
+                <div class="item-info">
+                    <p class="item-name">Long Dress</p>
+                    <p class="item-meta">Black / M</p>
+                </div>
+                <span class="price">$120.00</span>
+            </div>
+
+            <div class="order-item">
+                <div class="item-img-container">
+                    <img src="images/img3.jpg" alt="Summer Fresh">
+                </div>
+                <div class="item-info">
+                    <p class="item-name">Summer Fresh</p>
+                    <p class="item-meta">Green / M</p>
+                </div>
+                <span class="price">$140.00</span>
+            </div>
+
+            <hr>
+
+            <div class="totals">
+                <div class="total-row">
+                    <span>Subtotal</span>
+                    <span>$260.00</span>
+                </div>
+                <div class="total-row">
+                    <span>Shipping</span>
+                    <span class="shipping-note">Calculated at next step</span>
+                </div>
+                <div class="total-row grand-total">
+                    <span>Total</span>
+                    <span>$260.00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
