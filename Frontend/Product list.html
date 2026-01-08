@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYD - Product list </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="new arrivals.css">
+</head>
+<body>
+
+<!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="index.html">
+                <img src="C:\Users\hi\Desktop\CYD-shop-main\Frontend\images\logo.png" alt="CYD Logo" class="logo">
+            </a>
+            <span class="brand-name">C Y D</span>
+        </div>
+        
+        <div class="nav-center">
+            <input type="text" id="searchInput" placeholder="What are you looking for today.." class="search-input">
+            <button id="searchBtn" class="search-btn">Search</button>
+        </div>
+        
+        <div class="nav-right">
+            <a href="#" class="nav-link">
+                <img src="User panel images/icons/orders-icon.png" alt="Orders" class="nav-icon">
+                <span>Orders</span>
+            </a>
+            <a href="cart.html" class="nav-link">
+                <img src="User panel images/icons/cart-icon.png" alt="Cart" class="nav-icon">
+                <span>Cart</span>
+            </a>
+            <a href="account.html" class="nav-link">
+                <img src="User panel images/icons/account-icon.webp" alt="Account" class="nav-icon">
+                <span>Account</span>
+            </a>
+        </div>
+    </nav>
+
+
+
+
+   
+    <nav class="menu-bar">
+        <ul class="menu-list">
+            <li class="menu-item"><a href="#New Arrivals">New Arrivals</a></li>
+            <li class="menu-item"><a href="#Best Selling" onclick="updatePageTitle('WOMEN')">Best Selling </a></li>
+            <li class="menu-item"><a href="#Women's Collection" onclick="updatePageTitle('MEN')">Women </a></li>
+            <li class="menu-item"><a href="#Men's Collection"> Men </a></li>
+            
+        </ul>
+    </nav>
+
+    <main class="main-container">
+        <h1 class="section-title" id = "New Arrivals"><Center>New Arrivals</Center></h1>
+        
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="image-box">
+                    <span class="arrival-badge">New</span>
+                    <img src="C:\Users\hi\Desktop\MT\intern project 01\User panel images\NA 05.webp" alt="Tunic Shirt">
+                    <div class="action-overlay">
+                        
+                        <button class="view-btn" onclick="window.location.href='New arrivals 01.html'">View Product</button>
+                        <button class="add-cart-btn" onclick="addToCart('Tunic Shirt')">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>Cotton Crop-top</h3>
+                        <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWishlist(this)"></i>
+                    </div>
+                    <p class="price">Rs.2,250.00</p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-box">
+                    <span class="arrival-badge">New</span>
+                    <img src="C:\Users\hi\Desktop\MT\intern project 01\User panel images\new-arrival-2.webp" alt="Suede Jacket">
+                    <div class="action-overlay">
+                        
+                        <button class="view-btn" onclick="window.location.href='New arrivals 02.html'">View Product</button>
+                        <button class="add-cart-btn" onclick="addToCart('Suede Jacket')">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>Heritage Suede Jacket</h3>
+                        <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWishlist(this)"></i>
+                    </div>
+                    <p class="price">Rs.8,990.00</p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-box">
+                    <span class="arrival-badge">New</span>
+                    <img src="C:\Users\hi\Desktop\MT\intern project 01\User panel images\new-arrival-3.webp" alt="Resort Shirt">
+                    <div class="action-overlay">
+                        
+                        <button class="view-btn" onclick="window.location.href='New arrivals 03.html'">View Product</button>
+                        <button class="add-cart-btn" onclick="addToCart('Resort Shirt')">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>Sunflower Resort Shirt</h3>
+                        <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWishlist(this)"></i>
+                    </div>
+                    <p class="price">Rs.2,990.00</p>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+         <h1 class="section-title" id = "Best Selling"> <Center>Best Selling </Center></h1>
+        
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="image-box">
+                    
+                    <img src="C:\Users\hi\Desktop\MT\intern project 01\User panel images\best-selling-1.jpg" alt="Tunic Shirt">
+                    <div class="action-overlay">
+                       
+                        <button class="view-btn" onclick="window.location.href='best selling 01.html'">View Product</button>
+                        <button class="add-cart-btn" onclick="addToCart('Tunic Shirt')">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3> embroidery mini frock</h3>
+                        <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWishlist(this)"></i>
+                    </div>
+                    <p class="price">Rs.3,490.00</p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-box">
+                    
+                    <img src="C:\Users\hi\Desktop\MT\intern project 01\User panel images\BS 03.jpeg" alt="Suede Jacket">
+                    <div class="action-overlay">
+                        
+                        <button class="view-btn" onclick="window.location.href='best selling 02.html'">View Product</button>
+                        <button class="add-cart-btn" onclick="addToCart('Suede Jacket')">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>  Polo Dobby Slim Fit Shirt</h3>
+                        <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWishlist(this)"></i>
+                    </div>
+                    <p class="price">Rs.8,990.00</p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-box">
+                   
+                    <img src="C:\Users\hi\Desktop\MT\intern project 01\User panel images\BS 01.webp" alt="Resort Shirt">
+                    <div class="action-overlay">
+                        <button class="view-btn" onclick="window.location.href='best selling 03.html'">View Product</button>
+                        
+                        <button class="add-cart-btn" onclick="addToCart('Resort Shirt')">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>Linen Midi Skirt</h3>
+                        <i class="fa-regular fa-heart wishlist-icon" onclick="toggleWishlist(this)"></i>
+                    </div>
+                    <p class="price">Rs.2,990.00</p>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <h1 class="section-title" id = "Women's Collection"><center>Women's Collection </center></h1>
+        
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="image-box">
+                    
+                    <img src="C:\Users\hi\Desktop\CYD-shop-main\Frontend\User panel images\category-tops.webp" alt="Tunic Shirt">
+                    <div class="action-overlay">
+                        
+                         <button class="view-btn" onclick="window.location.href='Women Tops.html'">View Product</button>
+                         
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>Tops</h3>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-box">
+                    
+                    <img src="C:\Users\hi\Desktop\CYD-shop-main\Frontend\User panel images\category-tshirts.webp" alt="Suede Jacket">
+                    <div class="action-overlay">
+                        
+                       <button class="view-btn" onclick="window.location.href='Women T Shirt.html'">View Product</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>T-shirts</h3>
+                       
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-box">
+                   
+                    <img src="C:\Users\hi\Desktop\CYD-shop-main\Frontend\User panel images\new-arrival-1.jpg" alt="Resort Shirt">
+                    <div class="action-overlay">
+                        
+                        <button class="view-btn" onclick="window.location.href='Women Blouses.html'">View Product</button>
+                       
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>Blouses</h3>
+                       
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="image-box">
+                    
+                    <img src="C:\Users\hi\Desktop\CYD-shop-main\Frontend\User panel images\best-selling-2.webp" alt="Tunic Shirt">
+                    <div class="action-overlay">
+                        
+                        <button class="view-btn" onclick="window.location.href='Women Dresses.html'">View Product</button>
+                        
+                         
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>Dresses</h3>
+                       
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-box">
+                    
+                    <img src="C:\Users\hi\Desktop\CYD-shop-main\Frontend\User panel images\category-trousers.jpg" alt="Suede Jacket">
+                    <div class="action-overlay">
+                        
+                        <button class="view-btn" onclick="window.location.href='Women Trousers .html'">View Product</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>Trousers</h3>
+                       
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-box">
+                   
+                    <img src="C:\Users\hi\Desktop\CYD-shop-main\Frontend\User panel images\category-skirts.webp" alt="Resort Shirt">
+                    <div class="action-overlay">
+                        
+                        <button class="view-btn" onclick="window.location.href='Women Skirts.html'">View Product</button>
+                       
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>Skirts</h3>
+                      
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <h1 class="section-title" id = "Men's Collection"><Center>Men's Collection</Center></h1>
+        
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="image-box">
+                    
+                    <img src="C:\Users\hi\Desktop\MT\intern project 01\User panel images\MT 01.jpeg" alt="Tunic Shirt">
+                    <div class="action-overlay">
+                         <button class="view-btn" onclick="window.location.href='Men Tshirt.html'">View Product</button>
+                       
+                         
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>T-Shirt</h3>
+                       
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-box">
+                    
+                    <img src="C:\Users\hi\Desktop\MT\intern project 01\User panel images\MSI 01.jpeg" alt="Suede Jacket">
+                    <div class="action-overlay">
+                        
+                        <button class="view-btn" onclick="window.location.href='Men Shirt.html'">View Product</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>  Shirt</h3> 
+                       
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-box">
+                   
+                    <img src="C:\Users\hi\Desktop\MT\intern project 01\User panel images\MSI01.jpeg" alt="Resort Shirt">
+                    <div class="action-overlay">
+                        
+                        <button class="view-btn" onclick="window.location.href='Men Shorts.html'">View Product</button>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3>Shorts </h3>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="image-box">
+                    
+                    <img src="C:\Users\hi\Desktop\MT\intern project 01\User panel images\MTR 01.jpeg" alt="Tunic Shirt">
+                    <div class="action-overlay">
+                       
+                        <button class="view-btn" onclick="window.location.href='Men Trousers.html'">View Product</button>
+                         
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="details-header">
+                        <h3> Trousers</h3>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3 class="footer-brand">C Y D</h3>
+                <div class="social-icons">
+                    <img src="User panel images/icons/facebook-icon.webp" alt="Facebook" class="social-icon">
+                    <img src="User panel images/icons/twitter-icon.png" alt="Twitter" class="social-icon">
+                    <img src="User panel images/icons/instagram-icon.jpg" alt="Instagram" class="social-icon">
+                </div>
+                <p class="footer-copyright">Copyright 2025 ©️ CYD.com - All rights Reserved</p>
+            </div>
+            
+            <div class="footer-column">
+                <h4 class="footer-heading">Company</h4>
+                <a href="products.html" class="footer-link">Shop Now</a>
+                <a href="index.html" class="footer-link">Home</a>
+                <a href="about.html" class="footer-link">About Us</a>
+                <a href="contact.html" class="footer-link">Contact Us</a>
+            </div>
+            
+            <div class="footer-column">
+                <h4 class="footer-heading">Information</h4>
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="terms.html" class="footer-link">Terms & Conditions</a>
+                <a href="returns.html" class="footer-link">Return Policy</a>
+                <a href="locations.html" class="footer-link">Store Locations</a>
+            </div>
+            
+            <div class="footer-column footer-newsletter">
+                <h4 class="footer-heading">Get In Touch</h4>
+                <input type="email" placeholder="enter your email" class="newsletter-input">
+                <button class="newsletter-btn">subscribe</button>
+            </div>
+        </div>
+    </footer>
+
+    <div id="toast-container"></div>
+
+    <script>
+        let cartCount = 0;
+        function addToCart(name) {
+            cartCount++;
+            const badge = document.getElementById('cart-badge');
+            badge.innerText = cartCount;
+            badge.classList.add('active');
+            showToast(`Added ${name} to Cart!`);
+        }
+        function toggleWishlist(el) {
+            const navHeart = document.querySelector('#nav-wishlist-btn i');
+            if (el.classList.contains('fa-regular')) {
+                el.classList.replace('fa-regular', 'fa-solid');
+                el.style.color = '#e74c3c';
+                navHeart.classList.replace('fa-regular', 'fa-solid');
+                navHeart.style.color = '#e74c3c';
+            } else {
+                el.classList.replace('fa-solid', 'fa-regular');
+                el.style.color = 'inherit';
+            }
+        }
+        function showToast(msg) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerText = msg;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 500); }, 3000);
+        }
+    </script>
+</body>
+</html>
