@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management - CYD Admin</title>
+    <link rel="stylesheet" href="../css/product-management.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar Dashboard (Same as admin-dashboard.html) -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../User panel images/icons/dashboard-icon.png" alt="Dashboard" class="header-icon">
+                <h1 class="sidebar-title">Dashboard</h1>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="admin-dashboard.html" class="nav-item">
+                    <img src="../User panel images/icons/dashboard-icon.png" alt="Dashboard" class="nav-icon">
+                    <span>Dashboard</span>
+                </a>
+                <a href="product-management.html" class="nav-item active">
+                    <img src="../User panel images/icons/product-icon.png" alt="Products" class="nav-icon">
+                    <span>Product Management</span>
+                </a>
+                <a href="customer-management.html" class="nav-item">
+                    <img src="../User panel images/icons/customer-icon.png" alt="Customers" class="nav-icon">
+                    <span>Customer Management</span>
+                </a>
+                <a href="order-management.html" class="nav-item">
+                    <img src="../User panel images/icons/order-icon.png" alt="Orders" class="nav-icon">
+                    <span>Order Management</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="admin-profile">
+                    <img src="../User panel images/default-avatar.png" alt="Admin" class="profile-icon">
+                    <span class="profile-name">Admin</span>
+                    <img src="../User panel images/icons/dropdown-icon.png" alt="Dropdown" class="dropdown-icon" id="dropdownIcon">
+                </div>
+                <div class="dropdown-content" id="dropdownContent">
+                    <span class="dropdown-text">admin</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Welcome Header -->
+            <div class="welcome-header">
+                <h2 class="welcome-text">Hello Admin 👋,</h2>
+            </div>
+
+            <!-- Add Product Button -->
+            <div class="add-product-section">
+                <button class="add-product-btn" onclick="window.location.href='add-product.html'">Add Product</button>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be loaded here dynamically -->
+                <div class="loading-message">Loading products...</div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/product-management.js"></script>
+</body>
+</html>

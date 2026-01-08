@@ -1,15 +1,34 @@
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 
-// Configure storage
-const storage = multer.diskStorage({
+// Ensure upload directories exist
+const uploadDirs = ['uploads/profiles', 'uploads/products'];
+uploadDirs.forEach(dir => {
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+    }
+});
+
+// Configure storage for profile images
+const profileStorage = multer.diskStorage({
     destination: function(req, file, cb) {
         cb(null, 'uploads/profiles/');
     },
     filename: function(req, file, cb) {
-        // Create unique filename: userId-timestamp.ext
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
         cb(null, 'profile-' + req.user._id + '-' + uniqueSuffix + path.extname(file.originalname));
+    }
+});
+
+// Configure storage for product images
+const productStorage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, 'uploads/products/');
+    },
+    filename: function(req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, 'product-' + uniqueSuffix + path.extname(file.originalname));
     }
 });
 
@@ -26,13 +45,24 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
-// Create multer instance
-const upload = multer({
-    storage: storage,
+// Create multer instances
+const uploadProfile = multer({
+    storage: profileStorage,
     limits: {
         fileSize: 5 * 1024 * 1024 // 5MB max file size
     },
     fileFilter: fileFilter
 });
 
-module.exports = upload;
+const uploadProduct = multer({
+    storage: productStorage,
+    limits: {
+        fileSize: 5 * 1024 * 1024 // 5MB max file size
+    },
+    fileFilter: fileFilter
+});
+
+module.exports = {
+    uploadProfile,
+    uploadProduct
+};
