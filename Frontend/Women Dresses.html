@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYD - Women's Fashion Collection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Helvetica Neue', Arial, sans-serif; }
+        body { background-color: #f4f4f4; color: #1a1a1a; line-height: 1.6; }
+
+        /* --- NAVIGATION --- */
+        .navbar {
+            background: #fff; padding: 10px 8%; display: flex;
+            justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 1100;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .logo-container { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .main-logo-img { width: 45px; height: 45px; object-fit: contain; border-radius: 50%; }
+        .logo-text { font-weight: 700; font-size: 24px; letter-spacing: 6px; color: #000; }
+
+        .search-bar { position: relative; }
+        .search-bar input {
+            padding: 10px 20px 10px 40px; width: 350px;
+            border: 1px solid #e0e0e0; border-radius: 20px;
+            background: #f1f1f1; font-size: 12px;
+        }
+        .search-bar::before {
+            content: "\f002"; font-family: "Font Awesome 6 Free"; font-weight: 900;
+            position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
+            color: #888; z-index: 1;
+        }
+        
+        .nav-tools { display: flex; gap: 30px; font-size: 13px; font-weight: 600; }
+        .nav-tools div { display: flex; align-items: center; gap: 8px; cursor: pointer; position: relative; }
+
+        /* --- MENU BAR --- */
+        .menu-bar {
+            background: #fff; border-top: 1px solid #f0f0f0;
+            display: flex; justify-content: center;
+            position: sticky; top: 65px; z-index: 1050;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .menu-list { display: flex; list-style: none; }
+        .menu-item { position: relative; padding: 15px 25px; }
+        .menu-item a { text-decoration: none; color: #1a1a1a; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; }
+        .sale-link { color: #e74c3c !important; }
+
+        /* --- LAYOUT --- */
+        .category-header { text-align: center; padding: 40px 0 20px; }
+        .category-title { font-size: 32px; font-weight: 800; letter-spacing: 5px; text-transform: uppercase; }
+
+        .grid-controls { max-width: 1400px; margin: 0 auto; display: flex; justify-content: flex-end; padding: 0 40px 10px; }
+        .sort-select { padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px; cursor: pointer; }
+
+        .main-content {
+            max-width: 1400px; margin: 0 auto 60px; display: grid;
+            grid-template-columns: 280px 1fr; gap: 40px; padding: 0 40px;
+        }
+
+        /* --- SIDEBAR REFINED --- */
+        .sidebar { background: #fff; padding: 25px; border-radius: 8px; height: fit-content; position: sticky; top: 140px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .filter-group { margin-bottom: 25px; border-bottom: 1px solid #f0f0f0; padding-bottom: 20px; }
+        .filter-title { font-size: 13px; font-weight: 700; text-transform: uppercase; margin-bottom: 15px; }
+        .filter-item { display: flex; align-items: center; gap: 10px; font-size: 13px; margin-bottom: 8px; cursor: pointer; color: #444; }
+        
+        .size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .size-box { border: 1px solid #ddd; padding: 5px; text-align: center; font-size: 11px; cursor: pointer; transition: 0.3s; }
+        .size-box:hover, .size-box.active { background: #000; color: #fff; border-color: #000; }
+
+        .color-options { display: flex; gap: 10px; flex-wrap: wrap; }
+        .color-box { width: 22px; height: 22px; border-radius: 50%; border: 1px solid #ddd; cursor: pointer; }
+        .color-box.selected { outline: 2px solid #000; outline-offset: 2px; }
+
+        /* --- PRODUCT GRID --- */
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+        .product-card { background: #fff; padding: 15px; position: relative; display: flex; flex-direction: column; transition: 0.3s;height: 535px; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .product-card img { width: 100%; height: 350px; object-fit: cover; margin-bottom: 15px; }
+        .p-name { font-size: 14px; font-weight: bold; margin-bottom: 5px; }
+        .p-price { font-size: 14px; font-weight: 700; margin-bottom: 15px; }
+        .card-actions { display: flex; gap: 8px; margin-top: 10px; }
+        .add-btn { flex: 2; padding: 12px; background: #000; color: #fff; border: none; font-size: 11px; font-weight: bold; cursor: pointer; }
+        .see-more-btn { flex: 1; padding: 12px; background: #fff; border: 1px solid #000; font-size: 11px; font-weight: bold; cursor: pointer; }
+
+        /* --- CART SIDEBAR --- */
+        #cart-sidebar {
+            position: fixed; top: 0; right: -420px; width: 400px; height: 100vh;
+            background: #fff; z-index: 2000; box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+            transition: 0.4s; padding: 30px; display: flex; flex-direction: column;
+        }
+        #cart-sidebar.open { right: 0; }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 20px; }
+        #sidebar-items-container { flex-grow: 1; overflow-y: auto; }
+        .cart-item { display: flex; gap: 15px; margin-bottom: 20px; align-items: center; }
+        .cart-item img { width: 70px; height: 90px; object-fit: cover; }
+        .remove-item { color: #e74c3c; cursor: pointer; font-size: 12px; margin-top: 5px; }
+        .cart-footer { border-top: 1px solid #eee; padding-top: 20px; }
+        .total-row { display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 20px; }
+
+        
+/* Footer */
+.footer {
+    background-color: #000000;
+    padding: 50px 80px 30px 80px;
+    color: #ffffff;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 80px;
+}
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.footer-brand {
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.social-icon {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.footer-copyright {
+    font-size: 10px;
+    color: #ffffff;
+}
+
+.footer-heading {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.footer-link {
+    font-size: 14px;
+    color: #ffffff;
+    transition: color 0.3s;
+    text-decoration: none;
+}
+
+.footer-link:hover {
+    color: #d4af37;
+}
+
+.footer-newsletter {
+    align-items: flex-end;
+}
+
+.newsletter-input {
+    padding: 12px;
+    width: 250px;
+    border: none;
+    background-color: #ffffff;
+    color: #000000;
+    font-size: 14px;
+    outline: none;
+}
+
+.newsletter-btn {
+    padding: 12px 30px;
+    border: none;
+    background-color: #5a5a5a;
+    color: #000000;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.newsletter-btn:hover {
+    background-color: #7a7a7a;
+}
+
+
+
+        /* --- MODAL --- */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 3000; display: none; align-items: center; justify-content: center; }
+        .modal-content { background: #fff; width: 900px; display: grid; grid-template-columns: 1fr 1fr; position: relative; }
+        .modal-details { padding: 40px; }
+        .modal-close { position: absolute; top: 20px; right: 25px; font-size: 24px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo-container">
+            <img src="C:\Users\hi\Desktop\MT\intern project 01\User panel images\logo.png" alt="CYD" class="main-logo-img">
+            <div class="logo-text">CYD</div>
+        </div>
+        <div class="search-bar"><input type="text" placeholder="Search for products..."></div>
+        <div class="nav-tools">
+           
+            <div><i class="fa-regular fa-heart"></i> Wishlist</div>
+            <div onclick="toggleSidebar(true)" style="position:relative">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span id="cart-badge" style="position:absolute; top:-8px; right:-10px; background:#e74c3c; color:white; font-size:10px; padding:2px 5px; border-radius:50%; display:none;">0</span>
+                Cart
+            </div>
+            <div><i class="fa-regular fa-user"></i> Login</div>
+        </div>
+    </nav>
+
+    
+
+    <div class="category-header">
+        <h1 class="category-title" id="pageTitle">Dresses</h1>
+    </div>
+
+    <div class="grid-controls">
+        <select class="sort-select" id="sortOrder" onchange="sortProducts()">
+            <option value="default">Sort by: Featured</option>
+            <option value="low-high">Price: Low to High</option>
+            <option value="high-low">Price: High to Low</option>
+        </select>
+    </div>
+
+    <div class="main-content">
+        <aside class="sidebar">
+            <div class="filter-group">
+                <div class="filter-title">Availability</div>
+                <label class="filter-item"><input type="checkbox" > In Stock Only</label>
+            </div>
+
+            <div class="filter-group">
+                <div class="filter-title">Category</div>
+                <label class="filter-item"><input type="checkbox" class="cat-filter" value="tops"> Tops</label>
+                <label class="filter-item"><input type="checkbox" class="cat-filter" value="tshirts"> T-Shirts</label>
+                <label class="filter-item"><input type="checkbox" class="cat-filter" value="dresses"> Dresses</label>
+            </div>
+
+            <div class="filter-group">
+                <div class="filter-title">Size</div>
+                <div class="size-grid">
+                    <div class="size-box">XS</div><div class="size-box">S</div>
+                    <div class="size-box">M</div><div class="size-box ">L</div>
+                    <div class="size-box">XL</div><div class="size-box">XXL</div>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <div class="filter-title">Max Price: <span id="priceVal">Rs. 10,000</span></div>
+                <input type="range" min="1000" max="10000" value="10000" id="priceRange" style="width:100%; accent-color:#000">
+            </div>
+
+            <div class="filter-group">
+                <div class="filter-title">Colors</div>
+                <div class="color-options">
+                    <div class="color-box" style="background:#000" onclick="toggleColor(this, 'black')"></div>
+                    <div class="color-box" style="background:#fff" onclick="toggleColor(this, 'white')"></div>
+                    <div class="color-box" style="background:#000080" onclick="toggleColor(this, 'navy')"></div>
+                    <div class="color-box" style="background:#9DC183" onclick="toggleColor(this, 'sage')"></div>
+                </div>
+            </div>
+
+            <button onclick="resetFilters()" style="width:100%; padding:12px; background:#000; color:#fff; border:none; font-weight:bold; cursor:pointer">CLEAR FILTERS</button>
+        </aside>
+
+        <main class="product-grid" id="productGrid">
+            <article class="product-card" data-cat="tshirts" data-col="black" data-price="3490">
+                <img src="C:\Users\hi\Desktop\MT\intern project 01\User panel images\Women images\WD 02.webp">
+                <p class="p-name">RAISA BACKLESS MINI DRESS</p>
+                <p class="p-price">Rs. 2,100</p>
+                <div class="card-actions">
+                    <button class="see-more-btn" onclick="openModal('Metallic Flower T-Shirt', 'Rs. 3,490', 'C:\Users\hi\Desktop\MT\intern project 01\User panel images\Women images\WD 02.webp')">VIEW</button>
+                    <button class="add-btn" onclick="quickAdd('Metallic Flower T-Shirt', 3490, 'C:\Users\hi\Desktop\MT\intern project 01\User panel images\Women images\WD 02.webp')">ADD TO BAG</button>
+                </div>
+            </article>
+            <article class="product-card" data-cat="tops" data-col="white" data-price="2850">
+                <img src="C:\Users\hi\Desktop\MT\intern project 01\User panel images\Women images\WD 10.webp">
+                <p class="p-name">JADE FRONT TIE-UP MAXI DRESS</p>
+                <p class="p-price">Rs. 4,200</p>
+                <div class="card-actions">
+                    <button class="see-more-btn" onclick="openModal('White Summer Top', 'Rs. 2,850', 'C:\Users\hi\Desktop\MT\intern project 01\User panel images\Women images\WD 10.webp')">VIEW</button>
+                    <button class="add-btn" onclick="quickAdd('White Summer Top', 2850, 'C:\Users\hi\Desktop\MT\intern project 01\User panel images\Women images\WD 10.webp')">ADD TO BAG</button>
+                </div>
+            </article>
+            <article class="product-card" data-cat="dresses" data-col="navy" data-price="7200">
+                <img src="C:\Users\hi\Desktop\MT\intern project 01\User panel images\Women images\WD 07.webp">
+                <p class="p-name">ESTI TE-UP MIDI DRESS</p>
+                <p class="p-price">Rs. 3,200</p>
+                <div class="card-actions">
+                    <button class="see-more-btn" onclick="openModal('Navy Silk Dress', 'Rs. 7,200', 'C:\Users\hi\Desktop\MT\intern project 01\User panel images\Women images\WD 07.webp')">VIEW</button>
+                    <button class="add-btn" onclick="quickAdd('Navy Silk Dress', 7200, 'C:\Users\hi\Desktop\MT\intern project 01\User panel images\Women images\WD 07.webp')">ADD TO BAG</button>
+                </div>
+            </article>
+            
+            
+            
+        </main>
+    </div>
+
+    <div id="cart-sidebar">
+        <div class="cart-header">
+            <h3>SHOPPING BAG</h3>
+            <i class="fa-solid fa-xmark" style="cursor:pointer" onclick="toggleSidebar(false)"></i>
+        </div>
+        <div id="sidebar-items-container">
+            </div>
+        <div class="cart-footer">
+            <div class="total-row">
+                <span>SUBTOTAL:</span>
+                <span id="cart-subtotal">Rs. 0</span>
+            </div>
+            <button class="add-btn" style="width:100%; height:50px">PROCEED TO CHECKOUT</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3 class="footer-brand">C Y D.</h3>
+                <div class="social-icons">
+                    <img src="User panel images/icons/facebook-icon.webp" alt="Facebook" class="social-icon">
+                    <img src="User panel images/icons/twitter-icon.png" alt="Twitter" class="social-icon">
+                    <img src="User panel images/icons/instagram-icon.jpg" alt="Instagram" class="social-icon">
+                </div>
+                <p class="footer-copyright">Copyright 2025 ©️ CYD.com - All rights Reserved</p>
+            </div>
+            
+            <div class="footer-column">
+                <h4 class="footer-heading">Company</h4>
+                <a href="products.html" class="footer-link">Shop Now</a>
+                <a href="index.html" class="footer-link">Home</a>
+                <a href="about.html" class="footer-link">About Us</a>
+                <a href="contact.html" class="footer-link">Contact Us</a>
+            </div>
+            
+            <div class="footer-column">
+                <h4 class="footer-heading">Information</h4>
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="terms.html" class="footer-link">Terms & Conditions</a>
+                <a href="returns.html" class="footer-link">Return Policy</a>
+                <a href="locations.html" class="footer-link">Store Locations</a>
+            </div>
+            
+            <div class="footer-column footer-newsletter">
+                <h4 class="footer-heading">Get In Touch</h4>
+                <input type="email" placeholder="enter your email" class="newsletter-input">
+                <button class="newsletter-btn">subscribe</button>
+            </div>
+        </div>
+    </footer>
+
+
+    <div class="modal-overlay" id="productModal">
+        <div class="modal-content">
+            <i class="fa-solid fa-xmark modal-close" onclick="closeModal()"></i>
+            <img id="m-img" src="" style="width:100%; height:100%; object-fit:cover;">
+            <div class="modal-details">
+                <h2 id="m-name" style="margin-bottom:10px"></h2>
+                <p id="m-price" style="font-size:24px; font-weight:bold; color:#e74c3c; margin-bottom:20px"></p>
+                <div style="margin-bottom:20px">
+                    <p style="font-size:12px; font-weight:bold; margin-bottom:8px">SELECT SIZE</p>
+                    <div class="size-grid" style="width:200px">
+                        <div class="size-box">S</div><div class="size-box">M</div><div class="size-box">L</div><div class="size-box">XL</div>
+                    </div>
+                </div>
+                <p style="font-size:13px; color:#666; margin-bottom:30px">This premium piece is crafted from 100% sustainable materials. Perfect for all-day comfort and effortless style.</p>
+                <button class="add-btn" style="width:100%; height:50px" onclick="closeModal(); quickAdd(document.getElementById('m-name').innerText, 5000, document.getElementById('m-img').src)">ADD TO BAG</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+        let selectedColors = [];
+
+        function toggleSidebar(show) { document.getElementById('cart-sidebar').classList.toggle('open', show); }
+        function closeModal() { document.getElementById('productModal').style.display = 'none'; }
+        function updatePageTitle(title) { document.getElementById('pageTitle').innerText = title + " COLLECTION"; }
+
+        function quickAdd(name, price, img) {
+            cart.push({name, price, img});
+            updateCart();
+            toggleSidebar(true);
+        }
+
+        function removeCartItem(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function updateCart() {
+            const container = document.getElementById('sidebar-items-container');
+            const badge = document.getElementById('cart-badge');
+            const subtotalEl = document.getElementById('cart-subtotal');
+            
+            badge.innerText = cart.length;
+            badge.style.display = cart.length > 0 ? 'block' : 'none';
+            
+            container.innerHTML = cart.length === 0 ? '<p style="text-align:center; color:#888; margin-top:50px">Your bag is empty.</p>' : '';
+            
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price;
+                container.innerHTML += `
+                    <div class="cart-item">
+                        <img src="${item.img}">
+                        <div style="flex-grow:1">
+                            <p style="font-size:13px; font-weight:bold">${item.name}</p>
+                            <p style="font-size:12px">Rs. ${item.price.toLocaleString()}</p>
+                            <span class="remove-item" onclick="removeCartItem(${index})">Remove</span>
+                        </div>
+                    </div>
+                `;
+            });
+            subtotalEl.innerText = `Rs. ${total.toLocaleString()}`;
+        }
+
+        function filterProducts() {
+            const max = parseInt(document.getElementById('priceRange').value);
+            const activeCats = Array.from(document.querySelectorAll('.cat-filter')).filter(cb => cb.checked).map(cb => cb.value);
+            
+            document.querySelectorAll('.product-card').forEach(card => {
+                const price = parseInt(card.dataset.price);
+                const cat = card.dataset.cat;
+                const col = card.dataset.col;
+                
+                const priceMatch = price <= max;
+                const catMatch = activeCats.length === 0 || activeCats.includes(cat);
+                const colMatch = selectedColors.length === 0 || selectedColors.includes(col);
+                
+                card.style.display = (priceMatch && catMatch && colMatch) ? 'flex' : 'none';
+            });
+        }
+
+        function toggleColor(el, color) {
+            el.classList.toggle('selected');
+            selectedColors = selectedColors.includes(color) ? selectedColors.filter(c => c !== color) : [...selectedColors, color];
+            filterProducts();
+        }
+
+        document.getElementById('priceRange').addEventListener('input', (e) => {
+            document.getElementById('priceVal').innerText = "Rs. " + parseInt(e.target.value).toLocaleString();
+            filterProducts();
+        });
+
+        document.querySelectorAll('.cat-filter').forEach(cb => cb.addEventListener('change', filterProducts));
+
+        function sortProducts() {
+            const grid = document.getElementById('productGrid');
+            const cards = Array.from(grid.children);
+            const val = document.getElementById('sortOrder').value;
+
+            cards.sort((a, b) => {
+                if(val === 'low-high') return a.dataset.price - b.dataset.price;
+                if(val === 'high-low') return b.dataset.price - a.dataset.price;
+                return 0;
+            });
+            cards.forEach(c => grid.appendChild(c));
+        }
+
+        function openModal(name, price, img) {
+            document.getElementById('m-name').innerText = name;
+            document.getElementById('m-price').innerText = price;
+            document.getElementById('m-img').src = img;
+            document.getElementById('productModal').style.display = 'flex';
+        }
+
+        function resetFilters() {
+            document.querySelectorAll('.cat-filter').forEach(cb => cb.checked = false);
+            document.querySelectorAll('.color-box').forEach(b => b.classList.remove('selected'));
+            selectedColors = [];
+            document.getElementById('priceRange').value = 10000;
+            document.getElementById('priceVal').innerText = "Rs. 10,000";
+            filterProducts();
+        }
+    </script>
+</body>
+</html>
