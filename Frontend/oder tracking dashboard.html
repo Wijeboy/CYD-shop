@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Oder Tracking Dashboard </title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI", sans-serif;
+}
+
+body{
+    background:#f4f6f8;
+}
+
+/* Layout */
+.container{
+    display:flex;
+    min-height:100vh;
+}
+
+/* Sidebar */
+.sidebar{
+    width:260px;
+    background:#fff;
+    padding:20px;
+    border-right:1px solid #eee;
+    position:relative;
+}
+
+.logo{
+    font-size:20px;
+    font-weight:600;
+}
+
+.logo span{
+    font-size:12px;
+    color:#aaa;
+}
+
+.menu{
+    list-style:none;
+    margin-top:30px;
+}
+
+.menu li{
+    padding:12px;
+    color:#555;
+    cursor:pointer;
+    border-radius:8px;
+}
+
+.menu li:hover{
+    background:#f2f2f2;
+}
+
+.menu .active{
+    background:#111;
+    color:#fff;
+}
+
+.menu .sub{
+    margin-left:20px;
+    font-size:14px;
+}
+
+.admin{
+    position:absolute;
+    bottom:20px;
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+
+.admin img{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+}
+
+/* Main */
+.content{
+    flex:1;
+    display:flex;
+    justify-content:center;   /* horizontal */
+    align-items:center;       /* vertical */
+    padding:30px;
+}
+
+/* Wrapper */
+.center-wrapper{
+    width:100%;
+    max-width:1400px;
+}
+
+/* Header */
+
+.header{
+    position:absolute;
+    top:20px;
+    right:30px;
+    font-weight:500;
+}
+
+/* Card */
+.main-card{
+    background:#fff;
+    border-radius:16px;
+    padding:30px;
+    min-height:550px;
+}
+
+.back-btn{
+    background:none;
+    border:none;
+    font-size:16px;
+    cursor:pointer;
+    margin-bottom:20px;
+}
+
+/* Inner Layout */
+.details{
+    display:flex;
+    gap:40px;
+}
+
+/* Left */
+.left{
+    width:40%;
+}
+
+.left h2{
+    margin:10px 0;
+}
+
+.left hr{
+    margin:15px 0;
+    border:1px solid #eee;
+}
+
+.left p{
+    margin:6px 0;
+}
+
+/* Right */
+.right{
+    width:60%;
+}
+
+.tracker-box{
+    background:#e0e0e0;
+    border-radius:12px;
+    padding:25px;
+}
+
+.tracker-box h3{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+/* Tracker */
+.step{
+    display:flex;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.dot{
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    border:2px solid #333;
+    margin-right:15px;
+}
+
+.step.active .dot{
+    background:#1ecb4f;
+    border-color:#1ecb4f;
+}
+
+.step span{
+    font-size:14px;
+}
+
+.step button{
+    margin-left:auto;
+    padding:6px 12px;
+    background:#000;
+    color:#fff;
+    border:none;
+    border-radius:6px;
+    font-size:12px;
+    cursor:pointer;
+}
+
+.step button:hover{
+    opacity:0.8;
+}
+
+.line{
+    height:25px;
+    width:2px;
+    background:#333;
+    margin:0 0 20px 6px;
+}
+
+/* Responsive */
+@media(max-width:900px){
+    .content{
+        align-items:flex-start; /* allow scrolling on mobile */
+    }
+    .details{
+        flex-direction:column;
+    }
+    .left,.right{
+        width:100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">⬡ Dashboard </div>
+
+        <ul class="menu">
+            <li>Dashboard</li>
+            <li>Product Management</li>
+            <li>Customers</li>
+            <li class="active">Order Management</li>
+            <li class="sub">Order Tracking</li>
+        </ul>
+
+        <div class="admin">
+            <img src="C:\Users\hi\Desktop\MT\intern project 01\User panel images\icons\account-icon.webp">
+            <div>
+                <strong>Admin</strong>
+                <div style="font-size:12px;color:#777;">Admin</div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="content">
+        <div class="center-wrapper">
+
+            <div class="header">Hello Admin 👋</div>
+
+            <div class="main-card">
+                <button class="back-btn">← Back</button>
+
+                <div class="details">
+
+                    <!-- Left Info -->
+                    <div class="left">
+                        <p>Order ID:</p>
+                        <h2>#26-00000001</h2>
+                        <hr>
+<br>
+                        <p><strong>Customer Information:</strong></p>
+                        <p><strong>Kinara Withana</strong></p>
+                        <p>kinara@gmail.com</p>
+                        <p>075 839 99788</p>
+
+                        <br>
+
+                        <p><strong>Order Placed:</strong><br>02 Jan, 2026</p>
+                        <br>
+                        <p><strong>EST Completion:</strong><br>07 Jan, 2026</p>
+                    </div>
+
+                    <!-- Tracker -->
+                    <div class="right">
+                        <div class="tracker-box">
+                            <h3>Order Tracker</h3>
+
+                            <div class="step active" id="packing">
+                                <div class="dot"></div>
+                                <span>Order Packing</span>
+                                <button onclick="updateStatus('packing')">Update As Packing</button>
+                            </div>
+
+                            <div class="line"></div>
+
+                            <div class="step active" id="shipped">
+                                <div class="dot"></div>
+                                <span>Shipped</span>
+                                <button onclick="updateStatus('shipped')">Update As Shipped</button>
+                            </div>
+
+                            <div class="line"></div>
+
+                            <div class="step" id="delivered">
+                                <div class="dot"></div>
+                                <span>Delivered</span>
+                                <button onclick="updateStatus('delivered')">Update As Delivered</button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+</div>
+
+<script>
+function updateStatus(status){
+    const steps=["packing","shipped","delivered"];
+    steps.forEach(s=>document.getElementById(s).classList.remove("active"));
+    for(let s of steps){
+        document.getElementById(s).classList.add("active");
+        if(s===status) break;
+    }
+}
+</script>
+
+</body>
+</html>
+

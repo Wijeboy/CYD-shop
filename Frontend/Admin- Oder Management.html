@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Orders Dashboard</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",sans-serif;
+}
+
+body{
+    background:#f4f6f8;
+}
+
+/* Layout */
+.container{
+    display:flex;
+    min-height:100vh;
+}
+
+/* Sidebar */
+.sidebar{
+    width:260px;
+    background:#fff;
+    padding:20px;
+    border-right:1px solid #eee;
+    position:relative;
+}
+
+.logo{
+    font-size:20px;
+    font-weight:600;
+}
+
+.logo span{
+    font-size:12px;
+    color:#aaa;
+}
+
+.menu{
+    list-style:none;
+    margin-top:30px;
+}
+
+.menu li{
+    padding:12px;
+    color:#555;
+    cursor:pointer;
+    border-radius:8px;
+}
+
+.menu li:hover{
+    background:#f2f2f2;
+}
+
+.menu .active{
+    background:#111;
+    color:#fff;
+}
+
+.admin{
+    position:absolute;
+    bottom:20px;
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+
+.admin img{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+}
+.menu .sub{
+    margin-left:20px;
+    font-size:14px;
+}
+
+/* Main */
+.content{
+    flex:1;
+    padding:30px;
+    position:relative;
+}
+
+/* Header */
+.header{
+    position:absolute;
+    top:20px;
+    right:30px;
+    font-weight:500;
+}
+
+/* Orders Card */
+.orders-card{
+    background:#fff;
+    border-radius:16px;
+    padding:30px;
+    margin-top:40px;
+}
+
+/* Title + Search */
+.orders-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.orders-header h2{
+    letter-spacing:2px;
+}
+
+.search-box{
+    position:relative;
+}
+
+.search-box input{
+    padding:8px 35px 8px 12px;
+    border-radius:20px;
+    border:1px solid #ccc;
+}
+
+.search-box span{
+    position:absolute;
+    right:10px;
+    top:7px;
+    font-size:14px;
+}
+
+/* Table */
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+thead{
+    background:#e0e0e0;
+}
+
+th,td{
+    padding:12px;
+    text-align:left;
+    font-size:14px;
+}
+
+tbody tr{
+    background:#fff7f7;
+    border-bottom:8px solid #fff;
+}
+
+.order-id{
+    font-weight:600;
+}
+
+.price{
+    color:green;
+    font-weight:600;
+}
+
+/* Buttons */
+.btn{
+    padding:5px 10px;
+    font-size:11px;
+    border:none;
+    cursor:pointer;
+    border-radius:4px;
+}
+
+.btn-black{
+    background:#000;
+    color:#fff;
+}
+
+.btn-gray{
+    background:#ddd;
+}
+
+.status-select{
+    padding:5px;
+    font-size:11px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo"> ⬡ Dashboard </div>
+
+        <ul class="menu">
+            <li>Dashboard</li>
+            <li>Product Management</li>
+            <li>Customers</li>
+            <li class="active">Order Management</li>
+            <li class="sub">Order Tracking</li>
+        </ul>
+
+        <div class="admin">
+            <img src="C:\Users\hi\Desktop\MT\intern project 01\User panel images\icons\account-icon.webp">
+            <div>
+                <strong>Admin</strong>
+                <div style="font-size:12px;color:#777;">Admin</div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="content">
+
+        <div class="header">Hello Admin 👋</div>
+
+        <div class="orders-card">
+
+            <div class="orders-header">
+                <h2>ORDERS</h2>
+
+                <div class="search-box">
+                    <input type="text" id="search" placeholder="Search order id">
+                    <span>🔍</span>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer Name</th>
+                        <th>Time</th>
+                        <th>Quantity</th>
+                        <th>Placed On</th>
+                        <th>Price</th>
+                        <th>Order Status</th>
+                    </tr>
+                </thead>
+
+                <tbody id="orderTable">
+                    <tr>
+                        <td class="order-id">#26-00000001</td>
+                        <td>Kinara Withana</td>
+                        <td>10.01 A.M</td>
+                        <td>05 items</td>
+                        <td>2026.01.01</td>
+                        <td class="price">12,500.00</td>
+                        <td>
+                            <select class="status-select">
+                                <option>Order Status</option>
+                            </select>
+                            <button class="btn btn-black">Update Order</button><br><br>
+                            <button class="btn btn-gray">Approve</button>
+                            <button class="btn btn-gray">Reject</button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="order-id">#26-00000002</td>
+                        <td>Kamal Perera</td>
+                        <td>11.14 A.M</td>
+                        <td>06 items</td>
+                        <td>2025.12.31</td>
+                        <td class="price">20,000.00</td>
+                        <td>
+                            <select class="status-select"><option>Order Status</option></select>
+                            <button class="btn btn-black">Update Order</button><br><br>
+                            <button class="btn btn-gray">Approve</button>
+                            <button class="btn btn-gray">Reject</button>
+                        </td>
+                    </tr>
+<tr>
+                        <td class="order-id">#26-00000003</td>
+                        <td>Kamal Perera</td>
+                        <td>11.14 A.M</td>
+                        <td>06 items</td>
+                        <td>2025.12.31</td>
+                        <td class="price">20,000.00</td>
+                        <td>
+                            <select class="status-select"><option>Order Status</option></select>
+                            <button class="btn btn-black">Update Order</button><br><br>
+                            <button class="btn btn-gray">Approve</button>
+                            <button class="btn btn-gray">Reject</button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="order-id">#26-00000004</td>
+                        <td>Kamal Perera</td>
+                        <td>11.14 A.M</td>
+                        <td>06 items</td>
+                        <td>2025.12.31</td>
+                        <td class="price">20,000.00</td>
+                        <td>
+                            <select class="status-select"><option>Order Status</option></select>
+                            <button class="btn btn-black">Update Order</button><br><br>
+                            <button class="btn btn-gray">Approve</button>
+                            <button class="btn btn-gray">Reject</button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="order-id">#26-00000005</td>
+                        <td>Kamal Perera</td>
+                        <td>11.14 A.M</td>
+                        <td>06 items</td>
+                        <td>2025.12.31</td>
+                        <td class="price">20,000.00</td>
+                        <td>
+                            <select class="status-select"><option>Order Status</option></select>
+                            <button class="btn btn-black">Update Order</button><br><br>
+                            <button class="btn btn-gray">Approve</button>
+                            <button class="btn btn-gray">Reject</button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="order-id">#26-00000006</td>
+                        <td>Nimal Dias</td>
+                        <td>01.01 P.M</td>
+                        <td>02 items</td>
+                        <td>2025.12.30</td>
+                        <td class="price">3,500.00</td>
+                        <td>
+                            <select class="status-select"><option>Order Status</option></select>
+                            <button class="btn btn-black">Update Order</button><br><br>
+                            <button class="btn btn-gray">Approve</button>
+                            <button class="btn btn-gray">Reject</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </main>
+
+</div>
+
+<script>
+document.getElementById("search").addEventListener("keyup", function(){
+    let value = this.value.toLowerCase();
+    let rows = document.querySelectorAll("#orderTable tr");
+
+    rows.forEach(row=>{
+        row.style.display = row.innerText.toLowerCase().includes(value) ? "" : "none";
+    });
+});
+</script>
+
+</body>
+</html>
