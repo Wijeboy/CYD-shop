@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYD - Product Detail</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Helvetica Neue', Arial, sans-serif; }
+        
+        body { background-color: #DDE0E3; color: #1a1a1a; line-height: 1.6; }
+
+        /* Navigation */
+        .navbar {
+            background: #fff;
+            padding: 10px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .logo-container { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .main-logo-img {
+            width: 45px;
+            height: 45px;
+            object-fit: contain;
+            border-radius: 50%; 
+        }
+        .logo-text { font-weight: 700; font-size: 24px; letter-spacing: 6px; color: #000; }
+
+        .search-bar { position: relative; }
+        .search-bar input {
+            padding: 10px 20px 10px 40px;
+            width: 350px;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            background: #f1f1f1;
+            font-size: 12px;
+        }
+        .search-bar::before {
+            content: "\f002";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+        
+        .nav-tools { display: flex; gap: 30px; font-size: 13px; font-weight: 600; }
+        .nav-tools div { display: flex; align-items: center; gap: 8px; cursor: pointer; position: relative; }
+        .nav-tools i { font-size: 20px; transition: color 0.3s ease; }
+
+        #nav-wishlist.active i { color: #e74c3c; font-weight: 900; }
+
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            left: 12px;
+            background-color: #e74c3c;
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 50%;
+            font-weight: bold;
+            display: none; 
+            transform: scale(0);
+            transition: transform 0.3s ease;
+        }
+        .cart-badge.show {
+            display: block;
+            transform: scale(1);
+        }
+
+        /* CART PREVIEW SIDEBAR */
+        #cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -420px;
+            width: 400px; 
+            height: 100vh;
+            background: #fff;
+            z-index: 1001;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            transition: right 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+        }
+        #cart-sidebar.open { right: 0; }
+
+        .close-sidebar {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 22px;
+            cursor: pointer;
+            color: #888;
+            transition: color 0.2s;
+        }
+        .close-sidebar:hover { color: #000; }
+
+        .sidebar-title { 
+            font-size: 16px; 
+            font-weight: bold; 
+            letter-spacing: 2px; 
+            margin-bottom: 30px; 
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+
+        #sidebar-items-container { flex: 1; overflow-y: auto; }
+        .empty-cart-msg { font-size: 12px; color: #888; text-align: center; margin-top: 50px; }
+
+        .cart-item-preview {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            animation: slideIn 0.3s ease-out;
+            transition: all 0.3s ease;
+        }
+        @keyframes slideIn { from { opacity:0; transform: translateX(20px); } to { opacity:1; transform: translateX(0); } }
+
+        .cart-item-preview img { width: 70px; height: 90px; object-fit: cover; }
+        
+        .cart-item-info { 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            flex: 1;
+            position: relative;
+        }
+        .cart-item-info .name { font-size: 12px; font-weight: bold; margin-bottom: 5px; padding-right: 25px; }
+        .cart-item-info .price { font-size: 12px; color: #666; }
+        
+        .remove-item-btn {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #ccc;
+            font-size: 14px;
+            transition: color 0.2s;
+            padding: 5px;
+        }
+        .remove-item-btn:hover { color: #e74c3c; }
+
+        .sidebar-footer { border-top: 1px solid #eee; padding-top: 20px; }
+        .checkout-btn {
+            width: 100%;
+            padding: 15px;
+            background: #000;
+            color: #fff;
+            border: none;
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
+            letter-spacing: 1px;
+        }
+
+        @keyframes cartBounce {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.4); }
+            100% { transform: scale(1); }
+        }
+        .bounce-effect {
+            animation: cartBounce 0.5s ease;
+        }
+
+        /* Main Product Layout */
+        .container {
+            max-width: 1300px;
+            margin: 40px auto;
+            display: flex;
+            gap: 40px;
+            padding: 0 40px;
+            align-items: flex-start;
+        }
+
+        .thumb-col-wrapper { position: relative; }
+        .thumb-col { display: flex; flex-direction: column; gap: 15px; }
+        .thumb-col img {
+            width: 100px; height: 135px;
+            object-fit: cover; cursor: pointer;
+            border: 1px solid transparent; transition: 0.2s;
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+        }
+        .thumb-col img.active { border: 1px solid #000; }
+        
+        .main-img-display { flex: 1.2; display: flex; justify-content: center; overflow: hidden; }
+        .main-img-display img {
+            width: 100%; max-width: 480px; 
+            height: 620px; object-fit: cover; background: #fff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: opacity 0.4s ease-in-out;
+            opacity: 1;
+        }
+        .main-img-display img.fade-out { opacity: 0; }
+
+        .product-info {
+            flex: 1.2;
+            background: rgba(255, 255, 255, 0.4);
+            padding: 40px;
+            min-height: 620px;
+            border-radius: 4px;
+        }
+        .title { font-size: 13px; margin-bottom: 25px; font-weight: 500; letter-spacing: 0.5px; }
+        .price { font-size: 12px; font-weight: bold; margin-bottom: 4px; }
+        .sku { font-size: 10px; color: #666; margin-bottom: 25px; }
+
+        .trust-badge { 
+            font-size: 10px; margin-bottom: 12px; 
+            display: flex; align-items: center; gap: 15px; 
+        }
+        .trust-badge i { font-size: 24px; width: 30px; text-align: center; }
+
+        .section-label { font-size: 10px; color: #888; margin: 20px 0 10px; text-transform: uppercase; }
+        
+        /* COLOR SWATCH STYLES */
+        .color-options { display: flex; gap: 12px; margin-bottom: 20px; }
+        .swatch { 
+            width: 32px; 
+            height: 32px; 
+            border: 1px solid #ddd; 
+            cursor: pointer; 
+            border-radius: 50%; 
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .swatch:hover { transform: scale(1.1); }
+        .swatch.selected {
+            border: 2px solid #000;
+            outline: 2px solid #fff;
+            outline-offset: -4px;
+        }
+
+        .info-tabs {
+            display: flex; gap: 30px;
+            border-bottom: 1px solid #ccc;
+            margin-top: 15px;
+            padding-bottom: 8px;
+        }
+        .tab { font-size: 9px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+
+        .size-options { display: flex; border: 1px solid #999; width: fit-content; margin-top: 10px; }
+        .size-btn { 
+            width: 45px; height: 40px; border: none;
+            border-right: 1px solid #999;
+            background: transparent; cursor: pointer; 
+            font-size: 10px;
+            transition: all 0.2s ease;
+        }
+        .size-btn:last-child { border-right: none; }
+        .size-btn.selected {
+            background: #000;
+            color: #fff;
+        }
+        .size-btn:hover:not(.selected) { background: #f0f0f0; }
+
+        .helper-links { font-size: 9px; color: #666; margin-top: 10px; text-transform: uppercase; }
+
+        .action-container {
+            display: flex;
+            gap: 12px;
+            margin-top: 35px;
+            align-items: stretch;
+            width: 100%;
+        }
+
+        .add-to-cart-btn {
+            flex: 1;
+            background: #000;
+            color: #fff;
+            border: none;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            height: 55px;
+        }
+
+        .add-to-cart-btn:hover { background: #333; }
+        .add-to-cart-btn:disabled { background: #555; cursor: not-allowed; opacity: 0.8; }
+
+        .wishlist-btn {
+            width: 55px;
+            height: 55px;
+            background: transparent;
+            border: 1px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .wishlist-btn i { font-size: 20px; color: #000; }
+        .wishlist-btn:hover { background: #f0f0f0; }
+        .wishlist-btn.active i { color: #e74c3c; font-weight: 900; }
+
+        .spinner {
+            display: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top: 2px solid #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .toast {
+            background: #fff;
+            color: #1a1a1a;
+            padding: 16px 24px;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid #27ae60;
+            transform: translateX(120%);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            min-width: 300px;
+        }
+
+        .toast.show { transform: translateX(0); }
+        .toast i { color: #27ae60; font-size: 20px; }
+        .toast-content { display: flex; flex-direction: column; }
+        .toast-title { font-weight: 700; font-size: 13px; }
+        .toast-msg { font-size: 11px; color: #666; }
+
+        /* Footer */
+.footer {
+    background-color: #000000;
+    padding: 50px 80px 30px 80px;
+    color: #ffffff;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 80px;
+}
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.footer-brand {
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.social-icon {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.footer-copyright {
+    font-size: 10px;
+    color: #ffffff;
+}
+
+.footer-heading {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.footer-link {
+    font-size: 14px;
+    color: #ffffff;
+    transition: color 0.3s;
+    text-decoration: none;
+}
+
+.footer-link:hover {
+    color: #d4af37;
+}
+
+.footer-newsletter {
+    align-items: flex-end;
+}
+
+.newsletter-input {
+    padding: 12px;
+    width: 250px;
+    border: none;
+    background-color: #ffffff;
+    color: #000000;
+    font-size: 14px;
+    outline: none;
+}
+
+.newsletter-btn {
+    padding: 12px 30px;
+    border: none;
+    background-color: #5a5a5a;
+    color: #000000;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.newsletter-btn:hover {
+    background-color: #7a7a7a;
+}
+
+    </style>
+</head>
+<body>
+
+    <div id="cart-sidebar">
+        <i class="fa-solid fa-xmark close-sidebar" onclick="toggleSidebar(false)"></i>
+        
+        <div class="sidebar-title">YOUR BAG</div>
+        <div id="sidebar-items-container">
+            <p class="empty-cart-msg">Your bag is currently empty.</p>
+        </div>
+        <div class="sidebar-footer">
+            <button class="checkout-btn">PROCEED TO CHECKOUT</button>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <nav class="navbar">
+        <div class="logo-container">
+            <img src="C:\Users\hi\Desktop\MT\intern project 01\User panel images\logo.png" alt="CYD Logo" class="main-logo-img">
+            <div class="logo-text">CYD</div>
+        </div>
+        
+        <div class="search-bar">
+            <input type="text" placeholder="Search">
+        </div>
+
+        <div class="nav-tools">
+            <div><i class="fa-solid fa-box-open"></i> Orders</div>
+            <div id="nav-wishlist"><i class="fa-regular fa-heart"></i> Wishlist</div>
+            <div id="cart-nav-item" onclick="toggleSidebar(true)">
+                <i class="fa-solid fa-cart-shopping" id="cart-icon"></i>
+                <span id="cart-badge" class="cart-badge">0</span> Cart
+            </div>
+            <div><i class="fa-regular fa-user"></i> Account</div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="thumb-col-wrapper">
+            <div class="thumb-col">
+                <img src="C:\Users\hi\Desktop\MT\intern project 01\User panel images\Men images\MT 07.webp" class="active" onclick="changeImage(this.src, this)">
+                <img src="C:\Users\hi\Desktop\MT\intern project 01\User panel images\Men images\MT 05.webp" onclick="changeImage(this.src, this)">
+                <img src="C:\Users\hi\Desktop\MT\intern project 01\User panel images\Men images\MT 06.webp" onclick="changeImage(this.src, this)">
+                 
+            </div>
+        </div>
+
+        <div class="main-img-display">
+            <img id="mainImage" src="C:\Users\hi\Desktop\MT\intern project 01\User panel images\Men images\MT 07.webp">
+        </div>
+
+        <div class="product-info">
+            <h1 class="title">DEEDAT Men's Regular Fit Cargo Pant Beige</h1>
+            <p class="price">Rs.3,290.00</p>
+            <p class="sku">SKU: BS-ZZ7001-XS</p>
+
+            <div class="trust-badge">
+                <i class="fa-solid fa-money-bill-1-wave"></i> Cash on Delivery
+            </div>
+            <div class="trust-badge">
+                <i class="fa-solid fa-arrows-rotate"></i> Easy Exchange & Refund Policy
+            </div>
+
+            <p class="section-label">Color</p>
+            <div class="color-options">
+                <div class="swatch selected" style="background:hwb(19 46% 29%)" onclick="selectColor(this)"></div>
+                <div class="swatch" style="background:#1a1a1a" onclick="selectColor(this)"></div>
+                
+                <div class="swatch" style="background:#fff" onclick="selectColor(this)"></div>
+                
+            </div>
+
+            <div class="info-tabs">
+                <div class="tab">SIZE GUIDE</div>
+                <div class="tab">PRODUCT INFORMATION</div>
+            </div>
+
+            <p class="section-label">Size</p>
+            <div class="size-options">
+                <button class="size-btn" onclick="selectSize(this)">XS</button>
+                <button class="size-btn" onclick="selectSize(this)">S</button>
+                <button class="size-btn" onclick="selectSize(this)">M</button>
+                <button class="size-btn" onclick="selectSize(this)">L</button>
+                <button class="size-btn" onclick="selectSize(this)">XL</button>
+                <button class="size-btn" onclick="selectSize(this)">XXL</button>
+            </div>
+            <p class="helper-links">FIND YOUR SIZE | MEASUREMENT GUIDE</p>
+
+            <div class="action-container">
+                <button class="add-to-cart-btn" id="addToCartBtn" onclick="addToCart()">
+                    <span class="spinner" id="btnSpinner"></span>
+                    <span id="btnText">ADD TO CART</span>
+                </button>
+                <button class="wishlist-btn" onclick="toggleWishlist(this)">
+                    <i class="fa-regular fa-heart"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3 class="footer-brand">C Y D</h3>
+                <div class="social-icons">
+                    <img src="User panel images/icons/facebook-icon.webp" alt="Facebook" class="social-icon">
+                    <img src="User panel images/icons/twitter-icon.png" alt="Twitter" class="social-icon">
+                    <img src="User panel images/icons/instagram-icon.jpg" alt="Instagram" class="social-icon">
+                </div>
+                <p class="footer-copyright">Copyright 2025 ©️ CYD.com - All rights Reserved</p>
+            </div>
+            
+            <div class="footer-column">
+                <h4 class="footer-heading">Company</h4>
+                <a href="products.html" class="footer-link">Shop Now</a>
+                <a href="index.html" class="footer-link">Home</a>
+                <a href="about.html" class="footer-link">About Us</a>
+                <a href="contact.html" class="footer-link">Contact Us</a>
+            </div>
+            
+            <div class="footer-column">
+                <h4 class="footer-heading">Information</h4>
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="terms.html" class="footer-link">Terms & Conditions</a>
+                <a href="returns.html" class="footer-link">Return Policy</a>
+                <a href="locations.html" class="footer-link">Store Locations</a>
+            </div>
+            
+            <div class="footer-column footer-newsletter">
+                <h4 class="footer-heading">Get In Touch</h4>
+                <input type="email" placeholder="enter your email" class="newsletter-input">
+                <button class="newsletter-btn">subscribe</button>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let cartCount = 0;
+
+        function toggleSidebar(show) {
+            const sidebar = document.getElementById('cart-sidebar');
+            sidebar.classList.toggle('open', show);
+        }
+
+        function selectColor(element) {
+            document.querySelectorAll('.swatch').forEach(s => s.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+
+        function selectSize(btn) {
+            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+        }
+
+        function changeImage(src, element) {
+            const mainImage = document.getElementById('mainImage');
+            mainImage.classList.add('fade-out');
+            setTimeout(() => {
+                mainImage.src = src;
+                mainImage.classList.remove('fade-out');
+                document.querySelectorAll('.thumb-col img').forEach(img => img.classList.remove('active'));
+                element.classList.add('active');
+            }, 400);
+        }
+
+        function showNotification(name) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `
+                <i class="fa-solid fa-circle-check"></i>
+                <div class="toast-content">
+                    <span class="toast-title">Added to Cart</span>
+                    <span class="toast-msg">${name} is now in your bag.</span>
+                </div>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 500);
+            }, 4000);
+        }
+
+        function addToCart() {
+            const btn = document.getElementById('addToCartBtn');
+            const btnText = document.getElementById('btnText');
+            const spinner = document.getElementById('btnSpinner');
+            const productName = document.querySelector('.title').innerText;
+            const productImg = document.getElementById('mainImage').src;
+            const productPrice = document.querySelector('.price').innerText;
+            const cartBadge = document.getElementById('cart-badge');
+            const cartIcon = document.getElementById('cart-icon');
+
+            btn.disabled = true;
+            spinner.style.display = 'inline-block';
+            btnText.innerText = 'ADDING...';
+
+            setTimeout(() => {
+                spinner.style.display = 'none';
+                btnText.innerText = 'ADDED ✓';
+                btn.style.background = '#27ae60'; 
+
+                showNotification(productName);
+
+                cartCount++;
+                cartBadge.innerText = cartCount;
+                cartBadge.classList.add('show');
+                cartIcon.classList.add('bounce-effect');
+                
+                updateSidebar(productName, productImg, productPrice);
+
+                setTimeout(() => cartIcon.classList.remove('bounce-effect'), 500);
+
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btnText.innerText = 'ADD TO CART';
+                    btn.style.background = '#000';
+                }, 2000);
+            }, 1500);
+        }
+
+        function updateSidebar(name, img, price) {
+            const container = document.getElementById('sidebar-items-container');
+            if (cartCount === 1) { container.innerHTML = ''; }
+            const item = document.createElement('div');
+            item.className = 'cart-item-preview';
+            item.innerHTML = `
+                <img src="${img}" alt="${name}">
+                <div class="cart-item-info">
+                    <span class="name">${name}</span>
+                    <span class="price">${price}</span>
+                    <i class="fa-solid fa-trash-can remove-item-btn" onclick="removeItem(this)"></i>
+                </div>
+            `;
+            container.prepend(item);
+        }
+
+        function removeItem(btn) {
+            const item = btn.closest('.cart-item-preview');
+            const container = document.getElementById('sidebar-items-container');
+            const cartBadge = document.getElementById('cart-badge');
+
+            item.style.opacity = '0';
+            item.style.transform = 'translateX(20px)';
+            
+            setTimeout(() => {
+                item.remove();
+                cartCount--;
+                if (cartCount <= 0) {
+                    cartCount = 0;
+                    cartBadge.classList.remove('show');
+                    container.innerHTML = '<p class="empty-cart-msg">Your bag is currently empty.</p>';
+                } else {
+                    cartBadge.innerText = cartCount;
+                }
+            }, 300);
+        }
+
+        function toggleWishlist(btn) {
+            const icon = btn.querySelector('i');
+            const navWishlist = document.getElementById('nav-wishlist');
+            const navIcon = navWishlist.querySelector('i');
+
+            if (icon.classList.contains('fa-regular')) {
+                icon.classList.replace('fa-regular', 'fa-solid');
+                btn.classList.add('active');
+                navIcon.classList.replace('fa-regular', 'fa-solid');
+                navWishlist.classList.add('active');
+            } else {
+                icon.classList.replace('fa-solid', 'fa-regular');
+                btn.classList.remove('active');
+                navIcon.classList.replace('fa-solid', 'fa-regular');
+                navWishlist.classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>
