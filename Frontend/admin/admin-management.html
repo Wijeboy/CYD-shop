@@ -112,6 +112,39 @@
         </main>
     </div>
 
+    <!-- Edit Admin Modal -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Edit Admin</h2>
+            
+            <form id="editAdminForm">
+                <input type="hidden" id="editAdminId">
+                
+                <div class="form-group">
+                    <label for="editAdminName" class="form-label">Full Name *</label>
+                    <input type="text" id="editAdminName" class="form-input" placeholder="Enter admin name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editAdminEmail" class="form-label">Email Address *</label>
+                    <input type="email" id="editAdminEmail" class="form-input" placeholder="Enter email address" required>
+                    <span class="error-message" id="editEmailError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="editAdminPassword" class="form-label">New Password (leave blank to keep current)</label>
+                    <input type="password" id="editAdminPassword" class="form-input" placeholder="Enter new password (optional)">
+                    <span class="error-message" id="editPasswordError"></span>
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="button" class="cancel-modal-btn" id="cancelEditBtn">Cancel</button>
+                    <button type="submit" class="save-modal-btn">Update Admin</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="../js/admin-management.js"></script>
 </body>
 </html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Profile - CYD Admin</title>
+    <link rel="stylesheet" href="../css/admin-profile.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar Dashboard -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../User panel images/icons/dashboard-icon.png" alt="Dashboard" class="header-icon">
+                <h1 class="sidebar-title">Dashboard</h1>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="admin-dashboard.html" class="nav-item">
+                    <img src="../User panel images/icons/dashboard-icon.png" alt="Dashboard" class="nav-icon">
+                    <span>Dashboard</span>
+                </a>
+                <a href="product-management.html" class="nav-item">
+                    <img src="../User panel images/icons/product-icon.png" alt="Products" class="nav-icon">
+                    <span>Product Management</span>
+                </a>
+                <a href="customer-management.html" class="nav-item">
+                    <img src="../User panel images/icons/customer-icon.png" alt="Customers" class="nav-icon">
+                    <span>Customer Management</span>
+                </a>
+                <a href="order-management.html" class="nav-item">
+                    <img src="../User panel images/icons/order-icon.png" alt="Orders" class="nav-icon">
+                    <span>Order Management</span>
+                </a>
+                <a href="admin-management.html" class="nav-item">
+                    <img src="../User panel images/icons/customer-icon.png" alt="Admin Management" class="nav-icon">
+                    <span>Admin Management</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="admin-profile">
+                    <a href="admin-profile.html">
+                    <img src="../User panel images/default-avatar.png" alt="Admin" class="profile-icon" id="sidebarProfileImg">
+                    </a>
+                    <span class="profile-name" id="sidebarProfileName">Admin</span>
+                    <img src="../User panel images/icons/dropdown-icon.png" alt="Dropdown" class="dropdown-icon" id="dropdownIcon">
+                </div>
+                <div class="dropdown-content" id="dropdownContent">
+                    <span class="dropdown-text">admin</span>
+                    <button class="logout-btn" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <h2 class="page-title">Admin Profile</h2>
+                <p class="page-subtitle">Manage your admin account details</p>
+            </div>
+
+            <!-- Profile Section -->
+            <section class="profile-section">
+                <div class="profile-card">
+                    <!-- Profile Picture Section -->
+                    <div class="profile-picture-section">
+                        <div class="profile-picture-container">
+                            <img src="../User panel images/default-avatar.png" alt="Profile Picture" class="profile-picture" id="profilePicture">
+                            <div class="picture-overlay" id="pictureOverlay">
+                                <span class="change-picture-text">Change Picture</span>
+                            </div>
+                        </div>
+                        <input type="file" id="profileImageInput" accept="image/*" style="display: none;">
+                        <button class="btn-upload" id="uploadBtn">Upload New Picture</button>
+                        <p class="upload-info">JPG, PNG or GIF (Max 2MB)</p>
+                    </div>
+
+                    <!-- Profile Form -->
+                    <div class="profile-form-section">
+                        <h3 class="form-title">Personal Information</h3>
+                        
+                        <form id="adminProfileForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="adminName" class="form-label">Full Name</label>
+                                    <input type="text" id="adminName" class="form-input" placeholder="Enter your name" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="adminEmail" class="form-label">Email Address</label>
+                                    <input type="email" id="adminEmail" class="form-input" placeholder="Enter your email" required>
+                                    <span class="error-message" id="emailError"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-divider"></div>
+
+                            <h3 class="form-title">Change Password</h3>
+                            <p class="form-subtitle">Leave blank if you don't want to change your password</p>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="currentPassword" class="form-label">Current Password</label>
+                                    <input type="password" id="currentPassword" class="form-input" placeholder="Enter current password">
+                                    <span class="error-message" id="currentPasswordError"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="newPassword" class="form-label">New Password</label>
+                                    <input type="password" id="newPassword" class="form-input" placeholder="Enter new password (min 6 characters)">
+                                    <span class="error-message" id="newPasswordError"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                                    <input type="password" id="confirmPassword" class="form-input" placeholder="Confirm new password">
+                                    <span class="error-message" id="confirmPasswordError"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn-save">Save Changes</button>
+                                <button type="button" class="btn-cancel" id="cancelBtn">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/admin-profile.js"></script>
+</body>
+</html>

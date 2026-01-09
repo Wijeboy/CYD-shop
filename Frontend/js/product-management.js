@@ -5,6 +5,7 @@ let productToDelete = null;
 // Check admin authentication and load products
 document.addEventListener('DOMContentLoaded', async function() {
     await verifyAdminAccess();
+    await loadAdminProfile();
     await loadProducts();
     
     // Dropdown toggle
@@ -13,6 +14,13 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     dropdownIcon.addEventListener('click', function() {
         dropdownContent.classList.toggle('show');
+    });
+    
+    // Listen for profile updates from other tabs/windows
+    window.addEventListener('storage', function(e) {
+        if (e.key === 'user' || !e.key) {
+            loadAdminProfile();
+        }
     });
 });
 
@@ -196,5 +204,47 @@ async function deleteProduct() {
     } catch (error) {
         console.error('Delete product error:', error);
         alert('Failed to delete product: ' + error.message);
+    }
+}
+
+// Load admin profile
+async function loadAdminProfile() {
+    const token = getAuthToken();
+    
+    try {
+        const response = await fetch(`${API_URL}/admin/profile`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+            const profileIcon = document.querySelector('.profile-icon');
+            const profileName = document.querySelector('.profile-name');
+            
+            if (data.admin.profileImage && data.admin.profileImage !== 'User panel images/default-avatar.png') {
+                const timestamp = new Date().getTime();
+                profileIcon.src = `http://localhost:5001/${data.admin.profileImage}?t=${timestamp}`;
+            }
+            
+            if (profileName) {
+                profileName.textContent = data.admin.name;
+            }
+        }
+    } catch (error) {
+        console.error('Load profile error:', error);
+    }
+}
+
+// Handle logout
+function handleLogout() {
+    if (confirm('Are you sure you want to logout?')) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '../signin.html';
     }
 }

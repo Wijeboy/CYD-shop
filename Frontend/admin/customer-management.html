@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Management - CYD Admin</title>
+    <link rel="stylesheet" href="../css/customer-management.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar Dashboard -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../User panel images/icons/dashboard-icon.png" alt="Dashboard" class="header-icon">
+                <h1 class="sidebar-title">Dashboard</h1>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="admin-dashboard.html" class="nav-item">
+                    <img src="../User panel images/icons/dashboard-icon.png" alt="Dashboard" class="nav-icon">
+                    <span>Dashboard</span>
+                </a>
+                <a href="product-management.html" class="nav-item">
+                    <img src="../User panel images/icons/product-icon.png" alt="Products" class="nav-icon">
+                    <span>Product Management</span>
+                </a>
+                <a href="customer-management.html" class="nav-item active">
+                    <img src="../User panel images/icons/customer-icon.png" alt="Customers" class="nav-icon">
+                    <span>Customer Management</span>
+                </a>
+                <a href="order-management.html" class="nav-item">
+                    <img src="../User panel images/icons/order-icon.png" alt="Orders" class="nav-icon">
+                    <span>Order Management</span>
+                </a>
+                <a href="admin-management.html" class="nav-item">
+                    <img src="../User panel images/icons/customer-icon.png" alt="Admin Management" class="nav-icon">
+                    <span>Admin Management</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="admin-profile">
+                    <a href="admin-profile.html">
+                    <img src="../User panel images/default-avatar.png" alt="Admin" class="profile-icon">
+                    </a>
+                    <span class="profile-name">Admin</span>
+                    <img src="../User panel images/icons/dropdown-icon.png" alt="Dropdown" class="dropdown-icon" id="dropdownIcon">
+                </div>
+                <div class="dropdown-content" id="dropdownContent">
+                    <span class="dropdown-text">admin</span>
+                    <button class="logout-btn" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <h2 class="page-title">Customer Management</h2>
+                <p class="page-subtitle">View and manage all customer accounts</p>
+            </div>
+
+            <!-- Search and Filter Section -->
+            <section class="search-section">
+                <div class="search-container">
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search by name or email...">
+                    <button class="btn-search" id="searchBtn">Search</button>
+                </div>
+            </section>
+
+            <!-- Customers Table Section -->
+            <section class="customers-section">
+                <div class="customers-table-container">
+                    <table class="customers-table">
+                        <thead>
+                            <tr>
+                                <th>Profile</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Country</th>
+                                <th>Status</th>
+                                <th>Joined Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customersTableBody">
+                            <tr>
+                                <td colspan="8" class="loading-message">Loading customers...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Edit Customer Modal -->
+    <div class="modal" id="editCustomerModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Edit Customer</h2>
+            
+            <form id="editCustomerForm">
+                <input type="hidden" id="editCustomerId">
+                
+                <!-- Profile Picture Upload -->
+                <div class="profile-upload-section">
+                    <img id="editCustomerProfilePreview" src="../User panel images/default-avatar.png" alt="Profile" class="profile-upload-preview">
+                    <input type="file" id="editCustomerProfileImage" accept="image/*" style="display: none;">
+                    <p class="profile-upload-hint">Click image to change profile picture</p>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editCustomerName" class="form-label">Full Name</label>
+                        <input type="text" id="editCustomerName" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editCustomerEmail" class="form-label">Email Address</label>
+                        <input type="email" id="editCustomerEmail" class="form-input" required>
+                        <span class="error-message" id="emailError"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editCustomerCountryCode" class="form-label">Country Code</label>
+                        <select id="editCustomerCountryCode" class="form-select" required>
+                            <option value="">Select country code</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editCustomerPhone" class="form-label">Phone Number</label>
+                        <input type="tel" id="editCustomerPhone" class="form-input" placeholder="Enter phone number" required>
+                        <span class="error-message" id="phoneError"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editCustomerCountry" class="form-label">Country</label>
+                        <select id="editCustomerCountry" class="form-select">
+                            <option value="">Select country</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editCustomerPostalCode" class="form-label">Postal Code</label>
+                        <input type="text" id="editCustomerPostalCode" class="form-input" placeholder="Enter postal code">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="editCustomerAddress" class="form-label">Address</label>
+                    <textarea id="editCustomerAddress" class="form-textarea" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="editCustomerPassword" class="form-label">New Password (Optional)</label>
+                    <input type="password" id="editCustomerPassword" class="form-input" placeholder="Leave blank to keep current password">
+                    <span class="error-message" id="passwordError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="editCustomerStatus" class="form-label">Account Status</label>
+                    <select id="editCustomerStatus" class="form-select">
+                        <option value="true">Active</option>
+                        <option value="false">Inactive</option>
+                    </select>
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="button" class="cancel-modal-btn" id="cancelEditBtn">Cancel</button>
+                    <button type="submit" class="save-modal-btn">Update Customer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- View Customer Details Modal -->
+    <div class="modal" id="viewCustomerModal">
+        <div class="modal-content modal-large">
+            <h2 class="modal-title">Customer Details</h2>
+            
+            <div class="customer-details-container" id="customerDetailsContainer">
+                <!-- Customer details will be loaded here -->
+            </div>
+
+            <div class="modal-buttons">
+                <button type="button" class="cancel-modal-btn" id="cancelViewBtn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/country-codes.js"></script>
+    <script src="../js/customer-management.js"></script>
+</body>
+</html>

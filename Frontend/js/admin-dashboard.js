@@ -4,6 +4,7 @@ const API_URL = 'http://localhost:5001/api';
 // Check admin authentication on page load
 document.addEventListener('DOMContentLoaded', async function() {
     await verifyAdminAccess();
+    await loadAdminProfile();
     await loadDashboardStats();
     
     // Dropdown toggle
@@ -21,6 +22,13 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Change button handler
     const changeBtn = document.getElementById('changeBtn');
     changeBtn.addEventListener('click', openChangeModal);
+    
+    // Listen for profile updates from other tabs/windows
+    window.addEventListener('storage', function(e) {
+        if (e.key === 'user' || !e.key) {
+            loadAdminProfile();
+        }
+    });
     
     // Modal handlers
     const cancelModalBtn = document.getElementById('cancelModalBtn');
@@ -194,6 +202,40 @@ async function handleUpdateStats(event) {
     } catch (error) {
         console.error('Update stats error:', error);
         alert('Failed to update dashboard statistics. Please try again.');
+    }
+}
+
+// Load admin profile
+async function loadAdminProfile() {
+    const token = getAuthToken();
+    
+    try {
+        const response = await fetch(`${API_URL}/admin/profile`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+            // Update sidebar profile picture and name
+            const profileIcon = document.querySelector('.profile-icon');
+            const profileName = document.querySelector('.profile-name');
+            
+            if (data.admin.profileImage && data.admin.profileImage !== 'User panel images/default-avatar.png') {
+                const timestamp = new Date().getTime();
+                profileIcon.src = `http://localhost:5001/${data.admin.profileImage}?t=${timestamp}`;
+            }
+            
+            if (profileName) {
+                profileName.textContent = data.admin.name;
+            }
+        }
+    } catch (error) {
+        console.error('Load profile error:', error);
     }
 }
 
