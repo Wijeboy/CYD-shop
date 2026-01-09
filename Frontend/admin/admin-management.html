@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Management - CYD Admin</title>
+    <link rel="stylesheet" href="../css/admin-management.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar Dashboard -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../User panel images/icons/dashboard-icon.png" alt="Dashboard" class="header-icon">
+                <h1 class="sidebar-title">Dashboard</h1>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="admin-dashboard.html" class="nav-item">
+                    <img src="../User panel images/icons/dashboard-icon.png" alt="Dashboard" class="nav-icon">
+                    <span>Dashboard</span>
+                </a>
+                <a href="product-management.html" class="nav-item">
+                    <img src="../User panel images/icons/product-icon.png" alt="Products" class="nav-icon">
+                    <span>Product Management</span>
+                </a>
+                <a href="customer-management.html" class="nav-item">
+                    <img src="../User panel images/icons/customer-icon.png" alt="Customers" class="nav-icon">
+                    <span>Customer Management</span>
+                </a>
+                <a href="order-management.html" class="nav-item">
+                    <img src="../User panel images/icons/order-icon.png" alt="Orders" class="nav-icon">
+                    <span>Order Management</span>
+                </a>
+                <a href="admin-management.html" class="nav-item active">
+                    <img src="../User panel images/icons/customer-icon.png" alt="Admin Management" class="nav-icon">
+                    <span>Admin Management</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="admin-profile">
+                    <a href="admin-profile.html">
+                    <img src="../User panel images/default-avatar.png" alt="Admin" class="profile-icon">
+                    </a>
+                    <span class="profile-name">Admin</span>
+                    <img src="../User panel images/icons/dropdown-icon.png" alt="Dropdown" class="dropdown-icon" id="dropdownIcon">
+                </div>
+                <div class="dropdown-content" id="dropdownContent">
+                    <span class="dropdown-text">admin</span>
+                    <button class="logout-btn" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <h2 class="page-title">Admin Management</h2>
+                <p class="page-subtitle">Create and manage admin accounts</p>
+            </div>
+
+            <!-- Add Admin Form -->
+            <section class="add-admin-section">
+                <div class="form-card">
+                    <h3 class="form-title">Add New Admin</h3>
+                    
+                    <form id="addAdminForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="adminName" class="form-label">Full Name *</label>
+                                <input type="text" id="adminName" class="form-input" placeholder="Enter admin name" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="adminEmail" class="form-label">Email Address *</label>
+                                <input type="email" id="adminEmail" class="form-input" placeholder="Enter email address" required>
+                                <span class="error-message" id="emailError"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="adminPassword" class="form-label">Password *</label>
+                                <input type="password" id="adminPassword" class="form-input" placeholder="Enter password (min 6 characters)" required>
+                                <span class="error-message" id="passwordError"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="adminConfirmPassword" class="form-label">Confirm Password *</label>
+                                <input type="password" id="adminConfirmPassword" class="form-input" placeholder="Confirm password" required>
+                                <span class="error-message" id="confirmPasswordError"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn-submit">Create Admin Account</button>
+                            <button type="reset" class="btn-reset">Clear Form</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Admin List Section -->
+            <section class="admin-list-section">
+                <h3 class="section-title">Current Admins</h3>
+                <div class="admin-list" id="adminList">
+                    <!-- Admin list will be loaded here -->
+                    <div class="loading-message">Loading admins...</div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/admin-management.js"></script>
+</body>
+</html>

@@ -18,6 +18,9 @@ app.use(cors());
 // Serve static files from uploads directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Serve frontend static files
+app.use(express.static(path.join(__dirname, '../Frontend')));
+
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => {

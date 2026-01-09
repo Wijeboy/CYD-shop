@@ -1,5 +1,5 @@
 // API Base URL
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'http://localhost:5001/api';
 
 // Check admin authentication on page load
 document.addEventListener('DOMContentLoaded', async function() {
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 // Get auth token
 function getAuthToken() {
-    return localStorage.getItem('authToken');
+    return localStorage.getItem('token');
 }
 
 // Verify admin access
@@ -50,9 +50,13 @@ async function verifyAdminAccess() {
             }
         });
         
-        if (!response.ok) {
-            throw new Error('Not authorized');
+        const data = await response.json();
+        
+        if (!response.ok || !data.success) {
+            throw new Error(data.message || 'Not authorized');
         }
+        
+        console.log('Admin verified:', data.user.name);
     } catch (error) {
         console.error('Admin verification error:', error);
         alert('You do not have admin access');

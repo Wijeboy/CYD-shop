@@ -1,5 +1,5 @@
 // API Base URL
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'http://localhost:5001/api';
 
 // Check admin authentication on page load
 document.addEventListener('DOMContentLoaded', async function() {
@@ -13,6 +13,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     dropdownIcon.addEventListener('click', function() {
         dropdownContent.classList.toggle('show');
     });
+    
+    // Logout button handler
+    const logoutBtn = document.getElementById('logoutBtn');
+    logoutBtn.addEventListener('click', handleLogout);
     
     // Change button handler
     const changeBtn = document.getElementById('changeBtn');
@@ -36,7 +40,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 // Get auth token from localStorage
 function getAuthToken() {
-    return localStorage.getItem('authToken');
+    return localStorage.getItem('token');
 }
 
 // Verify admin access
@@ -190,5 +194,17 @@ async function handleUpdateStats(event) {
     } catch (error) {
         console.error('Update stats error:', error);
         alert('Failed to update dashboard statistics. Please try again.');
+    }
+}
+
+// Handle logout
+function handleLogout() {
+    if (confirm('Are you sure you want to logout?')) {
+        // Clear authentication data
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        
+        // Redirect to signin page
+        window.location.href = '../signin.html';
     }
 }

@@ -21,13 +21,19 @@ const userSchema = new mongoose.Schema({
     },
     phone: {
         type: String,
-        required: [true, 'Please provide your phone number'],
-        trim: true
+        required: function() {
+            return this.role === 'user';
+        },
+        trim: true,
+        default: ''
     },
     countryCode: {
         type: String,
-        required: [true, 'Please provide country code'],
-        trim: true
+        required: function() {
+            return this.role === 'user';
+        },
+        trim: true,
+        default: ''
     },
     address: {
         type: String,

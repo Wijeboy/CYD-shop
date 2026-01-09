@@ -1,5 +1,5 @@
 // API Base URL
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'http://localhost:5001/api';
 let productToDelete = null;
 
 // Check admin authentication and load products
@@ -18,12 +18,15 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 // Get auth token
 function getAuthToken() {
-    return localStorage.getItem('authToken');
+    return localStorage.getItem('token');
 }
 
 // Verify admin access
 async function verifyAdminAccess() {
     const token = getAuthToken();
+    
+    console.log('Verifying admin access...');
+    console.log('Token:', token ? 'Present' : 'Missing');
     
     if (!token) {
         alert('Please login as admin');
@@ -32,6 +35,7 @@ async function verifyAdminAccess() {
     }
     
     try {
+        console.log('Making request to:', `${API_URL}/admin/verify`);
         const response = await fetch(`${API_URL}/admin/verify`, {
             method: 'GET',
             headers: {
@@ -40,9 +44,15 @@ async function verifyAdminAccess() {
             }
         });
         
-        if (!response.ok) {
-            throw new Error('Not authorized');
+        console.log('Response status:', response.status);
+        const data = await response.json();
+        console.log('Response data:', data);
+        
+        if (!response.ok || !data.success) {
+            throw new Error(data.message || 'Not authorized');
         }
+        
+        console.log('Admin verified:', data.user.name);
     } catch (error) {
         console.error('Admin verification error:', error);
         alert('You do not have admin access');
@@ -99,7 +109,7 @@ function createProductCard(product) {
     
     card.innerHTML = `
         <div class="product-image-container">
-            <img src="http://localhost:5000/${product.image}" alt="${product.name}" class="product-image">
+            <img src="http://localhost:5001/${product.image}" alt="${product.name}" class="product-image">
             <div class="action-icons">
                 <div class="action-icon edit-icon" onclick="editProduct('${product._id}')">
                     <img src="../User panel images/icons/edit-icon.png" alt="Edit">

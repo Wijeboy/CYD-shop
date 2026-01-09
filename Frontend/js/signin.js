@@ -87,8 +87,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Show success message
                 showToast(`Welcome back, ${data.user.name}!`, 'success');
                 
-                // Redirect to home page
-                setTimeout(() => window.location.href = 'index.html', 1000);
+                // Redirect based on user role
+                setTimeout(() => {
+                    if (data.user.role === 'admin') {
+                        window.location.href = 'admin/admin-dashboard.html';
+                    } else {
+                        window.location.href = 'index.html';
+                    }
+                }, 1000);
             } else {
                 // Show error message
                 showToast(data.message || 'Login failed. Please check your credentials.', 'error');
