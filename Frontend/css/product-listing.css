@@ -95,6 +95,23 @@ a {
     height: 20px;
 }
 
+.logout-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+    font-size: 14px;
+    color: #ec4b4b;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.logout-btn:hover {
+    color: #666666;
+}
+
 /* Main Container */
 .main-container {
     padding: 40px 80px;

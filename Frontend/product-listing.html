@@ -5,8 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop - CYD</title>
     <link rel="stylesheet" href="css/product-listing.css">
+    <script src="js/auth-utils.js"></script>
 </head>
 <body>
+    <script>
+        // Protect this page - require authentication
+        document.addEventListener('DOMContentLoaded', async function() {
+            const authenticated = await requireAuth();
+            if (!authenticated) {
+                return; // Will be redirected to signin by requireAuth()
+            }
+            
+            // Start inactivity monitor (auto logout after 10 minutes)
+            startInactivityMonitor();
+            
+            // Display user info in account link
+            const user = getAuthUser();
+            if (user) {
+                const accountLink = document.querySelector('a[href="profile.html"]');
+                if (accountLink) {
+                    const accountText = accountLink.querySelector('span');
+                    if (accountText) {
+                        accountText.textContent = user.name.split(' ')[0]; // First name only
+                    }
+                }
+            }
+        });
+        
+        // Logout function
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                stopInactivityMonitor(); // Stop the timer
+                logout(); // From auth-utils.js
+            }
+        }
+    </script>
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="nav-left">
@@ -17,7 +50,7 @@
             <a href="index.html" class="nav-link">
                 <span>Home</span>
             </a>
-            <a href="products.html" class="nav-link">
+            <a href="product-listing.html" class="nav-link">
                 <span>Shop Now</span>
             </a>
         </div>
@@ -42,10 +75,13 @@
             <a href="contact.html" class="nav-link">
                 <span>Contact Us</span>
             </a>
-            <a href="account.html" class="nav-link">
+            <a href="profile.html" class="nav-link">
                 <img src="User panel images/icons/account-icon.webp" alt="Account" class="nav-icon">
                 <span>Account</span>
             </a>
+            <button onclick="handleLogout()" class="nav-link logout-btn">
+                <span>Logout</span>
+            </button>
         </div>
     </nav>
 
