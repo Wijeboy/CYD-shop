@@ -1,7 +1,12 @@
 // API Base URL
-const API_URL = 'http://localhost:5001/api';
+const API_URL = 'http://localhost:5000/api';
 let productId = null;
-let imageChanged = false;
+let imagesChanged = {
+    main: false,
+    additional1: false,
+    additional2: false,
+    additional3: false
+};
 
 // Get product ID from URL and load product data
 document.addEventListener('DOMContentLoaded', async function() {
@@ -19,15 +24,22 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     await loadProductData();
     
-    // Image upload handlers
-    const imagePreview = document.getElementById('imagePreview');
-    const productImageInput = document.getElementById('productImage');
+    // Main image upload handlers
+    const mainImagePreview = document.getElementById('mainImagePreview');
+    const mainImageInput = document.getElementById('mainImage');
     const uploadLabel = document.querySelector('.upload-label');
     
-    imagePreview.addEventListener('click', () => productImageInput.click());
-    uploadLabel.addEventListener('click', () => productImageInput.click());
+    mainImagePreview.addEventListener('click', () => mainImageInput.click());
+    uploadLabel.addEventListener('click', () => mainImageInput.click());
+    mainImageInput.addEventListener('change', (e) => {
+        handleImagePreview(e, 'mainPreviewImg');
+        imagesChanged.main = true;
+    });
     
-    productImageInput.addEventListener('change', handleImagePreview);
+    // Additional images upload handlers
+    setupAdditionalImageUpload('additionalPreview1', 'additionalImage1', 'additionalImg1', 'additional1');
+    setupAdditionalImageUpload('additionalPreview2', 'additionalImage2', 'additionalImg2', 'additional2');
+    setupAdditionalImageUpload('additionalPreview3', 'additionalImage3', 'additionalImg3', 'additional3');
     
     // Cancel button handler
     const cancelBtn = document.getElementById('cancelBtn');
@@ -40,9 +52,23 @@ document.addEventListener('DOMContentLoaded', async function() {
     editProductForm.addEventListener('submit', handleUpdateProduct);
 });
 
+// Setup additional image upload
+function setupAdditionalImageUpload(previewId, inputId, imgId, imageKey) {
+    const preview = document.getElementById(previewId);
+    const input = document.getElementById(inputId);
+    const uploadText = preview.nextElementSibling;
+    
+    preview.addEventListener('click', () => input.click());
+    uploadText.addEventListener('click', () => input.click());
+    input.addEventListener('change', (e) => {
+        handleImagePreview(e, imgId);
+        imagesChanged[imageKey] = true;
+    });
+}
+
 // Get auth token
 function getAuthToken() {
-    return localStorage.getItem('token');
+    return localStorage.getItem('authToken');
 }
 
 // Verify admin access
@@ -64,13 +90,9 @@ async function verifyAdminAccess() {
             }
         });
         
-        const data = await response.json();
-        
-        if (!response.ok || !data.success) {
-            throw new Error(data.message || 'Not authorized');
+        if (!response.ok) {
+            throw new Error('Not authorized');
         }
-        
-        console.log('Admin verified:', data.user.name);
     } catch (error) {
         console.error('Admin verification error:', error);
         alert('You do not have admin access');
@@ -114,16 +136,22 @@ function populateForm(product) {
     document.getElementById('productName').value = product.name;
     document.getElementById('price').value = product.price;
     document.getElementById('category').value = product.category;
-    document.getElementById('stockQuantity').value = product.stockQuantity;
     document.getElementById('description').value = product.description;
+    document.getElementById('sizeS').value = product.sizeQuantities.S;
+    document.getElementById('sizeM').value = product.sizeQuantities.M;
+    document.getElementById('sizeL').value = product.sizeQuantities.L;
+    document.getElementById('sizeXL').value = product.sizeQuantities.XL;
+    document.getElementById('size2XL').value = product.sizeQuantities.XXL;
     
-    // Display current product image
-    const previewImg = document.getElementById('previewImg');
-    previewImg.src = `http://localhost:5001/${product.image}`;
+    // Display current product images
+    document.getElementById('mainPreviewImg').src = `http://localhost:5000/${product.mainImage}`;
+    document.getElementById('additionalImg1').src = `http://localhost:5000/${product.additionalImages.image1}`;
+    document.getElementById('additionalImg2').src = `http://localhost:5000/${product.additionalImages.image2}`;
+    document.getElementById('additionalImg3').src = `http://localhost:5000/${product.additionalImages.image3}`;
 }
 
 // Handle image preview
-function handleImagePreview(event) {
+function handleImagePreview(event, imgElementId) {
     const file = event.target.files[0];
     
     if (file) {
@@ -141,12 +169,10 @@ function handleImagePreview(event) {
             return;
         }
         
-        imageChanged = true;
-        
         // Preview image
         const reader = new FileReader();
         reader.onload = function(e) {
-            const previewImg = document.getElementById('previewImg');
+            const previewImg = document.getElementById(imgElementId);
             previewImg.src = e.target.result;
         };
         reader.readAsDataURL(file);
@@ -164,11 +190,16 @@ async function handleUpdateProduct(event) {
     const name = document.getElementById('productName').value.trim();
     const price = document.getElementById('price').value;
     const category = document.getElementById('category').value;
-    const stockQuantity = document.getElementById('stockQuantity').value;
     const description = document.getElementById('description').value.trim();
+    const sizeS = document.getElementById('sizeS').value;
+    const sizeM = document.getElementById('sizeM').value;
+    const sizeL = document.getElementById('sizeL').value;
+    const sizeXL = document.getElementById('sizeXL').value;
+    const size2XL = document.getElementById('size2XL').value;
     
     // Validate inputs
-    if (!name || !price || !category || !stockQuantity || !description) {
+    if (!name || !price || !category || !description || 
+        !sizeS || !sizeM || !sizeL || !sizeXL || !size2XL) {
         alert('Please fill in all fields');
         return;
     }
@@ -186,9 +217,10 @@ async function handleUpdateProduct(event) {
         return;
     }
     
-    // Validate stock quantity
-    if (parseInt(stockQuantity) < 0) {
-        alert('Stock quantity must be a non-negative number');
+    // Validate size quantities
+    if (parseInt(sizeS) < 0 || parseInt(sizeM) < 0 || parseInt(sizeL) < 0 || 
+        parseInt(sizeXL) < 0 || parseInt(size2XL) < 0) {
+        alert('Size quantities must be non-negative numbers');
         return;
     }
     
@@ -196,14 +228,39 @@ async function handleUpdateProduct(event) {
     formData.append('name', name);
     formData.append('price', price);
     formData.append('category', category);
-    formData.append('stockQuantity', stockQuantity);
     formData.append('description', description);
+    formData.append('sizeS', sizeS);
+    formData.append('sizeM', sizeM);
+    formData.append('sizeL', sizeL);
+    formData.append('sizeXL', sizeXL);
+    formData.append('size2XL', size2XL);
     
-    // Append image only if changed
-    if (imageChanged) {
-        const productImage = document.getElementById('productImage').files[0];
-        if (productImage) {
-            formData.append('productImage', productImage);
+    // Append images only if changed
+    if (imagesChanged.main) {
+        const mainImage = document.getElementById('mainImage').files[0];
+        if (mainImage) {
+            formData.append('mainImage', mainImage);
+        }
+    }
+    
+    if (imagesChanged.additional1) {
+        const additionalImage1 = document.getElementById('additionalImage1').files[0];
+        if (additionalImage1) {
+            formData.append('additionalImage1', additionalImage1);
+        }
+    }
+    
+    if (imagesChanged.additional2) {
+        const additionalImage2 = document.getElementById('additionalImage2').files[0];
+        if (additionalImage2) {
+            formData.append('additionalImage2', additionalImage2);
+        }
+    }
+    
+    if (imagesChanged.additional3) {
+        const additionalImage3 = document.getElementById('additionalImage3').files[0];
+        if (additionalImage3) {
+            formData.append('additionalImage3', additionalImage3);
         }
     }
     

@@ -18,11 +18,37 @@ const productSchema = new mongoose.Schema({
         enum: ['tops', 't-shirts', 'blouses', 'dresses', 'trousers', 'skirts', 'ethnic wear'],
         lowercase: true
     },
-    stockQuantity: {
-        type: Number,
-        required: [true, 'Please provide stock quantity'],
-        min: [0, 'Stock cannot be negative'],
-        default: 0
+    sizeQuantities: {
+        S: {
+            type: Number,
+            required: [true, 'Please provide size S quantity'],
+            min: [0, 'Quantity cannot be negative'],
+            default: 0
+        },
+        M: {
+            type: Number,
+            required: [true, 'Please provide size M quantity'],
+            min: [0, 'Quantity cannot be negative'],
+            default: 0
+        },
+        L: {
+            type: Number,
+            required: [true, 'Please provide size L quantity'],
+            min: [0, 'Quantity cannot be negative'],
+            default: 0
+        },
+        XL: {
+            type: Number,
+            required: [true, 'Please provide size XL quantity'],
+            min: [0, 'Quantity cannot be negative'],
+            default: 0
+        },
+        XXL: {
+            type: Number,
+            required: [true, 'Please provide size 2XL quantity'],
+            min: [0, 'Quantity cannot be negative'],
+            default: 0
+        }
     },
     description: {
         type: String,
@@ -30,9 +56,23 @@ const productSchema = new mongoose.Schema({
         trim: true,
         maxlength: [1000, 'Description cannot exceed 1000 characters']
     },
-    image: {
+    mainImage: {
         type: String,
-        required: [true, 'Please upload product image']
+        required: [true, 'Please upload main product image']
+    },
+    additionalImages: {
+        image1: {
+            type: String,
+            required: [true, 'Please upload additional image 1']
+        },
+        image2: {
+            type: String,
+            required: [true, 'Please upload additional image 2']
+        },
+        image3: {
+            type: String,
+            required: [true, 'Please upload additional image 3']
+        }
     },
     isActive: {
         type: Boolean,
@@ -50,5 +90,11 @@ const productSchema = new mongoose.Schema({
 // Index for faster queries
 productSchema.index({ category: 1, price: 1 });
 productSchema.index({ isActive: 1 });
+
+// Virtual for total stock quantity
+productSchema.virtual('totalStock').get(function() {
+    return this.sizeQuantities.S + this.sizeQuantities.M + 
+           this.sizeQuantities.L + this.sizeQuantities.XL + this.sizeQuantities.XXL;
+});
 
 module.exports = mongoose.model('Product', productSchema);
