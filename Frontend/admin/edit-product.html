@@ -12,12 +12,42 @@
 
         <form id="editProductForm" class="product-form">
             <!-- Image Upload Section -->
-            <div class="image-upload-section">
-                <div class="image-preview" id="imagePreview">
-                    <img src="../User panel images/icons/upload-placeholder.png" alt="Product" id="previewImg">
+            <div class="images-section">
+                <!-- Main Image -->
+                <div class="main-image-section">
+                    <div class="image-preview main-preview" id="mainImagePreview">
+                        <img src="../User panel images/icons/upload-placeholder.png" alt="Main Image" id="mainPreviewImg">
+                    </div>
+                    <label for="mainImage" class="upload-label">Click to upload an image</label>
+                    <input type="file" id="mainImage" name="mainImage" accept="image/*" style="display: none;">
                 </div>
-                <label for="productImage" class="upload-label">Click to upload an image</label>
-                <input type="file" id="productImage" name="productImage" accept="image/*" style="display: none;">
+
+                <!-- Additional Images -->
+                <div class="additional-images-section">
+                    <div class="additional-image-item">
+                        <div class="image-preview additional-preview" id="additionalPreview1">
+                            <img src="../User panel images/icons/upload-placeholder.png" alt="Additional 1" id="additionalImg1">
+                        </div>
+                        <label for="additionalImage1" class="upload-text">upload</label>
+                        <input type="file" id="additionalImage1" name="additionalImage1" accept="image/*" style="display: none;">
+                    </div>
+
+                    <div class="additional-image-item">
+                        <div class="image-preview additional-preview" id="additionalPreview2">
+                            <img src="../User panel images/icons/upload-placeholder.png" alt="Additional 2" id="additionalImg2">
+                        </div>
+                        <label for="additionalImage2" class="upload-text">upload</label>
+                        <input type="file" id="additionalImage2" name="additionalImage2" accept="image/*" style="display: none;">
+                    </div>
+
+                    <div class="additional-image-item">
+                        <div class="image-preview additional-preview" id="additionalPreview3">
+                            <img src="../User panel images/icons/upload-placeholder.png" alt="Additional 3" id="additionalImg3">
+                        </div>
+                        <label for="additionalImage3" class="upload-text">upload</label>
+                        <input type="file" id="additionalImage3" name="additionalImage3" accept="image/*" style="display: none;">
+                    </div>
+                </div>
             </div>
 
             <!-- Input Fields Row 1 -->
@@ -50,12 +80,6 @@
                         <option value="ethnic wear">Ethnic Wear</option>
                     </select>
                 </div>
-
-                <div class="form-group">
-                    <label for="stockQuantity" class="form-label">Stock Quantity</label>
-                    <input type="number" id="stockQuantity" name="stockQuantity" class="form-input" 
-                           placeholder="Enter stock quantity" min="0" required>
-                </div>
             </div>
 
             <!-- Product Description -->
@@ -63,6 +87,39 @@
                 <label for="description" class="form-label">Product Description</label>
                 <textarea id="description" name="description" class="form-textarea" 
                           placeholder="Enter product description" rows="5" required></textarea>
+            </div>
+
+            <!-- Size Quantities -->
+            <div class="size-quantities-section">
+                <div class="size-quantity-item">
+                    <label for="sizeS" class="size-label">Size S Quantity</label>
+                    <input type="number" id="sizeS" name="sizeS" class="size-input" 
+                           placeholder="0" min="0" required>
+                </div>
+
+                <div class="size-quantity-item">
+                    <label for="sizeM" class="size-label">Size M Quantity</label>
+                    <input type="number" id="sizeM" name="sizeM" class="size-input" 
+                           placeholder="0" min="0" required>
+                </div>
+
+                <div class="size-quantity-item">
+                    <label for="sizeL" class="size-label">Size L Quantity</label>
+                    <input type="number" id="sizeL" name="sizeL" class="size-input" 
+                           placeholder="0" min="0" required>
+                </div>
+
+                <div class="size-quantity-item">
+                    <label for="sizeXL" class="size-label">Size XL Quantity</label>
+                    <input type="number" id="sizeXL" name="sizeXL" class="size-input" 
+                           placeholder="0" min="0" required>
+                </div>
+
+                <div class="size-quantity-item">
+                    <label for="size2XL" class="size-label">Size 2XL Quantity</label>
+                    <input type="number" id="size2XL" name="size2XL" class="size-input" 
+                           placeholder="0" min="0" required>
+                </div>
             </div>
 
             <!-- Buttons -->

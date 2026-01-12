@@ -10,12 +10,21 @@ const path = require('path');
 // @route   POST /api/products
 // @desc    Add new product (Admin only)
 // @access  Private/Admin
-router.post('/', protect, authorize('admin'), uploadProduct.single('productImage'), [
+router.post('/', protect, authorize('admin'), uploadProduct.fields([
+    { name: 'mainImage', maxCount: 1 },
+    { name: 'additionalImage1', maxCount: 1 },
+    { name: 'additionalImage2', maxCount: 1 },
+    { name: 'additionalImage3', maxCount: 1 }
+]), [
     body('name').trim().notEmpty().withMessage('Product name is required'),
     body('price').isFloat({ min: 0 }).withMessage('Price must be a positive number'),
     body('category').isIn(['tops', 't-shirts', 'blouses', 'dresses', 'trousers', 'skirts', 'ethnic wear'])
         .withMessage('Please select a valid category'),
-    body('stockQuantity').isInt({ min: 0 }).withMessage('Stock quantity must be a non-negative integer'),
+    body('sizeS').isInt({ min: 0 }).withMessage('Size S quantity must be a non-negative integer'),
+    body('sizeM').isInt({ min: 0 }).withMessage('Size M quantity must be a non-negative integer'),
+    body('sizeL').isInt({ min: 0 }).withMessage('Size L quantity must be a non-negative integer'),
+    body('sizeXL').isInt({ min: 0 }).withMessage('Size XL quantity must be a non-negative integer'),
+    body('size2XL').isInt({ min: 0 }).withMessage('Size 2XL quantity must be a non-negative integer'),
     body('description').trim().notEmpty().withMessage('Product description is required')
 ], async (req, res) => {
     try {
@@ -29,24 +38,36 @@ router.post('/', protect, authorize('admin'), uploadProduct.single('productImage
             });
         }
 
-        // Check if image was uploaded
-        if (!req.file) {
+        // Check if all images were uploaded
+        if (!req.files || !req.files.mainImage || !req.files.additionalImage1 || 
+            !req.files.additionalImage2 || !req.files.additionalImage3) {
             return res.status(400).json({
                 success: false,
-                message: 'Please upload a product image'
+                message: 'Please upload main image and all 3 additional images'
             });
         }
 
-        const { name, price, category, stockQuantity, description } = req.body;
+        const { name, price, category, sizeS, sizeM, sizeL, sizeXL, size2XL, description } = req.body;
 
         // Create product
         const product = new Product({
             name,
             price: parseFloat(price),
             category: category.toLowerCase(),
-            stockQuantity: parseInt(stockQuantity),
+            sizeQuantities: {
+                S: parseInt(sizeS),
+                M: parseInt(sizeM),
+                L: parseInt(sizeL),
+                XL: parseInt(sizeXL),
+                XXL: parseInt(size2XL)
+            },
             description,
-            image: 'uploads/products/' + req.file.filename,
+            mainImage: 'uploads/products/' + req.files.mainImage[0].filename,
+            additionalImages: {
+                image1: 'uploads/products/' + req.files.additionalImage1[0].filename,
+                image2: 'uploads/products/' + req.files.additionalImage2[0].filename,
+                image3: 'uploads/products/' + req.files.additionalImage3[0].filename
+            },
             createdBy: req.user._id
         });
 
@@ -60,9 +81,10 @@ router.post('/', protect, authorize('admin'), uploadProduct.single('productImage
                 name: product.name,
                 price: product.price,
                 category: product.category,
-                stockQuantity: product.stockQuantity,
+                sizeQuantities: product.sizeQuantities,
                 description: product.description,
-                image: product.image
+                mainImage: product.mainImage,
+                additionalImages: product.additionalImages
             }
         });
     } catch (error) {
@@ -107,7 +129,7 @@ router.get('/', async (req, res) => {
 
         const products = await Product.find(filter)
             .sort({ createdAt: -1 })
-            .select('name price category stockQuantity description image createdAt');
+            .select('name price category sizeQuantities description mainImage additionalImages createdAt');
 
         res.status(200).json({
             success: true,
@@ -155,12 +177,21 @@ router.get('/:id', async (req, res) => {
 // @route   PUT /api/products/:id
 // @desc    Update product (Admin only)
 // @access  Private/Admin
-router.put('/:id', protect, authorize('admin'), uploadProduct.single('productImage'), [
+router.put('/:id', protect, authorize('admin'), uploadProduct.fields([
+    { name: 'mainImage', maxCount: 1 },
+    { name: 'additionalImage1', maxCount: 1 },
+    { name: 'additionalImage2', maxCount: 1 },
+    { name: 'additionalImage3', maxCount: 1 }
+]), [
     body('name').trim().notEmpty().withMessage('Product name is required'),
     body('price').isFloat({ min: 0 }).withMessage('Price must be a positive number'),
     body('category').isIn(['tops', 't-shirts', 'blouses', 'dresses', 'trousers', 'skirts', 'ethnic wear'])
         .withMessage('Please select a valid category'),
-    body('stockQuantity').isInt({ min: 0 }).withMessage('Stock quantity must be a non-negative integer'),
+    body('sizeS').isInt({ min: 0 }).withMessage('Size S quantity must be a non-negative integer'),
+    body('sizeM').isInt({ min: 0 }).withMessage('Size M quantity must be a non-negative integer'),
+    body('sizeL').isInt({ min: 0 }).withMessage('Size L quantity must be a non-negative integer'),
+    body('sizeXL').isInt({ min: 0 }).withMessage('Size XL quantity must be a non-negative integer'),
+    body('size2XL').isInt({ min: 0 }).withMessage('Size 2XL quantity must be a non-negative integer'),
     body('description').trim().notEmpty().withMessage('Product description is required')
 ], async (req, res) => {
     try {
@@ -183,24 +214,54 @@ router.put('/:id', protect, authorize('admin'), uploadProduct.single('productIma
             });
         }
 
-        const { name, price, category, stockQuantity, description } = req.body;
+        const { name, price, category, sizeS, sizeM, sizeL, sizeXL, size2XL, description } = req.body;
 
         // Update fields
         product.name = name;
         product.price = parseFloat(price);
         product.category = category.toLowerCase();
-        product.stockQuantity = parseInt(stockQuantity);
+        product.sizeQuantities = {
+            S: parseInt(sizeS),
+            M: parseInt(sizeM),
+            L: parseInt(sizeL),
+            XL: parseInt(sizeXL),
+            XXL: parseInt(size2XL)
+        };
         product.description = description;
 
-        // Update image if new one uploaded
-        if (req.file) {
-            // Delete old image
-            const oldImagePath = path.join(__dirname, '..', product.image);
+        // Update main image if new one uploaded
+        if (req.files && req.files.mainImage) {
+            // Delete old main image
+            const oldImagePath = path.join(__dirname, '..', product.mainImage);
             if (fs.existsSync(oldImagePath)) {
                 fs.unlinkSync(oldImagePath);
             }
-            
-            product.image = 'uploads/products/' + req.file.filename;
+            product.mainImage = 'uploads/products/' + req.files.mainImage[0].filename;
+        }
+
+        // Update additional images if new ones uploaded
+        if (req.files && req.files.additionalImage1) {
+            const oldImagePath = path.join(__dirname, '..', product.additionalImages.image1);
+            if (fs.existsSync(oldImagePath)) {
+                fs.unlinkSync(oldImagePath);
+            }
+            product.additionalImages.image1 = 'uploads/products/' + req.files.additionalImage1[0].filename;
+        }
+
+        if (req.files && req.files.additionalImage2) {
+            const oldImagePath = path.join(__dirname, '..', product.additionalImages.image2);
+            if (fs.existsSync(oldImagePath)) {
+                fs.unlinkSync(oldImagePath);
+            }
+            product.additionalImages.image2 = 'uploads/products/' + req.files.additionalImage2[0].filename;
+        }
+
+        if (req.files && req.files.additionalImage3) {
+            const oldImagePath = path.join(__dirname, '..', product.additionalImages.image3);
+            if (fs.existsSync(oldImagePath)) {
+                fs.unlinkSync(oldImagePath);
+            }
+            product.additionalImages.image3 = 'uploads/products/' + req.files.additionalImage3[0].filename;
         }
 
         await product.save();
@@ -213,9 +274,10 @@ router.put('/:id', protect, authorize('admin'), uploadProduct.single('productIma
                 name: product.name,
                 price: product.price,
                 category: product.category,
-                stockQuantity: product.stockQuantity,
+                sizeQuantities: product.sizeQuantities,
                 description: product.description,
-                image: product.image
+                mainImage: product.mainImage,
+                additionalImages: product.additionalImages
             }
         });
     } catch (error) {
@@ -242,10 +304,26 @@ router.delete('/:id', protect, authorize('admin'), async (req, res) => {
             });
         }
 
-        // Delete product image
-        const imagePath = path.join(__dirname, '..', product.image);
-        if (fs.existsSync(imagePath)) {
-            fs.unlinkSync(imagePath);
+        // Delete main image
+        const mainImagePath = path.join(__dirname, '..', product.mainImage);
+        if (fs.existsSync(mainImagePath)) {
+            fs.unlinkSync(mainImagePath);
+        }
+
+        // Delete additional images
+        const additionalImage1Path = path.join(__dirname, '..', product.additionalImages.image1);
+        if (fs.existsSync(additionalImage1Path)) {
+            fs.unlinkSync(additionalImage1Path);
+        }
+
+        const additionalImage2Path = path.join(__dirname, '..', product.additionalImages.image2);
+        if (fs.existsSync(additionalImage2Path)) {
+            fs.unlinkSync(additionalImage2Path);
+        }
+
+        const additionalImage3Path = path.join(__dirname, '..', product.additionalImages.image3);
+        if (fs.existsSync(additionalImage3Path)) {
+            fs.unlinkSync(additionalImage3Path);
         }
 
         // Delete product from database

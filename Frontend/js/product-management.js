@@ -1,11 +1,10 @@
 // API Base URL
-const API_URL = 'http://localhost:5001/api';
+const API_URL = 'http://localhost:5000/api';
 let productToDelete = null;
 
 // Check admin authentication and load products
 document.addEventListener('DOMContentLoaded', async function() {
     await verifyAdminAccess();
-    await loadAdminProfile();
     await loadProducts();
     
     // Dropdown toggle
@@ -15,26 +14,16 @@ document.addEventListener('DOMContentLoaded', async function() {
     dropdownIcon.addEventListener('click', function() {
         dropdownContent.classList.toggle('show');
     });
-    
-    // Listen for profile updates from other tabs/windows
-    window.addEventListener('storage', function(e) {
-        if (e.key === 'user' || !e.key) {
-            loadAdminProfile();
-        }
-    });
 });
 
 // Get auth token
 function getAuthToken() {
-    return localStorage.getItem('token');
+    return localStorage.getItem('authToken');
 }
 
 // Verify admin access
 async function verifyAdminAccess() {
     const token = getAuthToken();
-    
-    console.log('Verifying admin access...');
-    console.log('Token:', token ? 'Present' : 'Missing');
     
     if (!token) {
         alert('Please login as admin');
@@ -43,7 +32,6 @@ async function verifyAdminAccess() {
     }
     
     try {
-        console.log('Making request to:', `${API_URL}/admin/verify`);
         const response = await fetch(`${API_URL}/admin/verify`, {
             method: 'GET',
             headers: {
@@ -52,15 +40,9 @@ async function verifyAdminAccess() {
             }
         });
         
-        console.log('Response status:', response.status);
-        const data = await response.json();
-        console.log('Response data:', data);
-        
-        if (!response.ok || !data.success) {
-            throw new Error(data.message || 'Not authorized');
+        if (!response.ok) {
+            throw new Error('Not authorized');
         }
-        
-        console.log('Admin verified:', data.user.name);
     } catch (error) {
         console.error('Admin verification error:', error);
         alert('You do not have admin access');
@@ -117,19 +99,19 @@ function createProductCard(product) {
     
     card.innerHTML = `
         <div class="product-image-container">
-            <img src="http://localhost:5001/${product.image}" alt="${product.name}" class="product-image">
+            <img src="http://localhost:5000/${product.mainImage}" alt="${product.name}" class="product-image">
             <div class="action-icons">
                 <div class="action-icon edit-icon" onclick="editProduct('${product._id}')">
-                    <img src="../User panel images/icons/edit-icon.png" alt="Edit">
+                    <img src="../images/product-icons/edit-icon.png" alt="Edit">
                 </div>
                 <div class="action-icon delete-icon" onclick="confirmDelete('${product._id}')">
-                    <img src="../User panel images/icons/delete-icon.png" alt="Delete">
+                    <img src="../images/product-icons/delete-icon.png" alt="Delete">
                 </div>
             </div>
         </div>
         <div class="product-info">
             <h3 class="product-name">${product.name}</h3>
-            <p class="product-price">$${product.price}</p>
+            <p class="product-price">${product.price}</p>
         </div>
     `;
     
@@ -204,47 +186,5 @@ async function deleteProduct() {
     } catch (error) {
         console.error('Delete product error:', error);
         alert('Failed to delete product: ' + error.message);
-    }
-}
-
-// Load admin profile
-async function loadAdminProfile() {
-    const token = getAuthToken();
-    
-    try {
-        const response = await fetch(`${API_URL}/admin/profile`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            }
-        });
-        
-        const data = await response.json();
-        
-        if (response.ok && data.success) {
-            const profileIcon = document.querySelector('.profile-icon');
-            const profileName = document.querySelector('.profile-name');
-            
-            if (data.admin.profileImage && data.admin.profileImage !== 'User panel images/default-avatar.png') {
-                const timestamp = new Date().getTime();
-                profileIcon.src = `http://localhost:5001/${data.admin.profileImage}?t=${timestamp}`;
-            }
-            
-            if (profileName) {
-                profileName.textContent = data.admin.name;
-            }
-        }
-    } catch (error) {
-        console.error('Load profile error:', error);
-    }
-}
-
-// Handle logout
-function handleLogout() {
-    if (confirm('Are you sure you want to logout?')) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        window.location.href = '../signin.html';
     }
 }
