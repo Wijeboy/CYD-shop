@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Checkout</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <link rel="stylesheet" href="css/billing.css">
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="header">
+
+  <!-- LOGO IMAGE -->
+  <div class="logo">
+    <img src="images/logo.png" alt="CYD Logo">
+  </div>
+
+  <!-- SEARCH -->
+  <div class="search-box">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="text" placeholder="Search">
+  </div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="#"><i class="fa-solid fa-box"></i> Orders</a>
+    <a href="#"><i class="fa-solid fa-cart-shopping"></i> Cart</a>
+    <a href="#"><i class="fa-regular fa-user"></i> Account</a>
+  </nav>
+</header>
+
+<!-- ===== CHECKOUT ===== -->
+<div class="checkout-wrapper">
+
+  <!-- LEFT SIDE -->
+  <div class="checkout-form">
+
+    <button class="back-btn">
+      <i class="fa-solid fa-arrow-left"></i>
+    </button>
+
+    <h2>CHECKOUT</h2>
+    <p class="sub">INFORMATION PAYMENT</p>
+
+    <h4><i class="fa-regular fa-envelope"></i> CONTACT INFO</h4>
+
+    <div class="input-icon">
+      <i class="fa-regular fa-envelope"></i>
+      <input type="email" placeholder="Email">
+    </div>
+
+    <div class="input-icon">
+      <i class="fa-solid fa-phone"></i>
+      <input type="text" placeholder="Phone">
+    </div>
+
+    <h4><i class="fa-solid fa-location-dot"></i> SHIPPING ADDRESS</h4>
+
+    <div class="row">
+      <div class="input-icon">
+        <i class="fa-regular fa-user"></i>
+        <input type="text" placeholder="Firstname">
+      </div>
+      <div class="input-icon">
+        <i class="fa-regular fa-user"></i>
+        <input type="text" placeholder="Lastname">
+      </div>
+    </div>
+
+    <div class="input-icon">
+      <i class="fa-solid fa-flag"></i>
+      <input type="text" placeholder="Country">
+    </div>
+
+    <div class="input-icon">
+      <i class="fa-solid fa-map"></i>
+      <input type="text" placeholder="State / Region">
+    </div>
+
+    <div class="input-icon">
+      <i class="fa-solid fa-road"></i>
+      <input type="text" placeholder="Street">
+    </div>
+
+    <div class="row">
+      <div class="input-icon">
+        <i class="fa-solid fa-city"></i>
+        <input type="text" placeholder="City">
+      </div>
+      <div class="input-icon">
+        <i class="fa-solid fa-envelopes-bulk"></i>
+        <input type="text" placeholder="Postal Code">
+      </div>
+    </div>
+
+    <button class="pay-btn">
+      <i class="fa-solid fa-lock"></i> Proceed to Payment
+    </button>
+  </div>
+
+  <!-- RIGHT SIDE -->
+  <div class="order-summary">
+    <h3><i class="fa-solid fa-receipt"></i> YOUR ORDER</h3>
+
+    <div class="item">
+      <p>Long Dress</p>
+      <span>Black / M</span>
+      <strong>$120.00</strong>
+    </div>
+
+    <div class="item">
+      <p>Summer Fresh</p>
+      <span>Green / M</span>
+      <strong>$140.00</strong>
+    </div>
+
+    <hr>
+
+    <p class="total-line">Subtotal <span>$260.00</span></p>
+    <p class="muted">Shipping calculated at next step</p>
+    <p class="total-line total">Total <span>$260.00</span></p>
+  </div>
+
+</div>
+
+</body>
+</html>
