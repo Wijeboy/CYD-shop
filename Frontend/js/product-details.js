@@ -53,6 +53,51 @@ function setupEventListeners() {
     // Add to cart button
     const addToCartBtn = document.getElementById('addToCartBtn');
     addToCartBtn.addEventListener('click', handleAddToCart);
+
+    // Policy modal
+    const policyInfoBtn = document.getElementById('policyInfoBtn');
+    const policyBadge = document.querySelector('.badge');
+    const policyModal = document.getElementById('policyModal');
+    const closePolicyModal = document.getElementById('closePolicyModal');
+
+    if (policyModal) {
+        // Open modal when clicking the badge or info button
+        if (policyBadge) {
+            policyBadge.addEventListener('click', function(e) {
+                e.preventDefault();
+                policyModal.classList.add('active');
+            });
+        }
+
+        if (policyInfoBtn) {
+            policyInfoBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                policyModal.classList.add('active');
+            });
+        }
+
+        // Close modal
+        if (closePolicyModal) {
+            closePolicyModal.addEventListener('click', function() {
+                policyModal.classList.remove('active');
+            });
+        }
+
+        // Close on overlay click
+        policyModal.addEventListener('click', function(e) {
+            if (e.target === policyModal) {
+                policyModal.classList.remove('active');
+            }
+        });
+
+        // Close on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && policyModal.classList.contains('active')) {
+                policyModal.classList.remove('active');
+            }
+        });
+    }
 }
 
 // Load product details from API
@@ -87,7 +132,6 @@ function displayProductDetails(product) {
     // Set title and basic info
     document.getElementById('productTitle').textContent = product.name;
     document.getElementById('productPrice').textContent = `Rs ${product.price.toFixed(2)}`;
-    document.getElementById('productSku').textContent = `SKU: ${product._id.substring(0, 12).toUpperCase()}`;
 
     // Check if product has color variants
     if (product.colorVariants && product.colorVariants.length > 0) {

@@ -6,6 +6,21 @@
     <title>Product Details - CYD</title>
     <link rel="stylesheet" href="css/product-details.css">
     <script src="js/auth-utils.js"></script>
+    <script>
+        // Load user info in navigation
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            if (user && user.name) {
+                const accountLink = document.querySelector('a[href="profile.html"]');
+                if (accountLink) {
+                    const accountText = accountLink.querySelector('span');
+                    if (accountText) {
+                        accountText.textContent = user.name.split(' ')[0]; // First name only
+                    }
+                }
+            }
+        });
+    </script>
 </head>
 <body>
     <!-- Navigation Bar -->
@@ -70,17 +85,17 @@
             <div class="product-info">
                 <h1 class="product-title" id="productTitle">Loading...</h1>
                 <p class="product-price" id="productPrice">Rs 0.00</p>
-                <p class="product-sku" id="productSku">SKU: -</p>
 
                 <!-- Badges -->
                 <div class="product-badges">
                     <div class="badge">
-                        <img src="User panel images/icons/delivery-icon.png" alt="COD" class="badge-icon">
-                        <span>Cash on Delivery</span>
-                    </div>
-                    <div class="badge">
                         <img src="User panel images/icons/exchange-icon.png" alt="Exchange" class="badge-icon">
-                        <span>Easy Exchange & Refund Policy</span>
+                        <div class="badge-text-wrapper">
+                            <span>Easy Exchange & Refund Policy</span>
+                            <button class="info-icon-btn" id="policyInfoBtn" title="View Policy Details">
+                                <span class="info-icon">i</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -120,6 +135,69 @@
             </div>
         </div>
     </main>
+
+    <!-- Policy Modal -->
+    <div class="modal-overlay" id="policyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Easy Exchange & Refund Policy</h2>
+                <button class="modal-close" id="closePolicyModal">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="policy-section">
+                    <h3>🔄 Exchange Policy</h3>
+                    <ul>
+                        <li>Free exchange within <strong>7 days</strong> of delivery</li>
+                        <li>Product must be unused, unworn, and in original condition with all tags attached</li>
+                        <li>Original packaging must be intact</li>
+                        <li>Exchange available for different size or color (subject to availability)</li>
+                        <li>Exchange processing time: 3-5 business days</li>
+                    </ul>
+                </div>
+                
+                <div class="policy-section">
+                    <h3>💰 Refund Policy</h3>
+                    <ul>
+                        <li>Refund available within <strong>7 days</strong> of delivery</li>
+                        <li>Full refund if product is defective or damaged</li>
+                        <li>Refund processed within 5-7 business days after product inspection</li>
+                        <li>Amount will be credited to original payment method</li>
+                        <li>Shipping charges are non-refundable (except for defective items)</li>
+                    </ul>
+                </div>
+                
+                <div class="policy-section">
+                    <h3>📦 How to Request Exchange/Refund</h3>
+                    <ol>
+                        <li>Go to <strong>Orders</strong> section in your account</li>
+                        <li>Select the order and click on <strong>Return/Exchange</strong></li>
+                        <li>Choose your reason and submit request</li>
+                        <li>Our team will contact you within 24 hours</li>
+                        <li>Pack the product securely and hand it to our courier partner</li>
+                    </ol>
+                </div>
+                
+                <div class="policy-section">
+                    <h3>❌ Non-Returnable Items</h3>
+                    <ul>
+                        <li>Innerwear and lingerie (for hygiene reasons)</li>
+                        <li>Products marked as "Final Sale"</li>
+                        <li>Customized or personalized items</li>
+                        <li>Items damaged due to misuse</li>
+                    </ul>
+                </div>
+                
+                <div class="policy-note">
+                    <p><strong>Note:</strong> For any queries, contact our customer support at <strong>support@cyd.com</strong> or call <strong>1-800-CYD-SHOP</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer class="footer">

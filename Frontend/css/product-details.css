@@ -210,6 +210,13 @@ body {
     padding: 12px;
     background-color: #f5f5f5;
     border-radius: 8px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.badge:hover {
+    background-color: #ebebeb;
 }
 
 .badge-icon {
@@ -221,6 +228,44 @@ body {
     font-size: 14px;
     color: #333333;
     font-weight: 500;
+}
+
+.badge-text-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.info-icon-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.info-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #666666;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: bold;
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    font-family: Georgia, serif;
+}
+
+.info-icon-btn:hover .info-icon {
+    background-color: #000000;
+    transform: scale(1.1);
 }
 
 /* Color Section */
@@ -534,4 +579,152 @@ body {
         grid-template-columns: 1fr;
         gap: 30px;
     }
+}
+
+/* Policy Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 700px;
+    max-height: 85vh;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    transform: translateY(-30px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .modal-content {
+    transform: translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px;
+    border-bottom: 1px solid #e0e0e0;
+    background-color: #f9f9f9;
+}
+
+.modal-header h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #000000;
+    margin: 0;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    color: #666666;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.modal-close:hover {
+    color: #000000;
+    background-color: #e0e0e0;
+}
+
+.modal-body {
+    padding: 25px;
+    overflow-y: auto;
+    max-height: calc(85vh - 70px);
+}
+
+.policy-section {
+    margin-bottom: 25px;
+}
+
+.policy-section h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #000000;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.policy-section ul,
+.policy-section ol {
+    margin-left: 20px;
+    line-height: 1.8;
+}
+
+.policy-section li {
+    font-size: 14px;
+    color: #333333;
+    margin-bottom: 8px;
+}
+
+.policy-section strong {
+    color: #000000;
+    font-weight: 600;
+}
+
+.policy-note {
+    background-color: #f0f8ff;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #001f3f;
+    margin-top: 20px;
+}
+
+.policy-note p {
+    font-size: 13px;
+    color: #333333;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.policy-note strong {
+    color: #001f3f;
+    font-weight: 600;
+}
+
+/* Scrollbar Styling for Modal */
+.modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
