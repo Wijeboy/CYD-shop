@@ -101,9 +101,19 @@ function createProductCard(product) {
     card.className = 'product-card';
     card.href = `product-details.html?id=${product._id}`;
     
+    // Get image - prioritize colorVariants if available
+    let imageUrl;
+    if (product.colorVariants && product.colorVariants.length > 0) {
+        // Use first color variant's main image
+        imageUrl = `http://localhost:5001/${product.colorVariants[0].images.mainImage}`;
+    } else {
+        // Use legacy main image
+        imageUrl = `http://localhost:5001/${product.mainImage}`;
+    }
+    
     card.innerHTML = `
         <div class="product-image-container">
-            <img src="http://localhost:5001/${product.mainImage}" alt="${product.name}" class="product-image" onerror="this.src='User panel images/icons/upload-placeholder.png'">
+            <img src="${imageUrl}" alt="${product.name}" class="product-image" onerror="this.src='User panel images/icons/upload-placeholder.png'">
         </div>
         <div class="product-info">
             <h3 class="product-name">${product.name}</h3>

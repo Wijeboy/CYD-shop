@@ -8,6 +8,20 @@ document.addEventListener('DOMContentLoaded', async function() {
     await loadAdminProfile();
     await loadProducts();
     
+    // Check for redirect messages
+    const urlParams = new URLSearchParams(window.location.search);
+    const message = urlParams.get('message');
+    
+    if (message === 'color-variant-edit-not-supported') {
+        showMessage('⚠️ This product has color variants and cannot be edited yet. Please delete and recreate the product if changes are needed.', 'warning');
+    } else if (message === 'missing-data') {
+        showMessage('⚠️ This product is missing required data and cannot be edited.', 'error');
+    } else if (message === 'load-failed') {
+        showMessage('❌ Failed to load product data.', 'error');
+    } else if (message === 'invalid-id') {
+        showMessage('❌ Invalid product ID.', 'error');
+    }
+    
     // Dropdown toggle
     const dropdownIcon = document.getElementById('dropdownIcon');
     const dropdownContent = document.getElementById('dropdownContent');
@@ -22,6 +36,34 @@ document.addEventListener('DOMContentLoaded', async function() {
         logoutBtn.addEventListener('click', handleLogout);
     }
 });
+
+// Show message to user
+function showMessage(text, type) {
+    const messageDiv = document.createElement('div');
+    messageDiv.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        background: ${type === 'warning' ? '#fff3cd' : type === 'error' ? '#f8d7da' : '#d1e7dd'};
+        color: ${type === 'warning' ? '#856404' : type === 'error' ? '#721c24' : '#0f5132'};
+        border: 1px solid ${type === 'warning' ? '#ffc107' : type === 'error' ? '#f5c6cb' : '#badbcc'};
+        border-radius: 6px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 10000;
+        max-width: 400px;
+        font-size: 14px;
+        line-height: 1.5;
+    `;
+    messageDiv.textContent = text;
+    document.body.appendChild(messageDiv);
+    
+    setTimeout(() => {
+        messageDiv.style.transition = 'opacity 0.5s';
+        messageDiv.style.opacity = '0';
+        setTimeout(() => messageDiv.remove(), 500);
+    }, 5000);
+}
 
 // Get auth token
 function getAuthToken() {
@@ -159,21 +201,50 @@ function createProductCard(product) {
     const card = document.createElement('div');
     card.className = 'product-card';
     
+    // Get image - prioritize colorVariants if available
+    let imageUrl;
+    console.log('Product:', product.name, 'colorVariants:', product.colorVariants);
+    
+    if (product.colorVariants && product.colorVariants.length > 0 && product.colorVariants[0].images && product.colorVariants[0].images.mainImage) {
+        // Use first color variant's main image
+        const imagePath = product.colorVariants[0].images.mainImage;
+        imageUrl = imagePath.startsWith('http') ? imagePath : `http://localhost:5001/${imagePath}`;
+        console.log('Using color variant image:', imageUrl);
+    } else if (product.mainImage) {
+        // Use legacy main image
+        const imagePath = product.mainImage;
+        imageUrl = imagePath.startsWith('http') ? imagePath : `http://localhost:5001/${imagePath}`;
+        console.log('Using legacy image:', imageUrl);
+    } else {
+        // Fallback to placeholder
+        imageUrl = '../User panel images/icons/upload-placeholder.png';
+        console.log('Using placeholder image');
+    }
+    
+    // Format price with proper decimal places
+    const formattedPrice = typeof product.price === 'number' ? product.price.toFixed(2) : product.price;
+    
+    // Check if product has color variants
+    const hasColorVariants = product.colorVariants && product.colorVariants.length > 0;
+    const colorBadge = hasColorVariants ? `<span class="color-badge">${product.colorVariants.length} Colors</span>` : '';
+    
     card.innerHTML = `
         <div class="product-image-container">
-            <img src="http://localhost:5001/${product.mainImage}" alt="${product.name}" class="product-image" onerror="this.src='../User panel images/icons/upload-placeholder.png'">
+            <img src="${imageUrl}" alt="${product.name}" class="product-image" onerror="this.src='../User panel images/icons/upload-placeholder.png'">
             <div class="action-icons">
-                <div class="action-icon edit-icon" onclick="editProduct('${product._id}')">
+                <div class="action-icon edit-icon" onclick="editProduct('${product._id}', ${hasColorVariants})">
                     <img src="../User panel images/icons/edit-icon.png" alt="Edit">
                 </div>
                 <div class="action-icon delete-icon" onclick="confirmDelete('${product._id}')">
                     <img src="../User panel images/icons/delete-icon.png" alt="Delete">
                 </div>
             </div>
+            ${colorBadge}
         </div>
         <div class="product-info">
             <h3 class="product-name">${product.name}</h3>
-            <p class="product-price">Rs ${product.price}</p>
+            <p class="product-price">Rs ${formattedPrice}</p>
+            <p class="product-category">${product.category}</p>
         </div>
     `;
     
@@ -181,8 +252,14 @@ function createProductCard(product) {
 }
 
 // Edit product
-function editProduct(productId) {
-    window.location.href = `edit-product.html?id=${productId}`;
+function editProduct(productId, hasColorVariants) {
+    if (hasColorVariants) {
+        // Redirect to edit-product-variant page
+        window.location.href = `edit-product-variant.html?id=${productId}`;
+    } else {
+        // Redirect to legacy edit product page
+        window.location.href = `edit-product.html?id=${productId}`;
+    }
 }
 
 // Confirm delete product

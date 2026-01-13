@@ -17,24 +17,31 @@ document.addEventListener('DOMContentLoaded', async function() {
     productId = urlParams.get('id');
     
     if (!productId) {
-        alert('Invalid product ID');
-        window.location.href = 'product-management.html';
+        window.location.href = 'product-management.html?message=invalid-id';
         return;
     }
     
-    await loadProductData();
+    // Load product data first - will redirect if it's a color variant product
+    const productLoaded = await loadProductData();
+    
+    // Only setup UI if product loaded successfully (not redirected)
+    if (!productLoaded) {
+        return;
+    }
     
     // Main image upload handlers
     const mainImagePreview = document.getElementById('mainImagePreview');
     const mainImageInput = document.getElementById('mainImage');
     const uploadLabel = document.querySelector('.upload-label');
     
-    mainImagePreview.addEventListener('click', () => mainImageInput.click());
-    uploadLabel.addEventListener('click', () => mainImageInput.click());
-    mainImageInput.addEventListener('change', (e) => {
-        handleImagePreview(e, 'mainPreviewImg');
-        imagesChanged.main = true;
-    });
+    if (mainImagePreview && mainImageInput && uploadLabel) {
+        mainImagePreview.addEventListener('click', () => mainImageInput.click());
+        uploadLabel.addEventListener('click', () => mainImageInput.click());
+        mainImageInput.addEventListener('change', (e) => {
+            handleImagePreview(e, 'mainPreviewImg');
+            imagesChanged.main = true;
+        });
+    }
     
     // Additional images upload handlers
     setupAdditionalImageUpload('additionalPreview1', 'additionalImage1', 'additionalImg1', 'additional1');
@@ -43,23 +50,32 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // Cancel button handler
     const cancelBtn = document.getElementById('cancelBtn');
-    cancelBtn.addEventListener('click', () => {
-        window.location.href = 'product-management.html';
-    });
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', () => {
+            window.location.href = 'product-management.html';
+        });
+    }
     
     // Form submission handler
     const editProductForm = document.getElementById('editProductForm');
-    editProductForm.addEventListener('submit', handleUpdateProduct);
+    if (editProductForm) {
+        editProductForm.addEventListener('submit', handleUpdateProduct);
+    }
 });
 
 // Setup additional image upload
 function setupAdditionalImageUpload(previewId, inputId, imgId, imageKey) {
     const preview = document.getElementById(previewId);
     const input = document.getElementById(inputId);
+    
+    if (!preview || !input) return;
+    
     const uploadText = preview.nextElementSibling;
     
     preview.addEventListener('click', () => input.click());
-    uploadText.addEventListener('click', () => input.click());
+    if (uploadText) {
+        uploadText.addEventListener('click', () => input.click());
+    }
     input.addEventListener('change', (e) => {
         handleImagePreview(e, imgId);
         imagesChanged[imageKey] = true;
@@ -130,71 +146,107 @@ async function loadProductData() {
         });
         
         const result = await response.json();
+        console.log('Product data received:', result);
         
         if (!response.ok) {
             throw new Error(result.message || 'Failed to load product');
         }
         
-        if (result.success) {
+        if (result.success && result.product) {
+            // Check if product has color variants
+            if (result.product.colorVariants && result.product.colorVariants.length > 0) {
+                // Redirect immediately without alert
+                console.log('Product has color variants, redirecting...');
+                window.location.href = 'product-management.html?message=color-variant-edit-not-supported';
+                return false;
+            }
+            
+            // Check if product has required fields for legacy editing
+            if (!result.product.mainImage || !result.product.additionalImages) {
+                console.log('Product missing required fields, redirecting...');
+                window.location.href = 'product-management.html?message=missing-data';
+                return false;
+            }
+            
             populateForm(result.product);
+            return true;
         } else {
             throw new Error('Product not found');
         }
     } catch (error) {
         console.error('Load product error:', error);
-        alert('Failed to load product data');
-        window.location.href = 'product-management.html';
+        window.location.href = 'product-management.html?message=load-failed';
+        return false;
     }
 }
 
 // Populate form with product data
 function populateForm(product) {
-    document.getElementById('productName').value = product.name;
-    document.getElementById('price').value = product.price;
-    document.getElementById('category').value = product.category;
-    document.getElementById('description').value = product.description;
-    document.getElementById('sizeS').value = product.sizeQuantities.S;
-    document.getElementById('sizeM').value = product.sizeQuantities.M;
-    document.getElementById('sizeL').value = product.sizeQuantities.L;
-    document.getElementById('sizeXL').value = product.sizeQuantities.XL;
-    document.getElementById('size2XL').value = product.sizeQuantities.XXL;
+    console.log('Populating form with product:', product);
     
-    // Display current product images with error handling
-    const mainImg = document.getElementById('mainPreviewImg');
-    const img1 = document.getElementById('additionalImg1');
-    const img2 = document.getElementById('additionalImg2');
-    const img3 = document.getElementById('additionalImg3');
-    
-    mainImg.src = `http://localhost:5001/${product.mainImage}`;
-    mainImg.onerror = function() {
-        this.src = '../User panel images/icons/upload-placeholder.png';
-        console.error('Failed to load main image:', product.mainImage);
-    };
-    
-    img1.src = `http://localhost:5001/${product.additionalImages.image1}`;
-    img1.onerror = function() {
-        this.src = '../User panel images/icons/upload-placeholder.png';
-        console.error('Failed to load additional image 1:', product.additionalImages.image1);
-    };
-    
-    img2.src = `http://localhost:5001/${product.additionalImages.image2}`;
-    img2.onerror = function() {
-        this.src = '../User panel images/icons/upload-placeholder.png';
-        console.error('Failed to load additional image 2:', product.additionalImages.image2);
-    };
-    
-    img3.src = `http://localhost:5001/${product.additionalImages.image3}`;
-    img3.onerror = function() {
-        this.src = '../User panel images/icons/upload-placeholder.png';
-        console.error('Failed to load additional image 3:', product.additionalImages.image3);
-    };
-    
-    console.log('Product images loaded:', {
-        main: `http://localhost:5001/${product.mainImage}`,
-        img1: `http://localhost:5001/${product.additionalImages.image1}`,
-        img2: `http://localhost:5001/${product.additionalImages.image2}`,
-        img3: `http://localhost:5001/${product.additionalImages.image3}`
-    });
+    try {
+        // Basic info
+        document.getElementById('productName').value = product.name || '';
+        document.getElementById('price').value = product.price || '';
+        document.getElementById('category').value = product.category || '';
+        document.getElementById('description').value = product.description || '';
+        
+        // Handle both legacy and new size structure
+        const sizeQuantities = product.sizeQuantities || {};
+        document.getElementById('sizeS').value = sizeQuantities.S || 0;
+        document.getElementById('sizeM').value = sizeQuantities.M || 0;
+        document.getElementById('sizeL').value = sizeQuantities.L || 0;
+        document.getElementById('sizeXL').value = sizeQuantities.XL || 0;
+        document.getElementById('size2XL').value = sizeQuantities.XXL || 0;
+        
+        // Display current product images with error handling
+        const mainImg = document.getElementById('mainPreviewImg');
+        const img1 = document.getElementById('additionalImg1');
+        const img2 = document.getElementById('additionalImg2');
+        const img3 = document.getElementById('additionalImg3');
+        
+        // Handle main image
+        if (product.mainImage) {
+            const mainImageUrl = product.mainImage.startsWith('http') ? product.mainImage : `http://localhost:5001/${product.mainImage}`;
+            mainImg.src = mainImageUrl;
+            mainImg.onerror = function() {
+                this.src = '../User panel images/icons/upload-placeholder.png';
+                console.error('Failed to load main image:', product.mainImage);
+            };
+        }
+        
+        // Handle additional images
+        if (product.additionalImages) {
+            if (product.additionalImages.image1) {
+                const img1Url = product.additionalImages.image1.startsWith('http') ? product.additionalImages.image1 : `http://localhost:5001/${product.additionalImages.image1}`;
+                img1.src = img1Url;
+                img1.onerror = function() {
+                    this.src = '../User panel images/icons/upload-placeholder.png';
+                };
+            }
+            
+            if (product.additionalImages.image2) {
+                const img2Url = product.additionalImages.image2.startsWith('http') ? product.additionalImages.image2 : `http://localhost:5001/${product.additionalImages.image2}`;
+                img2.src = img2Url;
+                img2.onerror = function() {
+                    this.src = '../User panel images/icons/upload-placeholder.png';
+                };
+            }
+            
+            if (product.additionalImages.image3) {
+                const img3Url = product.additionalImages.image3.startsWith('http') ? product.additionalImages.image3 : `http://localhost:5001/${product.additionalImages.image3}`;
+                img3.src = img3Url;
+                img3.onerror = function() {
+                    this.src = '../User panel images/icons/upload-placeholder.png';
+                };
+            }
+        }
+        
+        console.log('Form populated successfully');
+    } catch (error) {
+        console.error('Error populating form:', error);
+        alert('Error loading product details: ' + error.message);
+    }
 }
 
 // Handle image preview
@@ -245,16 +297,8 @@ async function handleUpdateProduct(event) {
     const size2XL = document.getElementById('size2XL').value;
     
     // Validate inputs
-    if (!name || !price || !category || !description || 
-        !sizeS || !sizeM || !sizeL || !sizeXL || !size2XL) {
-        alert('Please fill in all fields');
-        return;
-    }
-    
-    // Validate product name (text only)
-    const nameRegex = /^[A-Za-z\s]+$/;
-    if (!nameRegex.test(name)) {
-        alert('Product name should contain only letters and spaces');
+    if (!name || !price || !category || !description) {
+        alert('Please fill in all required fields');
         return;
     }
     

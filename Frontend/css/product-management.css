@@ -234,6 +234,19 @@ body {
     background-color: #f0f0f0;
 }
 
+/* Color Badge */
+.color-badge {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
 /* Action Icons */
 .action-icons {
     position: absolute;
@@ -275,12 +288,24 @@ body {
     color: #000000;
     margin-bottom: 8px;
     text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .product-price {
-    font-size: 14px;
+    font-size: 16px;
+    font-weight: 600;
     color: #000000;
     text-align: left;
+    margin-bottom: 5px;
+}
+
+.product-category {
+    font-size: 13px;
+    color: #666;
+    text-align: left;
+    text-transform: capitalize;
 }
 
 /* Delete Confirmation Modal */

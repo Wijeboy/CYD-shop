@@ -18,61 +18,77 @@ const productSchema = new mongoose.Schema({
         enum: ['tops', 't-shirts', 'blouses', 'dresses', 'trousers', 'skirts', 'ethnic wear'],
         lowercase: true
     },
-    sizeQuantities: {
-        S: {
-            type: Number,
-            required: [true, 'Please provide size S quantity'],
-            min: [0, 'Quantity cannot be negative'],
-            default: 0
-        },
-        M: {
-            type: Number,
-            required: [true, 'Please provide size M quantity'],
-            min: [0, 'Quantity cannot be negative'],
-            default: 0
-        },
-        L: {
-            type: Number,
-            required: [true, 'Please provide size L quantity'],
-            min: [0, 'Quantity cannot be negative'],
-            default: 0
-        },
-        XL: {
-            type: Number,
-            required: [true, 'Please provide size XL quantity'],
-            min: [0, 'Quantity cannot be negative'],
-            default: 0
-        },
-        XXL: {
-            type: Number,
-            required: [true, 'Please provide size 2XL quantity'],
-            min: [0, 'Quantity cannot be negative'],
-            default: 0
-        }
-    },
     description: {
         type: String,
         required: [true, 'Please provide product description'],
         trim: true,
         maxlength: [1000, 'Description cannot exceed 1000 characters']
     },
-    mainImage: {
-        type: String,
-        required: [true, 'Please upload main product image']
-    },
-    additionalImages: {
-        image1: {
+    // Color variants with their own images and sizes
+    colorVariants: [{
+        color: {
             type: String,
-            required: [true, 'Please upload additional image 1']
+            required: true,
+            enum: ['black', 'white', 'red', 'blue', 'green', 'yellow', 'pink', 'purple', 'orange', 'brown', 'gray', 'navy', 'beige', 'maroon']
         },
-        image2: {
+        colorName: {
             type: String,
-            required: [true, 'Please upload additional image 2']
+            required: true
         },
-        image3: {
+        colorHex: {
             type: String,
-            required: [true, 'Please upload additional image 3']
+            required: true
+        },
+        images: {
+            mainImage: {
+                type: String,
+                required: true
+            },
+            additionalImages: [{
+                type: String
+            }]
+        },
+        sizeQuantities: {
+            S: {
+                type: Number,
+                min: [0, 'Quantity cannot be negative'],
+                default: 0
+            },
+            M: {
+                type: Number,
+                min: [0, 'Quantity cannot be negative'],
+                default: 0
+            },
+            L: {
+                type: Number,
+                min: [0, 'Quantity cannot be negative'],
+                default: 0
+            },
+            XL: {
+                type: Number,
+                min: [0, 'Quantity cannot be negative'],
+                default: 0
+            },
+            XXL: {
+                type: Number,
+                min: [0, 'Quantity cannot be negative'],
+                default: 0
+            }
         }
+    }],
+    // Keep old structure for backward compatibility
+    sizeQuantities: {
+        S: { type: Number, min: [0, 'Quantity cannot be negative'], default: 0 },
+        M: { type: Number, min: [0, 'Quantity cannot be negative'], default: 0 },
+        L: { type: Number, min: [0, 'Quantity cannot be negative'], default: 0 },
+        XL: { type: Number, min: [0, 'Quantity cannot be negative'], default: 0 },
+        XXL: { type: Number, min: [0, 'Quantity cannot be negative'], default: 0 }
+    },
+    mainImage: { type: String },
+    additionalImages: {
+        image1: { type: String },
+        image2: { type: String },
+        image3: { type: String }
     },
     isActive: {
         type: Boolean,
@@ -93,6 +109,12 @@ productSchema.index({ isActive: 1 });
 
 // Virtual for total stock quantity
 productSchema.virtual('totalStock').get(function() {
+    if (this.colorVariants && this.colorVariants.length > 0) {
+        return this.colorVariants.reduce((total, variant) => {
+            return total + variant.sizeQuantities.S + variant.sizeQuantities.M + 
+                   variant.sizeQuantities.L + variant.sizeQuantities.XL + variant.sizeQuantities.XXL;
+        }, 0);
+    }
     return this.sizeQuantities.S + this.sizeQuantities.M + 
            this.sizeQuantities.L + this.sizeQuantities.XL + this.sizeQuantities.XXL;
 });

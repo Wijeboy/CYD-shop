@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - CYD</title>
+    <link rel="stylesheet" href="css/product-details.css">
+    <script src="js/auth-utils.js"></script>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="index.html">
+                <img src="images/logo.png" alt="CYD Logo" class="logo">
+            </a>
+            <span class="brand-name">C Y D</span>
+            <a href="index.html" class="nav-link">
+                <span>Home</span>
+            </a>
+            <a href="product-listing.html" class="nav-link">
+                <span>Shop Now</span>
+            </a>
+        </div>
+        
+        <div class="nav-center">
+            <input type="text" id="searchInput" placeholder="search" class="search-input">
+            <button id="searchBtn" class="search-btn">Search</button>
+        </div>
+        
+        <div class="nav-right">
+            <a href="order.html" class="nav-link">
+                <img src="User panel images/icons/orders-icon.png" alt="Orders" class="nav-icon">
+                <span>Orders</span>
+            </a>
+            <a href="checkout.html" class="nav-link">
+                <img src="User panel images/icons/cart-icon.png" alt="Cart" class="nav-icon">
+                <span>Cart</span>
+            </a>
+            <a href="about.html" class="nav-link">
+                <span>About Us</span>
+            </a>
+            <a href="profile.html" class="nav-link">
+                <img src="User panel images/icons/account-icon.webp" alt="Account" class="nav-icon">
+                <span>Account</span>
+            </a>
+            <button onclick="handleLogout()" class="nav-link logout-btn">
+                <span>Logout</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Product Details Section -->
+    <main class="product-details-container">
+        <div class="product-content">
+            <!-- Image Gallery -->
+            <div class="image-gallery">
+                <div class="thumbnail-images">
+                    <img src="" alt="Thumbnail 1" class="thumbnail active" data-index="0">
+                    <img src="" alt="Thumbnail 2" class="thumbnail" data-index="1">
+                    <img src="" alt="Thumbnail 3" class="thumbnail" data-index="2">
+                    <img src="" alt="Thumbnail 4" class="thumbnail" data-index="3">
+                </div>
+                <div class="main-image-container">
+                    <img src="" alt="Product Image" class="main-product-image" id="mainImage">
+                </div>
+            </div>
+
+            <!-- Product Information -->
+            <div class="product-info">
+                <h1 class="product-title" id="productTitle">Loading...</h1>
+                <p class="product-price" id="productPrice">Rs 0.00</p>
+                <p class="product-sku" id="productSku">SKU: -</p>
+
+                <!-- Badges -->
+                <div class="product-badges">
+                    <div class="badge">
+                        <img src="User panel images/icons/delivery-icon.png" alt="COD" class="badge-icon">
+                        <span>Cash on Delivery</span>
+                    </div>
+                    <div class="badge">
+                        <img src="User panel images/icons/exchange-icon.png" alt="Exchange" class="badge-icon">
+                        <span>Easy Exchange & Refund Policy</span>
+                    </div>
+                </div>
+
+                <!-- Color Selection -->
+                <div class="color-section">
+                    <label class="section-label">Color</label>
+                    <div class="color-options" id="colorOptions">
+                        <!-- Colors will be loaded dynamically -->
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="product-tabs">
+                    <button class="tab-btn active" data-tab="size">SIZE GUIDE</button>
+                    <button class="tab-btn" data-tab="info">PRODUCT INFORMATION</button>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="tab-content" id="sizeContent">
+                    <div class="size-section">
+                        <label class="section-label">Size</label>
+                        <div class="size-options" id="sizeOptions">
+                            <!-- Sizes will be loaded dynamically -->
+                        </div>
+                        <a href="#" class="size-guide-link">FIND YOUR SIZE / MEASUREMENT GUIDE</a>
+                    </div>
+                </div>
+
+                <div class="tab-content hidden" id="infoContent">
+                    <div class="product-description" id="productDescription">
+                        <p>Loading product information...</p>
+                    </div>
+                </div>
+
+                <!-- Add to Cart Button -->
+                <button class="add-to-cart-btn" id="addToCartBtn">ADD</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 class="footer-title">About CYD</h3>
+                <p class="footer-text">Your trusted online fashion destination for the latest trends and timeless styles.</p>
+            </div>
+            <div class="footer-section">
+                <h3 class="footer-title">Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="product-listing.html">Shop Now</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="profile.html">My Account</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3 class="footer-title">Customer Service</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Shipping Policy</a></li>
+                    <li><a href="#">Return Policy</a></li>
+                    <li><a href="#">FAQs</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3 class="footer-title">Follow Us</h3>
+                <div class="social-links">
+                    <a href="#"><img src="User panel images/icons/facebook-icon.webp" alt="Facebook"></a>
+                    <a href="#"><img src="User panel images/icons/instagram-icon.jpg" alt="Instagram"></a>
+                    <a href="#"><img src="User panel images/icons/twitter-icon.png" alt="Twitter"></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 CYD. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/product-details.js"></script>
+</body>
+</html>
