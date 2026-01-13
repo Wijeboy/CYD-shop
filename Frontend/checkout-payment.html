@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout - CYD</title>
-    <link rel="stylesheet" href="css/checkout.css">
+    <title>Checkout Payment - CYD</title>
+    <link rel="stylesheet" href="css/checkout-payment.css">
 </head>
 <body>
     <!-- Navigation Bar -->
@@ -57,77 +57,40 @@
 
             <!-- Navigation Tabs -->
             <div class="checkout-nav">
-                <a href="checkout.html" class="nav-tab active">Information</a>
-                <a href="checkout-payment.html" class="nav-tab">Payment</a>
+                <a href="checkout.html" class="nav-tab">Information</a>
+                <a href="checkout-payment.html" class="nav-tab active">Payment</a>
             </div>
 
-            <!-- Checkout Form -->
-            <form class="checkout-form" id="checkoutForm">
-                <!-- Contact Info Section -->
+            <!-- Payment Form -->
+            <form class="payment-form" id="paymentForm">
+                <!-- Card Info Section -->
                 <div class="form-section">
-                    <h2 class="section-title">Contact Info</h2>
+                    <h2 class="section-title">Add Card</h2>
                     
                     <div class="form-group">
-                        <input type="email" id="email" name="email" class="form-input" 
-                               placeholder="Email" required>
+                        <input type="text" id="cardNumber" name="cardNumber" class="form-input" 
+                               placeholder="Card Number" maxlength="16" required>
                     </div>
 
                     <div class="form-group">
-                        <input type="tel" id="phone" name="phone" class="form-input" 
-                               placeholder="Phone" required>
-                    </div>
-                </div>
-
-                <!-- Shipping Address Section -->
-                <div class="form-section">
-                    <h2 class="section-title">Shipping Address</h2>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <input type="text" id="firstName" name="firstName" class="form-input" 
-                                   placeholder="First Name" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="lastName" name="lastName" class="form-input" 
-                                   placeholder="Last Name" required>
-                        </div>
+                        <input type="text" id="cvv" name="cvv" class="form-input" 
+                               placeholder="CVV" maxlength="3" required>
                     </div>
 
                     <div class="form-group">
-                        <select id="country" name="country" class="form-input" required>
-                            <option value="">Select Country</option>
-                            <option value="srilanka">Sri Lanka</option>
-                            <option value="india">India</option>
-                            <option value="china">China</option>
-                            <option value="japan">Japan</option>
-                            <option value="usa">USA</option>
-                        </select>
+                        <input type="text" id="nameOnCard" name="nameOnCard" class="form-input" 
+                               placeholder="Name on Card" required>
                     </div>
 
                     <div class="form-group">
-                        <input type="text" id="state" name="state" class="form-input" 
-                               placeholder="State/Region" required>
-                    </div>
-
-                    <div class="form-group">
-                        <input type="text" id="line1" name="line1" class="form-input" 
-                               placeholder="Address Line 1" required>
-                    </div>
-
-                    <div class="form-group">
-                        <input type="text" id="city" name="city" class="form-input" 
-                               placeholder="City" required>
-                    </div>
-
-                    <div class="form-group">
-                        <input type="text" id="postalCode" name="postalCode" class="form-input" 
-                               placeholder="Postal Code" required>
+                        <input type="text" id="expiry" name="expiry" class="form-input" 
+                               placeholder="Expiry (MM/YY)" maxlength="5" required>
                     </div>
                 </div>
 
                 <!-- Submit Button -->
                 <div class="button-container">
-                    <button type="submit" class="proceed-btn">Proceed to Payment</button>
+                    <button type="submit" class="confirm-btn">Confirm Payment</button>
                 </div>
             </form>
         </div>
@@ -171,30 +134,72 @@
     </footer>
 
     <script>
+        // Format card number as user types
+        document.getElementById('cardNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            e.target.value = value;
+        });
+
+        // Format CVV as user types (numbers only)
+        document.getElementById('cvv').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            e.target.value = value;
+        });
+
+        // Format expiry as MM/YY
+        document.getElementById('expiry').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            e.target.value = value;
+        });
+
         // Handle form submission
-        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+        document.getElementById('paymentForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             // Validate all fields are filled
             const form = e.target;
             if (form.checkValidity()) {
-                // Save form data to localStorage for payment page
-                const formData = {
-                    email: document.getElementById('email').value,
-                    phone: document.getElementById('phone').value,
-                    firstName: document.getElementById('firstName').value,
-                    lastName: document.getElementById('lastName').value,
-                    country: document.getElementById('country').value,
-                    state: document.getElementById('state').value,
-                    line1: document.getElementById('line1').value,
-                    city: document.getElementById('city').value,
-                    postalCode: document.getElementById('postalCode').value
-                };
+                // Get saved checkout info
+                const checkoutInfo = localStorage.getItem('checkoutInfo');
                 
-                localStorage.setItem('checkoutInfo', JSON.stringify(formData));
+                if (!checkoutInfo) {
+                    alert('Please complete checkout information first');
+                    window.location.href = 'checkout.html';
+                    return;
+                }
                 
-                // Redirect to payment page
-                window.location.href = 'checkout-payment.html';
+                // Validate card number (basic validation)
+                const cardNumber = document.getElementById('cardNumber').value;
+                if (cardNumber.length < 13 || cardNumber.length > 16) {
+                    alert('Please enter a valid card number');
+                    return;
+                }
+                
+                // Validate CVV
+                const cvv = document.getElementById('cvv').value;
+                if (cvv.length !== 3) {
+                    alert('Please enter a valid CVV');
+                    return;
+                }
+                
+                // Validate expiry format
+                const expiry = document.getElementById('expiry').value;
+                if (!/^\d{2}\/\d{2}$/.test(expiry)) {
+                    alert('Please enter expiry in MM/YY format');
+                    return;
+                }
+                
+                // Show success message
+                alert('Payment Confirmed! Thank you for your purchase.');
+                
+                // Clear checkout info
+                localStorage.removeItem('checkoutInfo');
+                
+                // In a real application, you would redirect to order confirmation page
+                // window.location.href = 'order-confirmation.html';
             }
         });
     </script>
