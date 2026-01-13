@@ -1,5 +1,5 @@
 // API Base URL
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'http://localhost:5001/api';
 
 let allProducts = [];
 let filteredProducts = [];
@@ -103,11 +103,11 @@ function createProductCard(product) {
     
     card.innerHTML = `
         <div class="product-image-container">
-            <img src="http://localhost:5000/${product.mainImage}" alt="${product.name}" class="product-image">
+            <img src="http://localhost:5001/${product.mainImage}" alt="${product.name}" class="product-image" onerror="this.src='User panel images/icons/upload-placeholder.png'">
         </div>
         <div class="product-info">
             <h3 class="product-name">${product.name}</h3>
-            <p class="product-price">${product.price}</p>
+            <p class="product-price">Rs ${product.price}</p>
         </div>
     `;
     

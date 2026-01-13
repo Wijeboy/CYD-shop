@@ -63,6 +63,7 @@ body {
     overflow: hidden;
     cursor: pointer;
     transition: border-color 0.3s;
+    background-color: #f5f5f5;
 }
 
 .image-preview:hover {
@@ -70,9 +71,10 @@ body {
 }
 
 .image-preview img {
-    max-width: 100%;
-    max-height: 100%;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
+    display: block;
 }
 
 .upload-label {

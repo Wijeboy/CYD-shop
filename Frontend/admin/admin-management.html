@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Management - CYD Admin</title>
     <link rel="stylesheet" href="../css/admin-management.css">
+    <script>
+        // Migrate old authToken to new token key
+        const oldToken = localStorage.getItem('authToken');
+        if (oldToken && !localStorage.getItem('token')) {
+            localStorage.setItem('token', oldToken);
+            localStorage.removeItem('authToken');
+        }
+    </script>
 </head>
 <body>
     <div class="admin-container">
@@ -41,7 +49,7 @@
             <div class="sidebar-footer">
                 <div class="admin-profile">
                     <a href="admin-profile.html">
-                    <img src="../User panel images/default-avatar.png" alt="Admin" class="profile-icon">
+                    <img src="../User panel images/default-avatar.png" alt="Admin" class="profile-icon" onerror="this.src='../User panel images/default-avatar.png'">
                     </a>
                     <span class="profile-name">Admin</span>
                     <img src="../User panel images/icons/dropdown-icon.png" alt="Dropdown" class="dropdown-icon" id="dropdownIcon">
@@ -55,6 +63,11 @@
 
         <!-- Main Content -->
         <main class="main-content">
+            <!-- Welcome Header -->
+            <div class="welcome-header">
+                <h2 class="welcome-text">Hello Admin 👋,</h2>
+            </div>
+
             <div class="content-header">
                 <h2 class="page-title">Admin Management</h2>
                 <p class="page-subtitle">Create and manage admin accounts</p>

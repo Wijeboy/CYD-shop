@@ -1,5 +1,5 @@
 // API Base URL
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'http://localhost:5001/api';
 
 // Check admin authentication on page load
 document.addEventListener('DOMContentLoaded', async function() {
@@ -43,7 +43,7 @@ function setupAdditionalImageUpload(previewId, inputId, imgId) {
 
 // Get auth token
 function getAuthToken() {
-    return localStorage.getItem('authToken');
+    return localStorage.getItem('token');
 }
 
 // Verify admin access

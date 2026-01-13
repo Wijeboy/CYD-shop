@@ -83,12 +83,26 @@ async function verifyAdminAccess() {
         const data = await response.json();
         
         if (!response.ok || !data.success) {
-            throw new Error(data.message || 'Not authorized');
+            console.error('Admin verification failed:', data);
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            alert('Session expired or invalid. Please login again as admin.');
+            window.location.href = '../signin.html';
+            return;
         }
+        
+        if (data.user && data.user.role !== 'admin') {
+            alert('You do not have admin access');
+            window.location.href = '../index.html';
+            return;
+        }
+        
     } catch (error) {
         console.error('Admin verification error:', error);
-        alert('You do not have admin access');
-        window.location.href = '../index.html';
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        alert('Unable to verify admin access. Please login again.');
+        window.location.href = '../signin.html';
     }
 }
 

@@ -1,10 +1,11 @@
 // API Base URL
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'http://localhost:5001/api';
 let productToDelete = null;
 
 // Check admin authentication and load products
 document.addEventListener('DOMContentLoaded', async function() {
     await verifyAdminAccess();
+    await loadAdminProfile();
     await loadProducts();
     
     // Dropdown toggle
@@ -14,11 +15,17 @@ document.addEventListener('DOMContentLoaded', async function() {
     dropdownIcon.addEventListener('click', function() {
         dropdownContent.classList.toggle('show');
     });
+    
+    // Logout button handler
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', handleLogout);
+    }
 });
 
 // Get auth token
 function getAuthToken() {
-    return localStorage.getItem('authToken');
+    return localStorage.getItem('token');
 }
 
 // Verify admin access
@@ -40,13 +47,68 @@ async function verifyAdminAccess() {
             }
         });
         
-        if (!response.ok) {
-            throw new Error('Not authorized');
+        const data = await response.json();
+        
+        if (!response.ok || !data.success) {
+            console.error('Admin verification failed:', data);
+            // Clear invalid token
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            alert('Session expired or invalid. Please login again as admin.');
+            window.location.href = '../signin.html';
+            return;
         }
+        
+        // Verify the user role is admin
+        if (data.user && data.user.role !== 'admin') {
+            alert('You do not have admin access');
+            window.location.href = '../index.html';
+            return;
+        }
+        
+        console.log('Admin verified:', data.user.name);
+        
     } catch (error) {
         console.error('Admin verification error:', error);
-        alert('You do not have admin access');
-        window.location.href = '../index.html';
+        // Clear potentially invalid token
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        alert('Unable to verify admin access. Please login again.');
+        window.location.href = '../signin.html';
+    }
+}
+
+// Load admin profile
+async function loadAdminProfile() {
+    const token = getAuthToken();
+    
+    try {
+        const response = await fetch(`${API_URL}/admin/profile`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+            // Update sidebar profile picture and name
+            const profileIcon = document.querySelector('.profile-icon');
+            const profileName = document.querySelector('.profile-name');
+            
+            if (profileIcon && data.admin.profileImage && data.admin.profileImage !== 'User panel images/default-avatar.png') {
+                const timestamp = new Date().getTime();
+                profileIcon.src = `http://localhost:5001/${data.admin.profileImage}?t=${timestamp}`;
+            }
+            
+            if (profileName && data.admin.name) {
+                profileName.textContent = data.admin.name;
+            }
+        }
+    } catch (error) {
+        console.error('Load profile error:', error);
     }
 }
 
@@ -99,19 +161,19 @@ function createProductCard(product) {
     
     card.innerHTML = `
         <div class="product-image-container">
-            <img src="http://localhost:5000/${product.mainImage}" alt="${product.name}" class="product-image">
+            <img src="http://localhost:5001/${product.mainImage}" alt="${product.name}" class="product-image" onerror="this.src='../User panel images/icons/upload-placeholder.png'">
             <div class="action-icons">
                 <div class="action-icon edit-icon" onclick="editProduct('${product._id}')">
-                    <img src="../images/product-icons/edit-icon.png" alt="Edit">
+                    <img src="../User panel images/icons/edit-icon.png" alt="Edit">
                 </div>
                 <div class="action-icon delete-icon" onclick="confirmDelete('${product._id}')">
-                    <img src="../images/product-icons/delete-icon.png" alt="Delete">
+                    <img src="../User panel images/icons/delete-icon.png" alt="Delete">
                 </div>
             </div>
         </div>
         <div class="product-info">
             <h3 class="product-name">${product.name}</h3>
-            <p class="product-price">${product.price}</p>
+            <p class="product-price">Rs ${product.price}</p>
         </div>
     `;
     
@@ -186,5 +248,17 @@ async function deleteProduct() {
     } catch (error) {
         console.error('Delete product error:', error);
         alert('Failed to delete product: ' + error.message);
+    }
+}
+
+// Handle logout
+function handleLogout() {
+    if (confirm('Are you sure you want to logout?')) {
+        // Clear authentication data
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        
+        // Redirect to signin page
+        window.location.href = '../signin.html';
     }
 }

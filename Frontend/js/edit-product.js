@@ -1,5 +1,5 @@
 // API Base URL
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'http://localhost:5001/api';
 let productId = null;
 let imagesChanged = {
     main: false,
@@ -68,7 +68,7 @@ function setupAdditionalImageUpload(previewId, inputId, imgId, imageKey) {
 
 // Get auth token
 function getAuthToken() {
-    return localStorage.getItem('authToken');
+    return localStorage.getItem('token');
 }
 
 // Verify admin access
@@ -90,13 +90,29 @@ async function verifyAdminAccess() {
             }
         });
         
-        if (!response.ok) {
-            throw new Error('Not authorized');
+        const data = await response.json();
+        
+        if (!response.ok || !data.success) {
+            console.error('Admin verification failed:', data);
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            alert('Session expired or invalid. Please login again as admin.');
+            window.location.href = '../signin.html';
+            return;
         }
+        
+        if (data.user && data.user.role !== 'admin') {
+            alert('You do not have admin access');
+            window.location.href = '../index.html';
+            return;
+        }
+        
     } catch (error) {
         console.error('Admin verification error:', error);
-        alert('You do not have admin access');
-        window.location.href = '../index.html';
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        alert('Unable to verify admin access. Please login again.');
+        window.location.href = '../signin.html';
     }
 }
 
@@ -143,11 +159,42 @@ function populateForm(product) {
     document.getElementById('sizeXL').value = product.sizeQuantities.XL;
     document.getElementById('size2XL').value = product.sizeQuantities.XXL;
     
-    // Display current product images
-    document.getElementById('mainPreviewImg').src = `http://localhost:5000/${product.mainImage}`;
-    document.getElementById('additionalImg1').src = `http://localhost:5000/${product.additionalImages.image1}`;
-    document.getElementById('additionalImg2').src = `http://localhost:5000/${product.additionalImages.image2}`;
-    document.getElementById('additionalImg3').src = `http://localhost:5000/${product.additionalImages.image3}`;
+    // Display current product images with error handling
+    const mainImg = document.getElementById('mainPreviewImg');
+    const img1 = document.getElementById('additionalImg1');
+    const img2 = document.getElementById('additionalImg2');
+    const img3 = document.getElementById('additionalImg3');
+    
+    mainImg.src = `http://localhost:5001/${product.mainImage}`;
+    mainImg.onerror = function() {
+        this.src = '../User panel images/icons/upload-placeholder.png';
+        console.error('Failed to load main image:', product.mainImage);
+    };
+    
+    img1.src = `http://localhost:5001/${product.additionalImages.image1}`;
+    img1.onerror = function() {
+        this.src = '../User panel images/icons/upload-placeholder.png';
+        console.error('Failed to load additional image 1:', product.additionalImages.image1);
+    };
+    
+    img2.src = `http://localhost:5001/${product.additionalImages.image2}`;
+    img2.onerror = function() {
+        this.src = '../User panel images/icons/upload-placeholder.png';
+        console.error('Failed to load additional image 2:', product.additionalImages.image2);
+    };
+    
+    img3.src = `http://localhost:5001/${product.additionalImages.image3}`;
+    img3.onerror = function() {
+        this.src = '../User panel images/icons/upload-placeholder.png';
+        console.error('Failed to load additional image 3:', product.additionalImages.image3);
+    };
+    
+    console.log('Product images loaded:', {
+        main: `http://localhost:5001/${product.mainImage}`,
+        img1: `http://localhost:5001/${product.additionalImages.image1}`,
+        img2: `http://localhost:5001/${product.additionalImages.image2}`,
+        img3: `http://localhost:5001/${product.additionalImages.image3}`
+    });
 }
 
 // Handle image preview

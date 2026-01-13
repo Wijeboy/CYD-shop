@@ -94,6 +94,8 @@ body {
     width: 40px;
     height: 40px;
     border-radius: 50%;
+    object-fit: cover;
+    background-color: #f0f0f0;
 }
 
 .profile-name {
@@ -121,6 +123,24 @@ body {
 .dropdown-text {
     color: #a0a0a0;
     font-size: 14px;
+}
+
+.logout-btn {
+    margin-top: 10px;
+    padding: 8px 20px;
+    background-color: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+.logout-btn:hover {
+    background-color: #dc2626;
 }
 
 /* Main Content */
@@ -204,12 +224,14 @@ body {
     width: 100%;
     height: 280px;
     overflow: hidden;
+    background-color: #f0f0f0;
 }
 
 .product-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    background-color: #f0f0f0;
 }
 
 /* Action Icons */
@@ -334,4 +356,54 @@ body {
 
 .delete-confirm-btn:hover {
     background-color: #c82333;
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+    .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 1024px) {
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .sidebar {
+        width: 240px;
+    }
+    
+    .main-content {
+        padding: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .main-content {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .welcome-text {
+        font-size: 20px;
+    }
 }

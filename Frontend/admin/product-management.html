@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Management - CYD Admin</title>
     <link rel="stylesheet" href="../css/product-management.css">
+    <script>
+        // Migrate old authToken to new token key
+        const oldToken = localStorage.getItem('authToken');
+        if (oldToken && !localStorage.getItem('token')) {
+            localStorage.setItem('token', oldToken);
+            localStorage.removeItem('authToken');
+        }
+    </script>
 </head>
 <body>
     <div class="admin-container">
@@ -40,12 +48,13 @@
 
             <div class="sidebar-footer">
                 <div class="admin-profile">
-                    <img src="../User panel images/default-avatar.png" alt="Admin" class="profile-icon">
+                    <img src="../User panel images/default-avatar.png" alt="Admin" class="profile-icon" onerror="this.src='../User panel images/default-avatar.png'">
                     <span class="profile-name">Admin</span>
                     <img src="../User panel images/icons/dropdown-icon.png" alt="Dropdown" class="dropdown-icon" id="dropdownIcon">
                 </div>
                 <div class="dropdown-content" id="dropdownContent">
                     <span class="dropdown-text">admin</span>
+                    <button class="logout-btn" id="logoutBtn">Logout</button>
                 </div>
             </div>
         </aside>

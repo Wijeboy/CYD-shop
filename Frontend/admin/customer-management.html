@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Management - CYD Admin</title>
     <link rel="stylesheet" href="../css/customer-management.css">
+    <script>
+        // Migrate old authToken to new token key
+        const oldToken = localStorage.getItem('authToken');
+        if (oldToken && !localStorage.getItem('token')) {
+            localStorage.setItem('token', oldToken);
+            localStorage.removeItem('authToken');
+        }
+    </script>
 </head>
 <body>
     <div class="admin-container">
