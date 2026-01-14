@@ -4,6 +4,7 @@ const API_URL = 'http://localhost:5001/api';
 let currentProduct = null;
 let selectedSize = null;
 let selectedColor = null;
+let selectedColorHex = null;
 
 // Get product ID from URL
 const urlParams = new URLSearchParams(window.location.search);
@@ -61,7 +62,6 @@ function setupEventListeners() {
     const closePolicyModal = document.getElementById('closePolicyModal');
 
     if (policyModal) {
-        // Open modal when clicking the badge or info button
         if (policyBadge) {
             policyBadge.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -77,21 +77,18 @@ function setupEventListeners() {
             });
         }
 
-        // Close modal
         if (closePolicyModal) {
             closePolicyModal.addEventListener('click', function() {
                 policyModal.classList.remove('active');
             });
         }
 
-        // Close on overlay click
         policyModal.addEventListener('click', function(e) {
             if (e.target === policyModal) {
                 policyModal.classList.remove('active');
             }
         });
 
-        // Close on ESC key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && policyModal.classList.contains('active')) {
                 policyModal.classList.remove('active');
@@ -129,22 +126,18 @@ async function loadProductDetails() {
 
 // Display product details
 function displayProductDetails(product) {
-    // Set title and basic info
     document.getElementById('productTitle').textContent = product.name;
     document.getElementById('productPrice').textContent = `Rs ${product.price.toFixed(2)}`;
 
-    // Check if product has color variants
     if (product.colorVariants && product.colorVariants.length > 0) {
-        // New format with color variants
         displayColors(product.colorVariants);
         
-        // Display first variant by default
         const firstVariant = product.colorVariants[0];
         selectedColor = firstVariant.colorName;
+        selectedColorHex = firstVariant.colorHex;
         updateImagesForVariant(firstVariant);
         displaySizes(firstVariant.sizeQuantities);
     } else {
-        // Legacy format without color variants
         const images = [
             `http://localhost:5001/${product.mainImage}`,
             `http://localhost:5001/${product.additionalImages.image1}`,
@@ -154,12 +147,9 @@ function displayProductDetails(product) {
 
         updateImageGallery(images);
         displaySizes(product.sizeQuantities);
-        
-        // Display default colors for legacy products
         displayDefaultColors();
     }
 
-    // Display description
     document.getElementById('productDescription').innerHTML = `
         <p>${product.description}</p>
         <p><strong>Category:</strong> ${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</p>
@@ -173,7 +163,6 @@ function updateImagesForVariant(variant) {
         ...variant.images.additionalImages.map(img => `http://localhost:5001/${img}`)
     ];
     
-    // Fill remaining slots if less than 4 images
     while (images.length < 4) {
         images.push('User panel images/icons/upload-placeholder.png');
     }
@@ -228,19 +217,19 @@ function displaySizes(sizeQuantities) {
     });
 }
 
-// Display color options (mock data)
+// Display color options
 function displayColors(colorVariants) {
     const colorOptions = document.getElementById('colorOptions');
     colorOptions.innerHTML = '';
 
     if (colorVariants && colorVariants.length > 0) {
-        // Display actual product color variants
         colorVariants.forEach((variant, index) => {
             const colorDiv = document.createElement('div');
             colorDiv.className = 'color-option';
             colorDiv.style.backgroundColor = variant.colorHex;
             colorDiv.title = variant.colorName;
             colorDiv.dataset.color = variant.colorName;
+            colorDiv.dataset.colorHex = variant.colorHex;
             colorDiv.dataset.variantIndex = index;
 
             if (variant.colorHex === '#FFFFFF' || variant.colorHex.toLowerCase() === '#fff') {
@@ -254,14 +243,13 @@ function displayColors(colorVariants) {
             colorOptions.appendChild(colorDiv);
         });
 
-        // Select first color by default
         const firstColor = colorOptions.querySelector('.color-option');
         if (firstColor) {
             firstColor.classList.add('selected');
             selectedColor = firstColor.dataset.color;
+            selectedColorHex = firstColor.dataset.colorHex;
         }
     } else {
-        // Display default colors for legacy products
         displayDefaultColors();
     }
 }
@@ -285,6 +273,7 @@ function displayDefaultColors() {
         colorDiv.style.backgroundColor = color.hex;
         colorDiv.title = color.name;
         colorDiv.dataset.color = color.name;
+        colorDiv.dataset.colorHex = color.hex;
 
         if (color.hex === '#FFFFFF') {
             colorDiv.style.border = '2px solid #e0e0e0';
@@ -297,11 +286,11 @@ function displayDefaultColors() {
         colorOptions.appendChild(colorDiv);
     });
 
-    // Select first color by default
     const firstColor = colorOptions.querySelector('.color-option');
     if (firstColor) {
         firstColor.classList.add('selected');
         selectedColor = firstColor.dataset.color;
+        selectedColorHex = firstColor.dataset.colorHex;
     }
 }
 
@@ -321,32 +310,25 @@ function selectColor(element, colorVariants) {
     });
     element.classList.add('selected');
     selectedColor = element.dataset.color;
+    selectedColorHex = element.dataset.colorHex;
 
-    // If colorVariants exist, update images and sizes for selected color
     if (colorVariants && element.dataset.variantIndex !== undefined) {
         const variantIndex = parseInt(element.dataset.variantIndex);
         const variant = colorVariants[variantIndex];
         
-        // Update images for this color
         updateImagesForVariant(variant);
-        
-        // Update sizes for this color
         displaySizes(variant.sizeQuantities);
-        
-        // Reset size selection
         selectedSize = null;
     }
 }
 
 // Switch tabs
 function switchTab(tabName) {
-    // Update tab buttons
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.classList.remove('active');
     });
     document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
 
-    // Update tab content
     document.querySelectorAll('.tab-content').forEach(content => {
         content.classList.add('hidden');
     });
@@ -363,18 +345,16 @@ function changeMainImage(index) {
     const mainImage = document.getElementById('mainImage');
     const thumbnails = document.querySelectorAll('.thumbnail');
     
-    // Update active thumbnail
     thumbnails.forEach(thumb => {
         thumb.classList.remove('active');
     });
     thumbnails[index].classList.add('active');
 
-    // Update main image
     mainImage.src = thumbnails[index].src;
 }
 
-// Handle add to cart
-function handleAddToCart() {
+// Handle add to cart - UPDATED
+async function handleAddToCart() {
     if (!selectedSize) {
         alert('Please select a size');
         return;
@@ -385,42 +365,51 @@ function handleAddToCart() {
         return;
     }
 
-    // Here you would typically add the product to cart
-    // For now, just show a confirmation
-    alert(`Added to cart!\n\nProduct: ${currentProduct.name}\nSize: ${selectedSize}\nColor: ${selectedColor}\nPrice: Rs ${currentProduct.price}`);
-
-    // You can implement actual cart functionality here
-    // addToCart(currentProduct, selectedSize, selectedColor);
-}
-
-// Add to cart function (placeholder)
-function addToCart(product, size, color) {
-    // Get existing cart from localStorage
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-    // Check if item already exists
-    const existingItemIndex = cart.findIndex(item => 
-        item.productId === product._id && 
-        item.size === size && 
-        item.color === color
-    );
-
-    if (existingItemIndex > -1) {
-        // Increase quantity
-        cart[existingItemIndex].quantity += 1;
-    } else {
-        // Add new item
-        cart.push({
-            productId: product._id,
-            name: product.name,
-            price: product.price,
-            size: size,
-            color: color,
-            quantity: 1,
-            image: product.mainImage
-        });
+    const token = getAuthToken();
+    if (!token) {
+        alert('Please login to add items to cart');
+        window.location.href = 'signin.html';
+        return;
     }
 
-    // Save cart
-    localStorage.setItem('cart', JSON.stringify(cart));
+    try {
+        const addToCartBtn = document.getElementById('addToCartBtn');
+        addToCartBtn.disabled = true;
+        addToCartBtn.textContent = 'Adding...';
+
+        const response = await fetch(`${API_URL}/cart/add`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                productId: currentProduct._id,
+                selectedColor: selectedColor,
+                selectedColorHex: selectedColorHex,
+                selectedSize: selectedSize,
+                quantity: 1
+            })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            alert(`Added to cart!\n\nProduct: ${currentProduct.name}\nSize: ${selectedSize}\nColor: ${selectedColor}\nPrice: Rs ${currentProduct.price}`);
+            
+            // Optionally redirect to cart
+            if (confirm('Go to cart?')) {
+                window.location.href = 'cart.html';
+            }
+        } else {
+            alert(result.message || 'Failed to add to cart');
+        }
+    } catch (error) {
+        console.error('Add to cart error:', error);
+        alert('Failed to add to cart. Please try again.');
+    } finally {
+        const addToCartBtn = document.getElementById('addToCartBtn');
+        addToCartBtn.disabled = false;
+        addToCartBtn.textContent = 'ADD';
+    }
 }
