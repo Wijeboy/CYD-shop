@@ -402,11 +402,19 @@ async function handleAddToCart() {
                 window.location.href = 'cart.html';
             }
         } else {
+            console.error('API Error Response:', result);
             alert(result.message || 'Failed to add to cart');
         }
     } catch (error) {
         console.error('Add to cart error:', error);
-        alert('Failed to add to cart. Please try again.');
+        console.error('Error details:', {
+            productId: currentProduct?._id,
+            selectedColor: selectedColor,
+            selectedSize: selectedSize,
+            colorVariants: currentProduct?.colorVariants?.length || 0,
+            error: error.message
+        });
+        alert('Failed to add to cart. Please try again. Check console for details.');
     } finally {
         const addToCartBtn = document.getElementById('addToCartBtn');
         addToCartBtn.disabled = false;

@@ -98,14 +98,29 @@ a {
     height: 20px;
 }
 
+.logout-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: #000000;
+    font-size: 14px;
+}
+
+.logout-btn:hover {
+    color: #666;
+}
+
 /* Main Content */
 .main-content {
     flex: 1;
-    padding: 60px 120px;
+    padding: 40px 80px;
+    background-color: #ffffff;
 }
 
 .checkout-container {
-    max-width: 800px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 /* Page Title */
@@ -154,34 +169,47 @@ a {
 .form-section {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 18px;
 }
 
 .section-title {
-    font-size: 20px;
-    font-weight: bold;
+    font-size: 18px;
+    font-weight: 600;
     color: #000000;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 
 /* Form Group */
 .form-group {
     display: flex;
     flex-direction: column;
+    width: 100%;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-row .form-group {
+    width: 100%;
 }
 
 .form-input {
-    padding: 14px;
+    padding: 12px 14px;
     border: 1px solid #d0d0d0;
     border-radius: 5px;
-    font-size: 15px;
+    font-size: 14px;
     font-family: 'Arial', sans-serif;
     outline: none;
     transition: border-color 0.3s;
+    width: 100%;
 }
 
 .form-input:focus {
     border-color: #000000;
+    background-color: #f9f9f9;
 }
 
 .form-input::placeholder {
@@ -190,7 +218,31 @@ a {
 
 /* Button Container */
 .button-container {
-    margin-top: 20px;
+    margin-top: 30px;
+    display: flex;
+    gap: 15px;
+}
+
+.complete-order-btn {
+    flex: 1;
+    padding: 15px 20px;
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.complete-order-btn:hover:not(:disabled) {
+    background-color: #333333;
+}
+
+.complete-order-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
 }
 
 .confirm-btn {
@@ -208,6 +260,170 @@ a {
 
 .confirm-btn:hover {
     background-color: #333333;
+}
+
+/* Payment method styles */
+.payment-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 5px;
+}
+
+.payment-option {
+    display: flex;
+    align-items: flex-start;
+    padding: 16px 18px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background-color: #ffffff;
+}
+
+.payment-option:hover {
+    border-color: #333;
+    background-color: #fafafa;
+}
+
+.payment-option input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    margin-right: 15px;
+    cursor: pointer;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.payment-option input[type="radio"]:checked {
+    accent-color: #000;
+}
+
+.method-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+}
+
+.method-name {
+    font-weight: 600;
+    color: #000;
+    font-size: 15px;
+}
+
+.method-desc {
+    font-size: 13px;
+    color: #666;
+}
+
+/* Payment summary section */
+.checkout-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 50px;
+    margin-top: 30px;
+}
+
+.payment-form-section {
+    flex: 1;
+}
+
+.payment-summary-section {
+    position: sticky;
+    top: 150px;
+    height: fit-content;
+    padding: 0;
+}
+
+.payment-summary {
+    background: #f5f5f5;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.payment-summary h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #000;
+}
+
+.items-list {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    font-size: 13px;
+    color: #333;
+}
+
+.item-name {
+    flex: 1;
+    font-weight: 500;
+}
+
+.item-qty {
+    color: #999;
+    margin: 0 8px;
+    font-size: 12px;
+}
+
+.item-price {
+    font-weight: 600;
+    text-align: right;
+    min-width: 70px;
+    color: #000;
+}
+
+.billing-address {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.billing-address h4 {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #000;
+}
+
+.billing-address p {
+    font-size: 12px;
+    line-height: 1.7;
+    color: #555;
+    margin: 0;
+}
+
+.price-breakdown {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    font-size: 13px;
+    color: #555;
+}
+
+.price-row.total {
+    font-weight: 700;
+    font-size: 15px;
+    border-top: 1px solid #e0e0e0;
+    padding-top: 12px;
+    margin-top: 8px;
+    color: #000;
 }
 
 /* Footer */
@@ -296,4 +512,47 @@ a {
 
 .newsletter-btn:hover {
     background-color: #7a7a7a;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-content {
+        padding: 30px 20px;
+    }
+
+    .checkout-wrapper {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .payment-summary-section {
+        position: static;
+        top: auto;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .page-title {
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+
+    .navbar {
+        padding: 15px 20px;
+    }
+
+    .nav-center {
+        display: none;
+    }
+
+    .footer {
+        padding: 30px 20px;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        gap: 30px;
+    }
 }

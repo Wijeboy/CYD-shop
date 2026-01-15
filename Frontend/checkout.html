@@ -58,7 +58,7 @@
                 <img src="User panel images/icons/orders-icon.png" alt="Orders" class="nav-icon">
                 <span>Orders</span>
             </a>
-            <a href="checkout.html" class="nav-link">
+            <a href="cart.html" class="nav-link">
                 <img src="User panel images/icons/cart-icon.png" alt="Cart" class="nav-icon">
                 <span>Cart</span>
             </a>
@@ -87,8 +87,11 @@
                 <a href="checkout-payment.html" class="nav-tab">Payment</a>
             </div>
 
-            <!-- Checkout Form -->
-            <form class="checkout-form" id="checkoutForm">
+            <div class="checkout-wrapper">
+                <!-- Checkout Form Section -->
+                <div class="checkout-form-section">
+                    <!-- Checkout Form -->
+                    <form class="checkout-form" id="checkoutForm">
                 <!-- Contact Info Section -->
                 <div class="form-section">
                     <h2 class="section-title">Contact Info</h2>
@@ -151,11 +154,21 @@
                     </div>
                 </div>
 
-                <!-- Submit Button -->
-                <div class="button-container">
-                    <button type="submit" class="proceed-btn">Proceed to Payment</button>
+                        <!-- Submit Button -->
+                        <div class="button-container">
+                            <button type="submit" class="proceed-btn">Proceed to Payment</button>
+                        </div>
+                    </form>
                 </div>
-            </form>
+
+                <!-- Order Summary Section -->
+                <div class="checkout-summary-section">
+                    <div class="checkout-summary">
+                        <h3>Order Summary</h3>
+                        <p>Loading order summary...</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -196,33 +209,6 @@
         </div>
     </footer>
 
-    <script>
-        // Handle form submission
-        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Validate all fields are filled
-            const form = e.target;
-            if (form.checkValidity()) {
-                // Save form data to localStorage for payment page
-                const formData = {
-                    email: document.getElementById('email').value,
-                    phone: document.getElementById('phone').value,
-                    firstName: document.getElementById('firstName').value,
-                    lastName: document.getElementById('lastName').value,
-                    country: document.getElementById('country').value,
-                    state: document.getElementById('state').value,
-                    line1: document.getElementById('line1').value,
-                    city: document.getElementById('city').value,
-                    postalCode: document.getElementById('postalCode').value
-                };
-                
-                localStorage.setItem('checkoutInfo', JSON.stringify(formData));
-                
-                // Redirect to payment page
-                window.location.href = 'checkout-payment.html';
-            }
-        });
-    </script>
+    <script src="js/checkout.js"></script>
 </body>
 </html>

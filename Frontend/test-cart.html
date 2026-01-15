@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cart Test</title>
+</head>
+<body>
+    <h1>Cart Add Test</h1>
+    <button onclick="testAddToCart()">Test Add to Cart</button>
+    <pre id="result"></pre>
+
+    <script>
+        const API_URL = 'http://localhost:5001/api';
+
+        async function testAddToCart() {
+            try {
+                // First signup to get token
+                const signupRes = await fetch(`${API_URL}/auth/signup`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        firstName: 'Test',
+                        lastName: 'User',
+                        name: 'Test User',
+                        email: `test${Date.now()}@test.com`,
+                        phone: '1234567890',
+                        countryCode: '+1',
+                        password: 'test123',
+                        confirmPassword: 'test123'
+                    })
+                });
+
+                const signupData = await signupRes.json();
+                const token = signupData.token;
+
+                document.getElementById('result').innerText = 'Token: ' + token + '\n\n';
+
+                // Test add to cart
+                const cartRes = await fetch(`${API_URL}/cart/add`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        productId: '69660adf45a394ca00c671ff',
+                        selectedColor: 'Red',
+                        selectedColorHex: '#FF0000',
+                        selectedSize: 'S',
+                        quantity: 1
+                    })
+                });
+
+                const cartData = await cartRes.json();
+                document.getElementById('result').innerText += 'Response Status: ' + cartRes.status + '\n';
+                document.getElementById('result').innerText += JSON.stringify(cartData, null, 2);
+
+            } catch (error) {
+                document.getElementById('result').innerText = 'Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>

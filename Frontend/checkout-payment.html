@@ -58,7 +58,7 @@
                 <img src="User panel images/icons/orders-icon.png" alt="Orders" class="nav-icon">
                 <span>Orders</span>
             </a>
-            <a href="checkout.html" class="nav-link">
+            <a href="cart.html" class="nav-link">
                 <img src="User panel images/icons/cart-icon.png" alt="Cart" class="nav-icon">
                 <span>Cart</span>
             </a>
@@ -87,38 +87,100 @@
                 <a href="checkout-payment.html" class="nav-tab active">Payment</a>
             </div>
 
-            <!-- Payment Form -->
-            <form class="payment-form" id="paymentForm">
-                <!-- Card Info Section -->
-                <div class="form-section">
-                    <h2 class="section-title">Add Card</h2>
-                    
-                    <div class="form-group">
-                        <input type="text" id="cardNumber" name="cardNumber" class="form-input" 
-                               placeholder="Card Number" maxlength="16" required>
-                    </div>
+            <div class="checkout-wrapper">
+                <!-- Payment Form Section -->
+                <div class="payment-form-section">
+                    <!-- Payment Form -->
+                    <form class="payment-form" id="paymentForm">
+                        <!-- Payment Method Selection -->
+                        <div class="form-section">
+                            <h2 class="section-title">Payment Method</h2>
+                            
+                            <div class="payment-methods">
+                                <label class="payment-option">
+                                    <input type="radio" name="paymentMethod" value="cod" checked>
+                                    <div class="method-content">
+                                        <span class="method-name">Cash on Delivery</span>
+                                        <span class="method-desc">Pay when you receive your order</span>
+                                    </div>
+                                </label>
+                                
+                                <label class="payment-option">
+                                    <input type="radio" name="paymentMethod" value="card">
+                                    <div class="method-content">
+                                        <span class="method-name">Credit/Debit Card</span>
+                                        <span class="method-desc">Pay securely with your card</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
 
-                    <div class="form-group">
-                        <input type="text" id="cvv" name="cvv" class="form-input" 
-                               placeholder="CVV" maxlength="3" required>
-                    </div>
+                        <!-- Card Info Section (Hidden by default) -->
+                        <div class="form-section" id="cardFormSection" style="display: none;">
+                            <h2 class="section-title">Card Details</h2>
+                            
+                            <div class="form-group">
+                                <input type="text" id="cardNumber" name="cardNumber" class="form-input" 
+                                       placeholder="Card Number (16 digits)">
+                            </div>
 
-                    <div class="form-group">
-                        <input type="text" id="nameOnCard" name="nameOnCard" class="form-input" 
-                               placeholder="Name on Card" required>
-                    </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <input type="text" id="expiry" name="expiry" class="form-input" 
+                                           placeholder="Expiry (MM/YY)">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="cvv" name="cvv" class="form-input" 
+                                           placeholder="CVV (3 digits)">
+                                </div>
+                            </div>
 
-                    <div class="form-group">
-                        <input type="text" id="expiry" name="expiry" class="form-input" 
-                               placeholder="Expiry (MM/YY)" maxlength="5" required>
-                    </div>
+                            <div class="form-group">
+                                <input type="text" id="nameOnCard" name="nameOnCard" class="form-input" 
+                                       placeholder="Name on Card">
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="button-container">
+                            <button type="submit" class="complete-order-btn">Complete Order</button>
+                        </div>
+                    </form>
                 </div>
 
-                <!-- Submit Button -->
-                <div class="button-container">
-                    <button type="submit" class="confirm-btn">Confirm Payment</button>
+                <!-- Order Summary Section -->
+                <div class="payment-summary-section">
+                    <div class="payment-summary">
+                        <h3>Order Review</h3>
+                        
+                        <div class="items-list" id="orderItems">
+                            <!-- Items will be loaded here -->
+                        </div>
+                        
+                        <div class="billing-address">
+                            <h4>Shipping To:</h4>
+                            <p id="shippingAddress">
+                                <!-- Shipping address will be loaded here -->
+                            </p>
+                        </div>
+                        
+                        <div class="price-breakdown">
+                            <div class="price-row">
+                                <span>Subtotal</span>
+                                <span id="subtotalAmount">Rs 0.00</span>
+                            </div>
+                            <div class="price-row">
+                                <span>Delivery Fee</span>
+                                <span id="deliveryAmount">Rs 350.00</span>
+                            </div>
+                            <div class="price-row total">
+                                <span>Total Amount</span>
+                                <span id="totalAmount">Rs 0.00</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </form>
+            </div>
         </div>
     </main>
 
@@ -159,75 +221,6 @@
         </div>
     </footer>
 
-    <script>
-        // Format card number as user types
-        document.getElementById('cardNumber').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            e.target.value = value;
-        });
-
-        // Format CVV as user types (numbers only)
-        document.getElementById('cvv').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            e.target.value = value;
-        });
-
-        // Format expiry as MM/YY
-        document.getElementById('expiry').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length >= 2) {
-                value = value.substring(0, 2) + '/' + value.substring(2, 4);
-            }
-            e.target.value = value;
-        });
-
-        // Handle form submission
-        document.getElementById('paymentForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Validate all fields are filled
-            const form = e.target;
-            if (form.checkValidity()) {
-                // Get saved checkout info
-                const checkoutInfo = localStorage.getItem('checkoutInfo');
-                
-                if (!checkoutInfo) {
-                    alert('Please complete checkout information first');
-                    window.location.href = 'checkout.html';
-                    return;
-                }
-                
-                // Validate card number (basic validation)
-                const cardNumber = document.getElementById('cardNumber').value;
-                if (cardNumber.length < 13 || cardNumber.length > 16) {
-                    alert('Please enter a valid card number');
-                    return;
-                }
-                
-                // Validate CVV
-                const cvv = document.getElementById('cvv').value;
-                if (cvv.length !== 3) {
-                    alert('Please enter a valid CVV');
-                    return;
-                }
-                
-                // Validate expiry format
-                const expiry = document.getElementById('expiry').value;
-                if (!/^\d{2}\/\d{2}$/.test(expiry)) {
-                    alert('Please enter expiry in MM/YY format');
-                    return;
-                }
-                
-                // Show success message
-                alert('Payment Confirmed! Thank you for your purchase.');
-                
-                // Clear checkout info
-                localStorage.removeItem('checkoutInfo');
-                
-                // In a real application, you would redirect to order confirmation page
-                // window.location.href = 'order-confirmation.html';
-            }
-        });
-    </script>
+    <script src="js/checkout-payment.js"></script>
 </body>
 </html>
