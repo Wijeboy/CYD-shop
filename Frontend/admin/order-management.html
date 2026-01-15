@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Management - CYD Admin</title>
+    <link rel="stylesheet" href="../css/order-management.css">
+    <script src="../js/auth-utils.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const authenticated = await requireAuth();
+            if (!authenticated) return;
+            startInactivityMonitor();
+        });
+        
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                stopInactivityMonitor();
+                logout();
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../User panel images/icons/dashboard-icon.png" alt="Dashboard" class="header-icon">
+                <h1 class="sidebar-title">Dashboard</h1>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="admin-dashboard.html" class="nav-item">
+                    <img src="../User panel images/icons/dashboard-icon.png" alt="Dashboard" class="nav-icon">
+                    <span>Dashboard</span>
+                </a>
+                <a href="product-management.html" class="nav-item">
+                    <img src="../User panel images/icons/product-icon.png" alt="Products" class="nav-icon">
+                    <span>Product Management</span>
+                </a>
+                <a href="customer-management.html" class="nav-item">
+                    <img src="../User panel images/icons/customer-icon.png" alt="Customers" class="nav-icon">
+                    <span>Customer Management</span>
+                </a>
+                <a href="order-management.html" class="nav-item active">
+                    <img src="../User panel images/icons/order-icon.png" alt="Orders" class="nav-icon">
+                    <span>Order Management</span>
+                </a>
+                <a href="admin-management.html" class="nav-item">
+                    <img src="../User panel images/icons/customer-icon.png" alt="Admin Management" class="nav-icon">
+                    <span>Admin Management</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="admin-profile">
+                    <img src="../User panel images/default-avatar.png" alt="Admin" class="profile-icon" onerror="this.src='../User panel images/default-avatar.png'">
+                    <span class="profile-name">Admin</span>
+                    <img src="../User panel images/icons/dropdown-icon.png" alt="Dropdown" class="dropdown-icon" id="dropdownIcon">
+                </div>
+                <div class="dropdown-content" id="dropdownContent">
+                    <span class="dropdown-text">admin</span>
+                    <button class="logout-btn" id="logoutBtn" onclick="handleLogout()">Logout</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Welcome Header -->
+            <div class="welcome-header">
+                <h2 class="welcome-text">Hello Admin 👋,</h2>
+            </div>
+
+            <div class="page-header">
+                <h1 class="page-title">Order Management</h1>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" onclick="refreshOrders()">
+                        <span>🔄</span> Refresh
+                    </button>
+                    <button class="btn btn-secondary" onclick="exportOrders()">
+                        <span>📥</span> Export
+                    </button>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <h3>Total Orders</h3>
+                        <p class="stat-value" id="totalOrders">0</p>
+                    </div>
+                    <span class="stat-icon">📦</span>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <h3>Pending</h3>
+                        <p class="stat-value" id="pendingOrders">0</p>
+                    </div>
+                    <span class="stat-icon">⏳</span>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <h3>Shipped</h3>
+                        <p class="stat-value" id="shippedOrders">0</p>
+                    </div>
+                    <span class="stat-icon">🚚</span>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <h3>Delivered</h3>
+                        <p class="stat-value" id="deliveredOrders">0</p>
+                    </div>
+                    <span class="stat-icon">✅</span>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <h3>Revenue</h3>
+                        <p class="stat-value" id="totalRevenue">$0</p>
+                    </div>
+                    <span class="stat-icon">💰</span>
+                </div>
+            </div>
+
+            <!-- Filters and Search -->
+            <div class="filters-section">
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-status="all" onclick="filterByStatus('all')">All Orders</button>
+                    <button class="filter-tab" data-status="placed" onclick="filterByStatus('placed')">Placed</button>
+                    <button class="filter-tab" data-status="confirmed" onclick="filterByStatus('confirmed')">Confirmed</button>
+                    <button class="filter-tab" data-status="processing" onclick="filterByStatus('processing')">Processing</button>
+                    <button class="filter-tab" data-status="shipped" onclick="filterByStatus('shipped')">Shipped</button>
+                    <button class="filter-tab" data-status="delivered" onclick="filterByStatus('delivered')">Delivered</button>
+                    <button class="filter-tab" data-status="cancelled" onclick="filterByStatus('cancelled')">Cancelled</button>
+                </div>
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search by customer name, email, or phone..." class="search-input">
+                    <button onclick="searchOrders()" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+
+            <!-- Orders Table -->
+            <div class="table-container">
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Date</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Payment</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTableBody">
+                        <tr>
+                            <td colspan="8" class="loading-cell">Loading orders...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination" id="pagination"></div>
+        </main>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div id="orderModal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2 id="modalTitle">Order Details</h2>
+                <span class="modal-close" onclick="closeModal('orderModal')">&times;</span>
+            </div>
+            <div class="modal-body" id="orderModalBody"></div>
+        </div>
+    </div>
+
+    <!-- Update Status Modal -->
+    <div id="statusModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Update Order Status</h2>
+                <span class="modal-close" onclick="closeModal('statusModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="statusForm" onsubmit="updateOrderStatus(event)">
+                    <input type="hidden" id="statusOrderId">
+                    <div class="form-group">
+                        <label for="orderStatus">Order Status</label>
+                        <select id="orderStatus" class="form-input" required>
+                            <option value="placed">Placed</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="processing">Processing</option>
+                            <option value="shipped">Shipped</option>
+                            <option value="delivered">Delivered</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="trackingNumber">Tracking Number (Optional)</label>
+                        <input type="text" id="trackingNumber" class="form-input" placeholder="Enter tracking number">
+                    </div>
+                    <div class="form-group">
+                        <label for="estimatedDelivery">Estimated Delivery (Optional)</label>
+                        <input type="date" id="estimatedDelivery" class="form-input">
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('statusModal')">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Update Status</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Delivery Fee Modal -->
+    <div id="deliveryFeeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Update Delivery Fee</h2>
+                <span class="modal-close" onclick="closeModal('deliveryFeeModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="deliveryFeeForm" onsubmit="updateDeliveryFee(event)">
+                    <input type="hidden" id="feeOrderId">
+                    <div class="form-group">
+                        <label for="currentDeliveryFee">Current Delivery Fee</label>
+                        <input type="text" id="currentDeliveryFee" class="form-input" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="newDeliveryFee">New Delivery Fee</label>
+                        <input type="number" id="newDeliveryFee" class="form-input" step="0.01" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newTotal">New Total Amount</label>
+                        <input type="text" id="newTotal" class="form-input" readonly>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('deliveryFeeModal')">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Update Fee</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/order-management.js"></script>
+</body>
+</html>

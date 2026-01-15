@@ -64,7 +64,7 @@ const orderSchema = new mongoose.Schema({
     },
     deliveryFee: {
         type: Number,
-        default: 350
+        required: true
     },
     totalAmount: {
         type: Number,
