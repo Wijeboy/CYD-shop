@@ -131,7 +131,7 @@ router.get('/:orderId', protect, async (req, res) => {
         }
 
         // Check if order belongs to the user
-        if (order.userId.toString() !== userId) {
+        if (order.userId.toString() !== userId.toString()) {
             return res.status(403).json({
                 success: false,
                 message: 'Unauthorized access to this order'
@@ -220,7 +220,7 @@ router.put('/:orderId/cancel', protect, async (req, res) => {
         }
 
         // Check if order belongs to the user
-        if (order.userId.toString() !== userId) {
+        if (order.userId.toString() !== userId.toString()) {
             return res.status(403).json({
                 success: false,
                 message: 'Unauthorized access to this order'

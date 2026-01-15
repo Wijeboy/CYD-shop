@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order History - Admin</title>
+    <title>My Orders - CYD</title>
     <link rel="stylesheet" href="css/order.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="js/auth-utils.js"></script>
 </head>
 <body>
@@ -14,6 +13,17 @@
     const authenticated = await requireAuth();
     if (!authenticated) return;
     startInactivityMonitor();
+    
+    const user = getAuthUser();
+    if (user) {
+      const accountLink = document.querySelector('a[href="profile.html"]');
+      if (accountLink) {
+        const accountText = accountLink.querySelector('span');
+        if (accountText) {
+          accountText.textContent = user.name.split(' ')[0];
+        }
+      }
+    }
   });
   
   function handleLogout() {
@@ -24,106 +34,131 @@
   }
 </script>
 
-    <div class="dashboard-wrapper">
-        <aside class="sidebar">
-            <div class="brand">
-                <div class="logo-icon">💠</div>
-                <div class="brand-name">Dashboard <small>v.01</small></div>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="index.html">
+                <img src="images/logo.png" alt="CYD Logo" class="logo">
+            </a>
+            <span class="brand-name">C Y D</span>
+            <a href="index.html" class="nav-link">
+                <span>Home</span>
+            </a>
+            <a href="product-listing.html" class="nav-link">
+                <span>Shop Now</span>
+            </a>
+        </div>
+        
+        <div class="nav-center">
+            <input type="text" id="searchInput" placeholder="search" class="search-input">
+            <button id="searchBtn" class="search-btn">Search</button>
+        </div>
+        
+        <div class="nav-right">
+            <a href="order.html" class="nav-link active">
+                <img src="User panel images/icons/orders-icon.png" alt="Orders" class="nav-icon">
+                <span>Orders</span>
+            </a>
+            <a href="cart.html" class="nav-link">
+                <img src="User panel images/icons/cart-icon.png" alt="Cart" class="nav-icon">
+                <span>Cart</span>
+            </a>
+            <a href="about.html" class="nav-link">
+                <span>About Us</span>
+            </a>
+            <a href="profile.html" class="nav-link">
+                <img src="User panel images/icons/account-icon.webp" alt="Account" class="nav-icon">
+                <span>Account</span>
+            </a>
+            <button onclick="handleLogout()" class="nav-link logout-btn">
+                <span>Logout</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="orders-container">
+            <h1 class="page-title">My Orders</h1>
+            
+            <!-- Filter Tabs -->
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">All Orders</button>
+                <button class="filter-tab" data-filter="processing">Processing</button>
+                <button class="filter-tab" data-filter="shipped">Shipped</button>
+                <button class="filter-tab" data-filter="delivered">Delivered</button>
+                <button class="filter-tab" data-filter="cancelled">Cancelled</button>
             </div>
 
-            <nav class="nav-menu">
-                <div class="nav-item"><span class="nav-icon">📄</span> Dashboard</div>
-                <div class="nav-item"><span class="nav-icon">📦</span> Return Products <span class="arrow">›</span></div>
-                <div class="nav-item"><span class="nav-icon">👤</span> Profile <span class="arrow">›</span></div>
-                
-                <div class="nav-group">
-                    <div class="nav-item active"><span class="nav-icon">🛒</span> Order Management <span class="arrow-down">⌄</span></div>
-                    <div class="sub-item active">Order History</div>
-                </div>
-            </nav>
-
-            <div class="admin-profile">
-                <img src="images/logo.png" alt="Admin" class="admin-img">
-                <div class="admin-info">
-                    <span class="admin-name">Admin</span>
-                    <span class="admin-role">Admin</span>
-                </div>
-                <span class="chevron">⌄</span>
+            <!-- Orders List -->
+            <div class="orders-list" id="ordersList">
+                <!-- Loading state -->
+                <div class="loading-message">Loading your orders...</div>
             </div>
-        </aside>
 
-        <main class="main-content">
-            <header class="content-header">
-                <h2 class="title">ORDER HISTORY</h2>
-                <div class="search-container">
-                    <input type="text" placeholder="Search order id">
-                    <span class="search-btn">🔍</span>
-                </div>
-            </header>
+            <!-- Empty State -->
+            <div class="empty-orders" id="emptyOrders" style="display: none;">
+                <img src="User panel images/icons/orders-icon.png" alt="No Orders" class="empty-icon">
+                <h2>No Orders Yet</h2>
+                <p>You haven't placed any orders yet. Start shopping to see your orders here!</p>
+                <a href="product-listing.html" class="shop-now-btn">Start Shopping</a>
+            </div>
+        </div>
+    </main>
 
-            <table class="order-table">
-                <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Order Number</th>
-                        <th>Total</th>
-                        <th>Status</th>
-                        <th>Attributes</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <div class="product-cell">
-                                <img src="images/1 Women.avif" alt="Women Top" class="product-img">
-                            </div>
-                        </td>
-                        <td><strong>234567AB12</strong></td>
-                        <td class="price">$250.00</td>
-                        <td><span class="status-tag refund">Refund</span></td>
-                        <td class="attr">Color : Blue <br> Size : S <br> <a href="#">See all</a></td>
-                        <td><span class="action-btn">▼</span></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="product-cell">
-                                <img src="images/img2.avif" alt="Casual Dress" class="product-img">
-                            </div>
-                        </td>
-                        <td><strong>234567AB12</strong></td>
-                        <td class="price">$210.00</td>
-                        <td><span class="status-tag delivered">Delivered</span></td>
-                        <td class="attr">Color : Brown <br> Size : M <br> <a href="#">See all</a></td>
-                        <td><span class="action-btn">▼</span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </main>
+    <!-- Order Details Modal -->
+    <div id="orderDetailsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalOrderNumber">Order Details</h2>
+                <span class="modal-close" onclick="closeOrderModal()">&times;</span>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+        </div>
     </div>
 
-    <footer class="main-footer">
-        <div class="footer-grid">
-            <div class="footer-brand">
-                <h2>C Y D .</h2>
-                <div class="socials">
-                    <div class="social-circle">📸</div>
-                    <div class="social-circle">🐦</div>
-                    <div class="social-circle">f</div>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3 class="footer-brand">C Y D.</h3>
+                <div class="social-icons">
+                    <img src="User panel images/icons/facebook-icon.webp" alt="Facebook" class="social-icon">
+                    <img src="User panel images/icons/twitter-icon.png" alt="Twitter" class="social-icon">
+                    <img src="User panel images/icons/instagram-icon.jpg" alt="Instagram" class="social-icon">
                 </div>
-                <p class="copyright">Copyright 2025 © CYD.com-All Right Reserved</p>
+                <p class="footer-copyright">Copyright 2025 ©️ CYD.com - All rights Reserved</p>
             </div>
-            <div class="footer-links">
-                <h3>Company</h3>
-                <ul><li>Shop Now</li><li>Home</li><li>About Us</li><li>Contact</li></ul>
+            
+            <div class="footer-column">
+                <h4 class="footer-heading">Company</h4>
+                <a href="product-listing.html" class="footer-link">Shop Now</a>
+                <a href="index.html" class="footer-link">Home</a>
+                <a href="about.html" class="footer-link">About Us</a>
+                <a href="contact.html" class="footer-link">Contact Us</a>
             </div>
-            <div class="footer-links">
-                <h3>Information</h3>
-                <ul><li>Privacy Policy</li><li>Terms & Conditions</li><li>Return Policy</li><li>Store Locations</li></ul>
+            
+            <div class="footer-column">
+                <h4 class="footer-heading">Information</h4>
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms & Conditions</a>
+                <a href="#" class="footer-link">Return Policy</a>
+                <a href="#" class="footer-link">Store Locations</a>
             </div>
-            <div class="footer-subscribe">
-                <h3>Get In Touch</h3>
-                <input type="email" placeholder="Enter Your Email">
+            
+            <div class="footer-column footer-newsletter">
+                <h4 class="footer-heading">Get In Touch</h4>
+                <input type="email" placeholder="enter your email" class="newsletter-input">
+                <button class="newsletter-btn">subscribe</button>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/order.js"></script>
+</body>
+</html>
                 <button class="sub-btn">Subscribe</button>
             </div>
         </div>
