@@ -9,8 +9,23 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
   <link rel="stylesheet" href="css/billing.css">
+  <script src="js/auth-utils.js"></script>
 </head>
 <body>
+<script>
+  document.addEventListener('DOMContentLoaded', async function() {
+    const authenticated = await requireAuth();
+    if (!authenticated) return;
+    startInactivityMonitor();
+  });
+  
+  function handleLogout() {
+    if (confirm('Are you sure you want to logout?')) {
+      stopInactivityMonitor();
+      logout();
+    }
+  }
+</script>
 
 <!-- ===== HEADER ===== -->
 <header class="header">

@@ -5,8 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout - CYD</title>
     <link rel="stylesheet" href="css/checkout.css">
+    <script src="js/auth-utils.js"></script>
 </head>
 <body>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const authenticated = await requireAuth();
+            if (!authenticated) return;
+            startInactivityMonitor();
+            
+            const user = getAuthUser();
+            if (user) {
+                const accountLink = document.querySelector('a[href="profile.html"]');
+                if (accountLink) {
+                    const accountText = accountLink.querySelector('span');
+                    if (accountText) {
+                        accountText.textContent = user.name.split(' ')[0];
+                    }
+                }
+            }
+        });
+        
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                stopInactivityMonitor();
+                logout();
+            }
+        }
+    </script>
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="nav-left">

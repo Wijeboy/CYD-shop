@@ -8,7 +8,14 @@
     <script src="js/auth-utils.js"></script>
     <script>
         // Load user info in navigation
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            const authenticated = await requireAuth();
+            if (!authenticated) {
+                return;
+            }
+            
+            startInactivityMonitor();
+            
             const user = JSON.parse(localStorage.getItem('user') || '{}');
             if (user && user.name) {
                 const accountLink = document.querySelector('a[href="profile.html"]');
@@ -20,6 +27,13 @@
                 }
             }
         });
+        
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                stopInactivityMonitor();
+                logout();
+            }
+        }
     </script>
 </head>
 <body>

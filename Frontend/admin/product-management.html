@@ -5,12 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Management - CYD Admin</title>
     <link rel="stylesheet" href="../css/product-management.css">
+    <script src="../js/auth-utils.js"></script>
     <script>
         // Migrate old authToken to new token key
         const oldToken = localStorage.getItem('authToken');
         if (oldToken && !localStorage.getItem('token')) {
             localStorage.setItem('token', oldToken);
             localStorage.removeItem('authToken');
+        }
+        
+        document.addEventListener('DOMContentLoaded', async function() {
+            const authenticated = await requireAuth();
+            if (!authenticated) return;
+            startInactivityMonitor();
+        });
+        
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                stopInactivityMonitor();
+                logout();
+            }
         }
     </script>
 </head>

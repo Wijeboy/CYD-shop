@@ -6,8 +6,23 @@
     <title>Order History - Admin</title>
     <link rel="stylesheet" href="css/order.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="js/auth-utils.js"></script>
 </head>
 <body>
+<script>
+  document.addEventListener('DOMContentLoaded', async function() {
+    const authenticated = await requireAuth();
+    if (!authenticated) return;
+    startInactivityMonitor();
+  });
+  
+  function handleLogout() {
+    if (confirm('Are you sure you want to logout?')) {
+      stopInactivityMonitor();
+      logout();
+    }
+  }
+</script>
 
     <div class="dashboard-wrapper">
         <aside class="sidebar">
